@@ -63,5 +63,18 @@ class Brackets{
         }
         return openBrackets.empty();
     }
+    
+    // Leetcode solution
+    public boolean isValid1(String s) {
+        
+        int length;
+    
+        do {
+            length = s.length(); // Store the current length of the string
+            s = s.replace("()", "").replace("{}", "").replace("[]", ""); // Replace valid pairs with an empty string
+        } while (length != s.length()); // Continue loop until no more valid pairs can be found
+    
+        return s.length() == 0; // Return true if the resulting string length is 0, indicating validity
+        }   
 
 }
