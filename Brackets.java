@@ -31,24 +31,16 @@ import java.util.Stack;
 
 class Brackets{
 
-    static String input = "{}()";
-                //  0123
-    HashMap<Character,Integer> pairs = new HashMap<Character,Integer>();
-
-    String[] inputs = {"2","3"};
-
-
     public static void main(String[] args) { 
+        String input = "{}()";
+                //  0123
 
         Brackets brackets = new Brackets();
-        brackets.isValid(input);
-
-
-        
+        brackets.isValid(input);        
     }
 
     public boolean isValid(String s) {
-            HashMap<Character,Character> closingBrackets = new HashMap<>();
+        HashMap<Character,Character> closingBrackets = new HashMap<>();
         Stack<Character> openBrackets = new Stack<>();
 
         closingBrackets.put('}','{');
