@@ -43,28 +43,26 @@
 //      212
 
 public class Climbing {
+
     public static void main(String args[]){
 
         Climbing climbing = new Climbing();
         int n = 10;
 
         for(int i = 1; i < n; i++ ){
-            System.out.println(climbing.climbingWays1(i));
+            System.out.println("Iteration aproach: " +climbing.climbingWays1(i));
+            System.out.println("Recursion aproach: " + climbing.climbingWays(i));
         }
         
-
     }
 
-    // public int climbingWays(int n){
-    //     if(n == 1) return 1;
-    //     if(n == 2) return 2;
-    //     // 1 2 3 5 8 ...x
+    public int climbingWays(int n){
+        if(n == 1) return 1;
+        if(n == 2) return 2;
+        // 1 2 3 5 8 ...x        
+        return climbingWays(n-1) + climbingWays(n-2);
 
-        
-        
-    //     return climbingWays(n-1);
-
-    // }
+    }
 
      public int climbingWays1(int n){
         int n1 = 1;
