@@ -19,18 +19,8 @@ class MaxArea {
         const xDistance = j - i;
         const lowestHeight = actual < actualJ ? actual : actualJ;
         const xVol = xDistance * lowestHeight;
-        
-        if (actual === 8 && actualJ === 7) {
-          console.log('i', i, 'j', j);
-          console.log('actual I', actual);
-          console.log('actual j', actualJ);
-          console.log('xDistance', xDistance);
-          console.log('lowestHigh', lowestHeight);
-          console.log('xVol', xVol);
-        }
 
         if (xVol > maxVol) {
-          console.log('new max', 'i', i, 'j', j);
           maxVol = xVol;
           maxAIndex = i;
           maxBIndex = j;
@@ -38,7 +28,7 @@ class MaxArea {
       }
     }
 
-    console.log('maxA', maxAIndex, 'maxB', maxBIndex, 'maxVol', maxVol);
+    return maxVol;
   }
 }
 
@@ -47,9 +37,9 @@ const max = new MaxArea();
 
 const cases = [
   [1,8,6,2,5,4,8,3,7],
-  // [1, 1]
+  [1, 1]
 ];
 
 cases.forEach((c) => {
-  max.maxArea(c);
+  console.log(max.maxArea(c));
 });
