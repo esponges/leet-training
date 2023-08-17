@@ -51,6 +51,8 @@ class MissingNumber{
         for(int i = min; i < max; i++){
             if(!list.contains(i)){
                 missing = i;
+                // no need to keep looking
+                break;
             }
         }
         if(missing == -1) return n;
