@@ -1,44 +1,47 @@
 public class MiddleLinkList {
     public static void main(String[] args) {
         MiddleLinkList middleLinkList = new MiddleLinkList();
-        ListNode head = new ListNode(1);
-        ListNode current = head;
-        int nodes = 5;
         int val = 1;
-        while(nodes > 0){
-            current.next = new ListNode(val);
+        ListNode head = new ListNode(val);
+        ListNode current = head;
+        int nodes = 15;
+        
+
+        //construct the linked list (First node already created)
+        while(nodes > 1){
             val++;
+            current.next = new ListNode(val);
             current = current.next;
             nodes--;
         }
-        middleLinkList.middleNode(head);
+        current = head;
+
+        //print the constructed linked list
+        while(current != null){
+            System.out.print(current.val + " ");
+            current = current.next;
+        }
+        System.out.println();
+
+        // return and print the value of the middle node
+        head = middleLinkList.middleNode(head);
+        System.out.println("Middle node value: " + head.val);
 
         
     }
 
     public ListNode middleNode(ListNode head) {
         ListNode current = head;
-        int count = 0;
-
-        while(current.next != null && current != null){
+        int count = 1;
+        //counting size of the list
+        while(current != null && current.next != null){
             count++;
             current = current.next;
         }
-        int middleCount = 0;
-        if(count % 2 != 0){
-            Double dou = (Math.ceil(count/2));
-            System.out.println(dou);
-            middleCount = dou.intValue();
-        } else {
-           middleCount = count/2 + 1;
-        }
-        
-        System.out.println(Math.round(count/2));
-        System.out.println(count);
-        System.out.println(middleCount);
-
-
-        while(middleCount != 0){
+        //find for the middle of the list
+        int middleCount = count / 2;
+        // move ahead of the middle node if even or middle node if odd
+        while(middleCount > 0){
             head = head.next;
             middleCount--;
         }
