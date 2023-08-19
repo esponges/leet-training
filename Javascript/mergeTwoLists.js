@@ -44,41 +44,51 @@ Both list1 and list2 are sorted in non-decreasing order. */
  */
 var mergeTwoLists = function(list1, list2) {
   const listCombined = [];
+  console.log(list1, list2);
 
-  let current1 = list1;
-  while(current1) {
-    listCombined.push(current1.val);
-    current1 = current1.next;
+  if (list1) {
+    let current1 = list1;
+    while(current1) {
+      listCombined.push(current1.val);
+      current1 = current1.next;
+    }
   }
 
-  let current2 = list2;
-  while(current2) {
-    listCombined.push(current2.val);
-    current2 = current2.next;
+  if (list2) {
+    let current2 = list2;
+    while(current2) {
+      listCombined.push(current2.val);
+      current2 = current2.next;
+    }
+  }
+  
+  if (listCombined.length > 0) {
+    const orderedList = listCombined.sort();
+    const mergedList = new common.ListNode(orderedList[0]);
+    let currentMergedList = mergedList;
+    // loop ordered list to create a new list 
+    for (let i = 1; i < orderedList.length; i++) {
+      const newNode = new common.ListNode(orderedList[i]);
+      currentMergedList.next = newNode;
+      currentMergedList = currentMergedList.next;
+    }
+    
+    return mergedList;
+  } else  {
+    return -1;
   }
 
-  const orderedList = listCombined.sort();
-  const mergedList = new common.ListNode(orderedList[0]);
-  let currentMergedList = mergedList;
-  // loop ordered list to create a new list 
-  for (let i = 1; i < orderedList.length; i++) {
-    const newNode = new common.ListNode(orderedList[i]);
-    currentMergedList.next = newNode;
-    currentMergedList = currentMergedList.next;
-  }
-
-  return mergedList;
 };
 
 const cases = [
   [[1,2,4], [1, 3, 4]],
-  // [[], []],
-  // [[], [0]]
+  [[], []],
+  [[], [0]]
 ];
 
-cases.forEach((c) => {
-  const list1 = common.createList(c[0]);
-  const list2 = common.createList(c[1]);
+cases.forEach((c, i) => {
+  const list1 = c[0].length > 0 ? common.createList(c[0]) : null;
+  const list2 = c[1].length > 0 ? common.createList(c[1]) : null;
 
-  console.log(mergeTwoLists(list1, list2));
+  console.log(`case ${1}`, mergeTwoLists(list1, list2));
 }) 
