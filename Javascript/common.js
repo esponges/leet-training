@@ -9,9 +9,11 @@ class ListNode {
 
 /**
  * @param {ListNode[]} vals
+ * @param {boolean} debug
+ * @return {ListNode}
  */
 
-const createList = (vals) => {
+const createList = (vals, debug) => {
   const list = new ListNode(vals[0]);
   let current = list;
 
@@ -20,7 +22,10 @@ const createList = (vals) => {
     current.next = node;
     current = current.next;
   }
-  console.log('your list', list);
+
+  if (debug) {
+    console.log('your list', list);
+  }
 
   return list;
 }
