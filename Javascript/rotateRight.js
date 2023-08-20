@@ -6,13 +6,15 @@ const { ListNode, getNodeValues } = require("./common");
  * @return {ListNode}
  */
 function rotateRight(head, k) {
+  let current = head;
   
   for (let i = 0; i < k; i ++) {
-    let current = head;
     let lastVal;
+    // todo: figure out how to swap after 1st iteration
     while (current && current.next) {
       if (!current.next.next) {
         // pop last node
+        console.log('pop last', current.next.val);
         lastVal = current.next.val;
         current.next = null;
       }
@@ -26,7 +28,8 @@ function rotateRight(head, k) {
     const newHeadNode = new ListNode(lastVal);
     newHeadNode.next = head;
     console.log('new node', getNodeValues(newHeadNode));
-    console.log('list with poped tail', getNodeValues(head));
+    head = newHeadNode;
+    // console.log('list with poped tail', getNodeValues(head));
   }
 
   return head;
