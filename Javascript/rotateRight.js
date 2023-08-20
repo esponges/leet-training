@@ -9,9 +9,11 @@ function rotateRight(head, k) {
   
   for (let i = 0; i < k; i ++) {
     let current = head;
+    let lastVal;
     while (current && current.next) {
       if (!current.next.next) {
         // pop last node
+        lastVal = current.next.val;
         current.next = null;
       }
       // const actualNode = new ListNode(current.next.val);
@@ -20,10 +22,11 @@ function rotateRight(head, k) {
       current = current.next;
     }
 
+    
+    const newHeadNode = new ListNode(lastVal);
+    newHeadNode.next = head;
+    console.log('new node', getNodeValues(newHeadNode));
     console.log('list with poped tail', getNodeValues(head));
-
-    // const newHeadNode = new ListNode(current.val);
-    // newHeadNode.next = current;
   }
 
   return head;
