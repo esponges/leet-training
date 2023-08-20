@@ -37,7 +37,9 @@ const createList = (vals, debug) => {
 const getNodeValues = (head) => {
   const vals = [];
   let current = head;
-  while (current.next) {
+
+  // should stop pushing when last current.next === undefined
+  while (current) {
     vals.push(current.val);
     current = current.next;
   }
