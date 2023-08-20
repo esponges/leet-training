@@ -13,7 +13,6 @@ class ListNode {
  * @param {boolean} debug
  * @return {ListNode}
  */
-
 const createList = (vals, debug) => {
   const list = new ListNode(vals[0]);
   let current = list;
@@ -31,7 +30,23 @@ const createList = (vals, debug) => {
   return list;
 }
 
+/**
+ * @param {ListNode} head
+ * @returns {Array}
+ */
+const getNodeValues = (head) => {
+  const vals = [];
+  let current = head;
+  while (current.next) {
+    vals.push(head.val);
+    current = current.next;
+  }
+
+  return vals;
+}
+
 module.exports = {
   ListNode,
-  createList
+  createList,
+  getNodeValues
 }
