@@ -9,7 +9,7 @@ class ListNode {
 }
 
 /**
- * @param {ListNode[]} vals
+ * @param {Array} vals
  * @param {boolean} debug
  * @return {ListNode}
  */
@@ -38,7 +38,7 @@ const getNodeValues = (head) => {
   const vals = [];
   let current = head;
   while (current.next) {
-    vals.push(head.val);
+    vals.push(current.val);
     current = current.next;
   }
 
