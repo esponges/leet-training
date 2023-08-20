@@ -8,6 +8,7 @@
 // i = 4
 // 5 - 3
 
+// Beats 77.53% runtime and 84.46% memory 
 function firstOcurrence(haystack, needle) {
   const len = needle.length;
   let firstOcurrence = -1;
@@ -33,3 +34,13 @@ const cases = [
 cases.forEach((c) => {
   console.log(firstOcurrence(c[0], c[1]));
 });
+
+// other solutions
+function builtIn(haystack, needle) {
+  return haystack.indexOf(needle);
+};
+
+function regexp(haystack, needle) {
+  const regex = new RegExp(needle);
+  return haystack.search(regex);
+};
