@@ -47,8 +47,20 @@ const getNodeValues = (head) => {
   return vals;
 }
 
+function traverseList(head) {
+  let current = head;
+  let count = 0;
+
+  while (current) {
+    console.log(count, current.val);
+    current = current.next;
+    count++;
+  }
+}
+
 module.exports = {
   ListNode,
   createList,
-  getNodeValues
+  getNodeValues,
+  traverseList,
 }
