@@ -42,25 +42,25 @@ function remove9thNode (head, n) {
   let current = head;
 
   while(current) {
-    console.log('current', current);
+    // console.log('current', current);
     // console.log(count, n);
     // remove this node!
     if (count === n) {
       if (current.next) {
-        console.log('assign nextnext');
-        current = current.next.next;
+        // console.log('assign nextnext');-
+        current.next = current.next.next;
       } else {
         // do nothing, last element reached, just don reassign to .next
       }
     } else {
-      console.log('go next');
+      // console.log('go next');
       current = current.next;
     }
     count++;
   }
   
-  console.log('current', getNodeValues(current));
-  console.log('head', getNodeValues(head));
+  // console.log('current', getNodeValues(current));
+  // console.log('head', getNodeValues(head));
   return head;
 }
 
