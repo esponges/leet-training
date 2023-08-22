@@ -24,6 +24,8 @@ The number of nodes in the list is in the range [1, 105].
 
 const { ListNode, getNodeValues } = require('./common');
 
+// todo: handle this case [1,0,1]
+
 /**
  * @param {ListNode} head
  * @returns {boolean}
@@ -32,14 +34,15 @@ function isListPalindrome(head) {
   const vals = [];
   let current = head;
 
+  // single elements are considered palindromes
   if (!head.next) return true;
 
   while (current) {
     vals.push(current.val);
     current = current.next;
   }
-  // console.log('val', vals);
 
+  // todo: apparently not true -> this is a palindrome too [1, 0 , 1]
   // not divisible by two, can't be palindrome
   if (vals.length % 2 !== 0) return false;
 
