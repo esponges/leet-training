@@ -37,28 +37,32 @@ newInterval.length == 2
  */
 
 function insertInterval(intervals, newInterval) {
-  let [start, end] = newInterval;
+  let [newIntStart, newIntEnd] = newInterval;
   let left = [];
   let right = [];
 
   for (const interval of intervals) {
-    const [first, last] = interval;
+    const [actualFirst, actualEnd] = interval;
     // current interval is smaller than newInterval
     // push to the left side of the output interval
-    if (last < start) {
+    // *** once we start overriding newInterval in the last else 
+    // this if condition wont ever be met
+    if (actualEnd < newIntStart) {
       left.push(interval);
     }
     // current interval is larger than newInterval
     // push to the right till the end of the loop
-    else if (first > end) right.push(interval);
+    else if (actualFirst > newIntEnd) right.push(interval);
     // there is a overlap
     else {
       // override newInterval
-      start = Math.min(start, first);
-      end = Math.max(end, last);
+      // well override the newInterval until the else if
+      // logic has been met
+      newIntStart = Math.min(newIntStart, actualFirst);
+      newIntEnd = Math.max(newIntEnd, actualEnd);
     }
   }
-  return [...left, [start, end], ...right];
+  return [...left, [newIntStart, newIntEnd], ...right];
 }
 
 const cases = [
