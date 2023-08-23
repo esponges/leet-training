@@ -8,7 +8,7 @@ Return intervals after the insertion.
 
 Example 1:
 
-Input: intervals = [[1,5],[6,9]], newInterval = [2,5]
+Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
 // if first > start = replace
 // if second > start = replace
 
@@ -37,56 +37,50 @@ newInterval.length == 2
  */
 
 function insertInterval(intervals, newInterval) {
-  const merge = intervals.reduce((acc, actual) => {
-    const first = actual[0];
-    const second = actual[1];
-    return [...acc, first, second]; 
-  });
+  let [start, end] = newInterval;
+  let left = [];
+  let right = [];
 
-  
-  let start;
-  let end;
-  let push = true;
-  const intervalStart = newInterval[0];
-  const intervalEnd = newInterval[1];
-  console.log('interval end', intervalEnd);
-
-  // [1,3],[6,9]] --- [2, 5]
-  const updatedInterval = [];
-  for (let i = 0; i < merge.length; i++) {
-    const actual = merge[i];
-    const next = merge[i+1];
-    console.log('actual', actual);
-
-    if (intervalStart > actual && intervalEnd > actual)
-    
-    // if (push && !start) updatedInterval.push(actual);
-    // if (!start) updatedInterval.push(actual);
-    // // look for start
-    // if (!push && intervalStart > next) {
-    //   console.log('start push');
-    //   start = true;
-    //   updatedInterval.push(intervalStart);
-      
-    //   push = false
-    // } else if (!start && !push && intervalEnd > actual) {
-    //   console.log('start end');
-    //   end = true;
-    //   updatedInterval.push(intervalEnd);
-    //   // set end
-    // }
-
-    // [1,3],[6,9]]
-    // [2, 5]
+  for (const interval of intervals) {
+    const [first, last] = interval;
+    // current interval is smaller than newInterval
+    // push to the left side of the output interval
+    if (last < start) {
+      left.push(interval);
+    }
+    // current interval is larger than newInterval
+    // push to the right till the end of the loop
+    else if (first > end) right.push(interval);
+    // there is a overlap
+    else {
+      // override newInterval
+      start = Math.min(start, first);
+      end = Math.max(end, last);
+    }
   }
-  console.log(updatedInterval);
+  return [...left, [start, end], ...right];
 }
 
 const cases = [
-  [[[1,3],[6,9]], [2,5]],
-  // [[[1,2],[3,5],[6,7],[8,10],[12,16]], [4, 8]]
+  [
+    [
+      [1, 3],
+      [6, 9],
+    ],
+    [2, 5],
+  ],
+  [
+    [
+      [1, 2],
+      [3, 5],
+      [6, 7],
+      [8, 10],
+      [12, 16],
+    ],
+    [4, 8],
+  ],
 ];
 
-cases.forEach(c => {
-  insertInterval(c[0], c[1]);
-})
+cases.forEach((c) => {
+  console.log(insertInterval(c[0], c[1]));
+});
