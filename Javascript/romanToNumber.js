@@ -45,54 +45,38 @@ Constraints:
 s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
 It is guaranteed that s is a valid roman numeral in the range [1, 3999]. */
 
+const cases = [
+  'III',
+  'LVIII',
+  'MCMXCIV'
+];
+
+const values = {
+  I: 1,
+  V: 5,
+  X: 10,
+  L: 50,
+  C: 100,
+  D: 500,
+  M: 1000,
+};
 /**
  * @param {string} roman
  * @returns {number}
  */
-function getRomanSingle(roman) {
-  switch (roman) {
-    case 'I':
-      return 1;
-    case 'V':
-      return 5;
-    case 'X':
-      return 10;
-    case 'L':
-      return 50;
-    case 'C':
-      return 1000;
-    case 'D':
-      return 500;
-    case 'M':
-      return 1000;
-    default:
-      return -1;
+function romanToNumber(s) {
+  let count = 0;
+  for (let i = 0; i < s.length; i++) {
+    let currentValue = values[s[i]];
+    if (i + 1 < s.length && values[s[i + 1]] > currentValue) {
+      count -= currentValue;
+    } else {
+      count += currentValue;
+    }
   }
+  return count;
 }
 
-/**
- *
- * @param {string} chunk
- * @returns {{value: number, rest: string}}
- */
-function getRomanChunk(chunk) {
-  const startsWith = chunk[0];
-  // substraction cases
-  if (startsWith === 'I' || startsWith === 'X' || startsWith === 'C') {
-    const next = chunk[1];
-    if (next === 'V' || next === 'X') {
-      if (next === 'V')
-        return {
-          value: getRomanSingle('V') - getRomanSingle('I'),
-          rest: chunk.slice(2),
-        };
-      if (next === 'X')
-        return {
-          value: getRomanSingle('V') - getRomanSingle('I'),
-          rest: chunk.slice(2),
-        };
-    } 
-  }
-}
-
-function romanToNumber(n) {}
+cases.forEach(c => {
+  console.log(romanToNumber(c));
+})
