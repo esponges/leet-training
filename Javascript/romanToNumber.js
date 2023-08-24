@@ -21,23 +21,22 @@ Given a roman numeral, convert it to an integer.
 
 Example 1:
 
-Input: s = "III"
+Input: s = "I I I"
 Output: 3
-Explanation: III = 3.
+Explanation: I I I = 3.
 Example 2:
 
-Input: s = "L VIII"
+Input: s = "L V I I I"
 Output: 58
 Explanation: L = 50, V= 5, III = 3.
 Example 3:
 
-Input: s = "M CM XC IV"
+Input: s = "M CM X C IV"
 Output: 1994
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 
-DCCC LXXX V 885
-M CCC XX VIII 1328
- 
+D C C C L X X X V 885
+M C C C X X V III 1328
 
 Constraints:
 
@@ -45,13 +44,9 @@ Constraints:
 s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
 It is guaranteed that s is a valid roman numeral in the range [1, 3999]. */
 
-const cases = [
-  'III',
-  'LVIII',
-  'MCMXCIV'
-];
+const cases = ['III', 'LVIII', 'MCMXCIV'];
 
-const values = {
+const symbols = {
   I: 1,
   V: 5,
   X: 10,
@@ -65,18 +60,18 @@ const values = {
  * @returns {number}
  */
 function romanToNumber(s) {
-  let count = 0;
-  for (let i = 0; i < s.length; i++) {
-    let currentValue = values[s[i]];
-    if (i + 1 < s.length && values[s[i + 1]] > currentValue) {
-      count -= currentValue;
-    } else {
-      count += currentValue;
-    }
+  let value = 0;
+  for (let i = 0; i < s.length; i += 1) {
+    // if actual is smaller than following
+    // case prefix
+    symbols[s[i]] < symbols[s[i + 1]]
+      ? (value -= symbols[s[i]])
+      // otherwise just sum actual value
+      : (value += symbols[s[i]]);
   }
-  return count;
+  return value;
 }
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(romanToNumber(c));
-})
+});
