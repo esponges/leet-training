@@ -42,9 +42,9 @@ public class InsertIntervals {
         InsertIntervals insertIntervals = new InsertIntervals();
         int[][] newIntervals = insertIntervals.intervalsMerge(intervals, newInterval);
 
-        // for(int i = 0; i < newInterval.length; i++){
-        //     System.out.println(Arrays.toString(newIntervals[i]));
-        // }
+        for(int i = 0; i < newIntervals.length; i++){
+             System.out.println(Arrays.toString(newIntervals[i]));
+        }
         
     }
 
@@ -86,9 +86,9 @@ public class InsertIntervals {
             newIntervalsArray[i] = newIntervalsList.get(i);
                        
         }
-        for(int i = 0; i < newIntervalsArray.length; i++){
-            System.out.println(Arrays.toString(newIntervalsArray[i]));
-        }
+        // for(int i = 0; i < newIntervalsArray.length; i++){
+        //     System.out.println(Arrays.toString(newIntervalsArray[i]));
+        // }
 
         return newIntervalsArray;
 
