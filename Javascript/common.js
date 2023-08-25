@@ -47,16 +47,42 @@ const getNodeValues = (head) => {
   return vals;
 }
 
-function traverseList(head) {
+/**
+ * 
+ * @param {ListNode} head 
+ * @param {number} stop 
+ */
+function traverseList(head, stop = 2) {
   let current = head;
   let count = 0;
 
-  while (current) {
+  while (current && count < stop) {
     console.log(count, current.val);
     current = current.next;
     count++;
   }
+
+  // mutate head stopping at stop
+  let current2 = head;
+
+  while (current2 && count < stop) {
+    console.log(count, current2.val);
+    current2 = current2.next;
+    count++;
+  }
+
+  console.log('head', head, getNodeValues(head));
+  return head;
 }
+// const samples = [
+//   [1, 2, 3, 4, 5],
+//   // [0, 1, 2],
+// ];
+
+// samples.forEach((sample) => {
+//   const list = createList(sample);
+  // traverseList(list);
+// });
 
 module.exports = {
   ListNode,
