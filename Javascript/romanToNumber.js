@@ -31,7 +31,7 @@ Output: 58
 Explanation: L = 50, V= 5, III = 3.
 Example 3:
 
-Input: s = "M CM X C IV"
+Input: s = "M CM XC IV"
 Output: 1994
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 
@@ -62,12 +62,13 @@ const symbols = {
 function romanToNumber(s) {
   let value = 0;
   for (let i = 0; i < s.length; i += 1) {
-    // if actual is smaller than following
-    // case prefix
-    symbols[s[i]] < symbols[s[i + 1]]
-      ? (value -= symbols[s[i]])
-      // otherwise just sum actual value
-      : (value += symbols[s[i]]);
+    const actual = symbols[s[i]];
+    const next = symbols[s[i + 1]];
+    if (actual < next) {
+      value -= actual;
+    } else {
+      value += actual;
+    }
   }
   return value;
 }
