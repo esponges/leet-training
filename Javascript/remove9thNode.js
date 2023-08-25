@@ -27,8 +27,8 @@ The number of nodes in the list is sz.
 const { ListNode, getNodeValues } = require("./common");
 
 cases = [
-  [[1, 2, 3, 4, 5], 2],
-  [[1], 1],
+  // [[1, 2, 3, 4, 5], 2],
+  // [[1], 1],
   [[1, 2], 1]
 ];
 
@@ -43,14 +43,14 @@ function remove9thNode (head, n) {
 
   while(current) {
     // console.log('current', current);
-    // console.log(count, n);
-    // remove this node!
-    if (count === n) {
+    console.log(count, n);
+    // remove next node!
+    if (count === n - 1) {
+      console.log('current', current);
+      console.log('head', head);
       if (current.next) {
-        // console.log('assign nextnext');-
+        console.log('assign nextnext');
         current.next = current.next.next;
-      } else {
-        // do nothing, last element reached, just don reassign to .next
       }
     } else {
       // console.log('go next');
@@ -63,6 +63,17 @@ function remove9thNode (head, n) {
   // console.log('head', getNodeValues(head));
   return head;
 }
+
+// ideal solution
+var removeNthFromEnd = function(head, n) {
+  let fast = head, slow = head
+  console.log(fast, slow);
+  for (let i = 0; i < n; i++) fast = fast.next
+  if (!fast) return head.next
+  while (fast.next) fast = fast.next, slow = slow.next
+  slow.next = slow.next.next
+  return head
+};
 
 /**
  * @param {number[]} els 
@@ -85,6 +96,6 @@ cases.forEach((c) => {
   const list = createList(c[0])
   console.log(getNodeValues(list));
 
-  const res = remove9thNode(list, c[1]);
-  console.log(getNodeValues(res));
+  console.log(removeNthFromEnd(list));
+  // const res = remove9thNode(list, c[1]);
 });
