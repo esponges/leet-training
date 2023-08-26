@@ -21,6 +21,8 @@ Example 2:
 Input: boxes = "001011"
 Output: [11,8,5,4,3,4] */
 
+// accepted: good memory, bad runtime - prolly bcuz of many iterations?
+
 /**
  * @param {number[]} operations
  * @returns {number[]}
@@ -29,11 +31,7 @@ function minOperations(operations) {
   let left = 0;
   let right = operations.length - 1;
 
-  const minOp = [];
-  // build base ops count
-  for (let i = 0; i < operations.length; i++) {
-    minOp.push(0);
-  }
+  const minOp = Array(operations.length).fill(0);
 
   const iterations = operations.length * operations.length;
   for (let i = 0; i < iterations; i++) {
@@ -41,12 +39,10 @@ function minOperations(operations) {
     
     // inc count
     if (actual > 0 && left !== right) {
-      console.log('sum actual', actual);
       const diff = Math.abs(left - right);
       minOp[right] += diff;
     }
 
-    console.log(i, 'actual', actual, 'minOp', minOp);
 
     // move pointers
     if (right === 0) {
@@ -65,7 +61,7 @@ function minOperations(operations) {
 
 const cases = [
   [1, 1, 0],
-  // [0, 0, 1, 0, 1, 1]
+  [0, 0, 1, 0, 1, 1]
 ];
 
 cases.forEach(c => {
