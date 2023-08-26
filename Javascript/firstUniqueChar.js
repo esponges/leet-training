@@ -24,11 +24,11 @@ Output: -1
 function firstUniqueChar(s) {
   const chars = {};
 
-  for (let i = 0; i < s.length; i++){
+  for (let i = 0; i < s.length; i++) {
     const actual = s[i];
     if (chars[actual]) {
       // inc count
-      chars[actual][0] +=1;
+      chars[actual][0] += 1;
       // save latest index where it was repeated
       chars[actual][1] = i;
     } else {
@@ -37,22 +37,19 @@ function firstUniqueChar(s) {
   }
 
   let found = -1;
-  Object.values(chars).forEach((actual) => {
-    if (found !== -1) return;
+  for (let i = 0; i < vals.length; i++) {
+    const actual = vals[i];
 
     if (actual[0] === 1) {
       found = actual[1];
+      return found;
     }
-  });
+  }
   return found;
 }
 
-const cases = [
-  'leetcode',
-  'loveleetcode',
-  'aabb'
-];
+const cases = ['leetcode', 'loveleetcode', 'aabb'];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(firstUniqueChar(c));
-})
+});
