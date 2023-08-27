@@ -16,22 +16,26 @@ class CustomNode {
   }
 }
 
+class BinaryTree {
   /**
    * @param {CustomNode|null} root 
    */
-class BinaryTree {
   constructor(root) {
     // todo: handle duplicates (allow or reject)
     this.root = root;
   }
 
-  // /**
-  //  * @param {CustomNode} node
-  //  */
-  // add(data) {
-  //   const node = new CustomNode(data)
-  // }
-
+  /**
+   * @param {CustomNode} node 
+   */
+  add (node) {
+    if (this.root === null) {
+      this.root = node;
+    } else {
+      this.insertNode(this.root, node);
+    }
+  }
+ 
   /**
    * @param {CustomNode} node
    * @param {CustomNode} newNode
@@ -59,4 +63,3 @@ class BinaryTree {
   }
 }
 
-const myBT = new BinaryTree(10);
