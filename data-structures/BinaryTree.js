@@ -9,7 +9,7 @@ class CustomNode {
    * @param {CustomNode|null} left 
    * @param {CustomNode|null} right 
    */
-  constructor(data, left, right) {
+  constructor(data, left = null, right = null) {
     this.left = left;
     this.right = right;
     this.data = data;
@@ -21,7 +21,6 @@ class BinaryTree {
    * @param {CustomNode|null} root 
    */
   constructor(root) {
-    // todo: handle duplicates (allow or reject)
     this.root = root;
   }
 
@@ -41,6 +40,10 @@ class BinaryTree {
    * @param {CustomNode} newNode
    */
   insertNode (node, newNode) {
+    // todo: handle duplicates or other kind of data (allow or reject)
+    if (node.data === newNode.data) throw new Error ('Duplicates not allowed for the moment');
+    if (typeof newNode.data !== 'number') throw new Error ('Only numbers allowed'); 
+
     // place data in the right node
     // bigger -  goes right
     if (newNode.data > node.data) {
