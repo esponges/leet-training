@@ -25,9 +25,11 @@ class BinaryTree {
   }
 
   /**
-   * @param {CustomNode} node 
+   * @param {any} data 
    */
-  add (node) {
+  add (data) {
+    const node = new CustomNode(data);
+    
     if (this.root === null) {
       this.root = node;
     } else {
