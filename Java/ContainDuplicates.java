@@ -1,11 +1,16 @@
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 class ContainDuplicates{
     public static void main(String[] args) {
         ContainDuplicates containDuplicates = new ContainDuplicates();
-        System.out.println(containDuplicates.containsDuplicate(new int[]{1,2,3,1}));
+        System.out.println(containDuplicates.containsDuplicates1(new int[]{1,2,3,4,5}));
         
     }
 
-    public boolean containsDuplicate(int[] nums) {
+    public boolean containsDuplicates(int[] nums) {
         int left = 0;
         int rigth = left + 1; 
         int end = nums.length-1;
@@ -20,5 +25,21 @@ class ContainDuplicates{
             }            
         }  
         return false;     
+    }
+
+    public boolean containsDuplicates1(int[] nums){
+        HashSet<Integer> numsSet = new HashSet<>();
+
+        for(int i : nums){
+            numsSet.add(i);
+        }
+
+        List<Integer> numsList = Arrays.stream(nums)
+                                        .distinct()
+                                        .boxed()
+                                        .collect(Collectors.toList());
+
+        if(numsList.size() == nums.length) return false;
+        return true;
     }
 }
