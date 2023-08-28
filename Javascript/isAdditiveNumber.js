@@ -33,7 +33,7 @@ num consists only of digits. */
  * @param {string} num
  */
 
-function isAdditiveNumber (num) {
+function isAdditiveNumber(num) {
   let left = 0;
   // start with next num
   let right = 1;
@@ -41,39 +41,71 @@ function isAdditiveNumber (num) {
   let rightOffset = 1;
 
   let consecutiveNext;
-  while (left + right + leftOffset + rightOffset < num.length - left + right + leftOffset + rightOffset) {
+  let consecutive;
+  let digits = 0;
+  while (
+    left + right + leftOffset + rightOffset <
+    num.length - left + right + leftOffset + rightOffset
+  ) {
     const actual = num.slice(left, left + leftOffset);
     const next = num.slice(left + leftOffset, right + rightOffset);
-    
+
     const sum = parseInt(actual) + parseInt(next);
-    const digits = sum.toString().length;
-    
-    const maybeSum = num.slice(right + rightOffset, right + rightOffset + digits);
-    console.log('right', right, 'rightOffset', rightOffset, 'digits', digits);
-    console.log('maybeSum ranges', right + rightOffset, ' - ', rightOffset + rightOffset + digits);
-    console.log('actual', actual, 'next', next, 'maybeSum', maybeSum, 'sum', sum);
+    digits = sum.toString().length;
+
+    const maybeSum = num.slice(
+      right + rightOffset,
+      right + rightOffset + digits
+    );
 
     // dont check strict equality
     if (sum == maybeSum) {
-      consecutiveNext = sum
+      consecutiveNext = sum;
+      consecutive = actual;
       break;
     } else {
-      // todo: handle cases where right is maxed and must check against left
-      rightOffset ++;
+      // todo: handle cases where right is maxed and must check against increasing left instead
+      rightOffset++;
     }
 
     // debug avoid inf loop
     if (rightOffset > 2) break;
   }
 
+  let remaingCheck = num.slice(right + rightOffset + digits);
+  let count = 0;
+  while (/* remaingCheck ||  */count < 3) {
+    count ++;
+    console.log('remaining', remaingCheck);
+    const prev = consecutiveNext;
+    const prevPrev = consecutive;
+    const maybeSum = parseInt(prev) + parseInt(prevPrev);
+    console.log('prev', prev, 'prevPrev', prevPrev, 'maybeSum', maybeSum);
+    if (maybeSum) {
+      digits = maybeSum.toString().length;
+      // console.log('digits', digits, 'remaining', remaingCheck);
+      const next = remaingCheck.slice(digits - 1, digits + digits - 1);
+      console.log('next', next);
+
+      if (maybeSum == next) {
+        remaingCheck = remaingCheck.slice(digits);
+
+        if (!remaingCheck.length) return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+    console.log('remaining', remaingCheck);
+    count ++;
+  }
+
   return consecutiveNext;
 }
 
-const cases = [
-  // "112358",
-  "199100199"
-];
+const cases = ['112358', /* '199100199' */];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(isAdditiveNumber(c));
 });
