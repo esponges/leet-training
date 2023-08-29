@@ -29,38 +29,83 @@ Input: s = "A", numRows = 1
 Output: "A" */
 
 class ZigzagConvertion {
-  constructor(){}
-  
+  constructor() {}
+
+  /**
+   * 
+   * @param {Array|undefined} prev 
+   * @param {number} rowCount 
+   * @param {number|string} val 
+   * @returns 
+   */
+  addToZigZag(prev = [], rowCount, val) {
+    const newVal = [...prev[rowCount], val];
+
+    return newVal;
+  }
+
   /**
    * @param {string} s
    * @param {number} numRows
    * @returns {string}
    */
-  convert (s, numRows) {
+  convert(s, numRows) {
+    console.log(s, s.length);
     // let zigzagRow = false;
     const zigzag = [];
     let col = 0;
     let rowCount = 0;
     let pushCount = 0;
+    let zigColPushIdx = numRows - 2; // 1 for starting cols at 0 and 1 for skipping last row
 
-    while (pushCount >= s.length) {
-      // todo: add statement to contidionally push depending of col & row
-      if (col % numRows - 1 === 0) {
-        const actual = s[pushCount];
-        zigzag[rowCount] = [...zigzag[rowCount], actual];
+    while (pushCount <= s.length) {
+      // the residual will be always 0 when col should be full
+      const actual = s[pushCount];
+      if ((col % numRows) - 1 === 0) {
+        zigzag[rowCount] = [...zigzag[rowCount] || [], actual];
+        // zigzag[rowCount] = this.addToZigZag(zigzag, rowCount, actual);
         pushCount++;
       } else {
         // todo: handle how should be the push or not cases
+        if (
+          rowCount !== 0 /* first */ &&
+          rowCount !== numRows - 1 /* last */ &&
+          rowCount === zigColPushIdx
+        ) {
+          // add flag to know which row to add number
+          zigzag[rowCount] = [...zigzag[rowCount] || [], actual];
+          pushCount++;
+          zigColPushIdx--; // offset one for next col push
+        } else {
+          // push 0
+          zigzag[rowCount] = [zigzag[rowCount] || [], 0];
+          pushCount++;
+
+          // restart count when reaching last row and col with horizontal pattern;
+          if (rowCount === numRows - 2 && col + 1 === numRows - 2)
+            zigColPushIdx = numRows - 2;
+        }
       }
 
       // updateRowCountAccordingly
-      if (rowCount !== numRows - 1) {
+      if (rowCount !== numRows - 2) {
         rowCount++;
       } else {
         // col is full, move to next and restart rowCount;
-        col ++;
+        col++;
         rowCount = 0;
-      };      
+      }
     }
+
+    return zigzag;
   }
 }
+
+const cases = [
+  ['PAYPALISHIRING', 3], 
+  // [('PAYPALISHIRING', 4)]
+];
+
+const zigzag = new ZigzagConvertion();
+
+cases.forEach((c) => console.log(zigzag.convert(c[0], c[1])));
