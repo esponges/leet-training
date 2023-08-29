@@ -18,10 +18,6 @@
 // 1 <= s.length <= 105
 // s consists of only lowercase English letters.
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FirstUniqueChar {
     public static void main(String[] args) {

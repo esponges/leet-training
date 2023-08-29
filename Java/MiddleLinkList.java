@@ -1,3 +1,5 @@
+
+
 public class MiddleLinkList {
     public static void main(String[] args) {
         MiddleLinkList middleLinkList = new MiddleLinkList();
@@ -51,12 +53,12 @@ public class MiddleLinkList {
 
     
 }
-class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-        val = x;
-        next = null;
-        }
+// class ListNode {
+//         int val;
+//         ListNode next;
+//         ListNode(int x) {
+//         val = x;
+//         next = null;
+//         }
     
-    }
+//     }

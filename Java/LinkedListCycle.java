@@ -66,5 +66,4 @@ public class LinkedListCycle {
         val = x;
         next = null;
         }
-    
     }
