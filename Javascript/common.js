@@ -20,6 +20,7 @@ const createList = (vals, debug) => {
   for (let i = 1; i < vals.length; i++) {
     const node = new ListNode(vals[i]);
     current.next = node;
+    // move pointer to next
     current = current.next;
   }
 
