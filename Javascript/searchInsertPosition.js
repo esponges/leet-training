@@ -24,22 +24,24 @@ Output: 4 */
  * @returns {number} 
  */
 function searchInsertPos (nums, target) {
-  const real = [];
-  let smaller = 0;
-  for (let i = 0; i < target; i++) {
-    const actual = nums[i];
-    real.push(i + 1);
-    if (actual === target) return i;
-    else if (real[i] === target) smaller = i;
-  }
+  // special case where target should be first element
+  if (target < nums[0]) return 0;
 
-  return target > nums[nums.length - 1] ? nums.length : smaller; 
+  for (let i = 0; i < nums.length; i++) {
+    const actual = nums[i];
+    const next = nums[i + 1];
+    if (actual === target) return i;
+    else if (target > actual && target < next) return i + 1;
+  }
+  
+  return nums.length;
 }
 
 const cases = [
   [[1, 3, 5, 6], 5],
   [[1, 3, 5, 6], 2],
   [[1, 3, 5, 6], 7],
+  [[-1,3,5,6], 0], // exp 1
 ];
 
 cases.forEach(c => {

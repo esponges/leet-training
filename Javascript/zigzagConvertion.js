@@ -132,7 +132,7 @@ class ZigzagConvertion {
 }
 
 const cases = [
-  // ['PAYPALISHIRING', 3],
+  ['PAYPALISHIRING', 3],
   ['PAYPALISHIRING', 4],
 ];
 
