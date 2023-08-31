@@ -26,7 +26,7 @@ The number of nodes in each linked list is in the range [1, 100].
 0 <= Node.val <= 9
 It is guaranteed that the list represents a number that does not have leading zeros. */
 
-const { ListNode, createList } = require("./common");
+const { ListNode, createList, getNodeValues } = require("./common");
 
 
 
@@ -65,7 +65,8 @@ class AddTwoNumbers  {
     return reversedSum;
   }
 
-  /**
+// accepted solution - bad perf and memory
+/**
  * @param {ListNode} l1
  * @param {ListNode} l2
  * @return {ListNode}
@@ -73,13 +74,11 @@ class AddTwoNumbers  {
   addLists (l1, l2) {
     let leftCurrent = l1;
     let rightCurrent = l2;
-    const headSum = new ListNode('foo')
+    const headSum = new ListNode('foo');
     let sumList = headSum;
-    console.log('initial sumList', sumList);
 
     let residual = 0;
     while (leftCurrent || rightCurrent) {
-      // console.log(leftCurrent && leftCurrent.val, rightCurrent && rightCurrent.val);
       const actualLeft = leftCurrent && leftCurrent.val;
       const nextLeft = leftCurrent && leftCurrent.next ? leftCurrent.next : 0;
       leftCurrent = nextLeft;
@@ -87,33 +86,28 @@ class AddTwoNumbers  {
       const actualRight = rightCurrent && rightCurrent.val;
       const nextRight = rightCurrent && rightCurrent.next ? rightCurrent.next : 0;
       rightCurrent = nextRight;
-
-      const sum = actualLeft + actualRight;
-      const str = sum.toString();
+      
+      const sum = actualLeft + actualRight + residual;
       // meaning two digits
       if (sum > 9) {
-        const newNode = new ListNode(sum - 10 + residual);
-        console.log('9 sumList.next Node', newNode);
+        const newNode = new ListNode(sum - 10);
         sumList.next = newNode;
-        console.log('9 before sumList', sumList);
         // move pointer to the next element
         sumList = sumList.next;
-        console.log('9 pointer sumList', sumList);
         // increase residual
         residual = 1;
       } else {
-        sumList.next = new ListNode(sum + residual);
-        console.log('before sumList', sumList);
-        // console.log('9 pointer sumList.next', sumList.next);
+        sumList.next = new ListNode(sum);
         // move pointer to next element
         sumList = sumList.next;
-        console.log('moved sumList', sumList);
         // restart residual count
         residual = 0;
       }
     }
-    // todo: figure out why node list is not moving pointer
-    console.log(headSum);
+    if (residual > 0) {
+      sumList.next = new ListNode(residual);
+    }
+    console.log(getNodeValues(headSum.next));
 
     return headSum.next;
   }
@@ -123,7 +117,7 @@ const add = new AddTwoNumbers();
 
 const ex1Args = [[2,4,3], [5,6,4]];
 const ex2Args = [[9,9,9,9,9,9,9], [9,9,9,9]];
-const cases = [ex1Args, /* ex2Args */];
+const cases = [ex1Args, ex2Args];
 
 cases.forEach((c) => {
   // console.log(add.add(c[0], c[1]));
