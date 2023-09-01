@@ -40,32 +40,30 @@ function topStudents(
 ) {
   const students = {};
 
-  for (let i = 0; i < k; i++) {
+  for (let i = 0; i < student_id.length; i++) {
     const actualId = student_id[i];
     const actualReport = report[i];
 
     let posCount = 0;
-    positive_feedback.forEach(pos => {
+    positive_feedback.forEach((pos) => {
       if (actualReport.includes(pos)) {
         posCount++;
       }
     });
-    console.log('positive', posCount);
 
     let negCount = 0;
-    negative_feedback.forEach(neg => {
+    negative_feedback.forEach((neg) => {
       if (actualReport.includes(neg)) {
-        negCount ++;
+        negCount++;
       }
     });
-    console.log('negative', negCount);
     const actualScore = posCount * 3 - negCount;
 
     students[actualId] = [actualId, actualReport, actualScore];
   }
 
   // a - b -> ascending 1, 2, 3, 4...
-  // b -a -> descending 4, 3, 2, 1 
+  // b -a -> descending 4, 3, 2, 1
   const std = Object.values(students);
   const sorted = std.sort((a, b) => {
     const aId = a[0];
@@ -75,18 +73,14 @@ function topStudents(
 
     // if id not the same sort the score
     if (aId !== bId) {
-      return bScore - aScore;   
+      return bScore - aScore;
     } else {
-      // otherwise get the smaller Id // 
+      // otherwise get the smaller Id //
       return aId - bId;
     }
   });
 
-  console.log('sorted', sorted);
-
-  // console.log(students);
-
-  return sorted.map(s => s[0]).slice(0, k);
+  return sorted.map((s) => s[0]).slice(0, k);
 }
 
 const cases = [
@@ -97,12 +91,32 @@ const cases = [
   //   [1, 2],
   //   2,
   // ],
+  // [
+  //   ['smart', 'brilliant', 'studious'],
+  //   ['not'],
+  //   ['this student is not studious', 'the student is smart'],
+  //   [1, 2],
+  //   2,
+  // ],
+  // todo: debug this test case
   [
-    ['smart', 'brilliant', 'studious'],
-    ['not'],
-    ['this student is not studious', 'the student is smart'],
-    [1, 2],
-    2,
+    ['fkeofjpc', 'qq', 'iio'],
+    ['jdh', 'khj', 'eget', 'rjstbhe', 'yzyoatfyx', 'wlinrrgcm'],
+    [
+      'rjstbhe eget kctxcoub urrmkhlmi yniqafy fkeofjpc iio yzyoatfyx khj iio',
+      'gpnhgabl qq qq fkeofjpc dflidshdb qq iio khj qq yzyoatfyx',
+      'tizpzhlbyb eget z rjstbhe iio jdh jdh iptxh qq rjstbhe',
+      'jtlghe wlinrrgcm jnkdbd k iio et rjstbhe iio qq jdh',
+      'yp fkeofjpc lkhypcebox rjstbhe ewwykishv egzhne jdh y qq qq',
+      'fu ql iio fkeofjpc jdh luspuy yzyoatfyx li qq v',
+      'wlinrrgcm iio qq omnc sgkt tzgev iio iio qq qq',
+      'd vhg qlj khj wlinrrgcm qq f jp zsmhkjokmb rjstbhe',
+    ],
+    [
+      96537918, 589204657, 765963609, 613766496, 43871615, 189209587, 239084671,
+      908938263,
+    ],
+    3,
   ],
 ];
 
