@@ -98,7 +98,6 @@ const cases = [
   //   [1, 2], // student1 = 2 , student2 = 3
   //   2, // [2, 1]
   // ],
-  // todo: debug this test case
   [
     ['fkeofjpc', 'qq', 'iio'], // positive
     ['jdh', 'khj', 'eget', 'rjstbhe', 'yzyoatfyx', 'wlinrrgcm'], // negative
@@ -120,6 +119,7 @@ const cases = [
   ],
 ];
 
+// todo: improve runtime
 cases.forEach((c) => {
   console.log(topStudents(c[0], c[1], c[2], c[3], c[4]));
 });
