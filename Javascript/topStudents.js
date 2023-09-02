@@ -38,85 +38,85 @@ function topStudents(
   student_id,
   k
 ) {
-  const students = {};
+  const students = [];
 
   for (let i = 0; i < student_id.length; i++) {
     const actualId = student_id[i];
     const actualReport = report[i];
+    const feedback = actualReport.split(' ');
 
-    let posCount = 0;
-    positive_feedback.forEach((pos) => {
-      if (actualReport.includes(pos)) {
-        posCount++;
+    let positiveCount = 0;
+    let negativeCount = 0;
+    feedback.forEach((word) => {
+      if (positive_feedback.includes(word)) {
+        positiveCount++;
+      } else if (negative_feedback.includes(word)) {
+        negativeCount++;
       }
     });
 
-    let negCount = 0;
-    negative_feedback.forEach((neg) => {
-      if (actualReport.includes(neg)) {
-        negCount++;
-      }
-    });
-    const actualScore = posCount * 3 - negCount;
+    const actualScore = positiveCount * 3 - negativeCount;
 
-    students[actualId] = [actualId, actualReport, actualScore];
+    students.push([actualId, actualScore]);
   }
 
   // a - b -> ascending 1, 2, 3, 4...
-  // b -a -> descending 4, 3, 2, 1
-  const std = Object.values(students);
-  const sorted = std.sort((a, b) => {
+  // b - a -> descending 4, 3, 2, 1
+  // [1, 4, 2].sort((a, b) => a - b); // 1, 2, 4
+  // [1, 4, 2].sort((a, b) => b - a); // 4, 2, 1
+  const sorted = students.sort((a, b) => {
     const aId = a[0];
     const bId = b[0];
-    const aScore = a[2];
-    const bScore = b[2];
+    const aScore = a[1];
+    const bScore = b[1];
 
     // if id not the same sort the score
-    if (aId !== bId) {
-      return bScore - aScore;
-    } else {
-      // otherwise get the smaller Id //
+    if (aScore === bScore) {
       return aId - bId;
+    } else {
+      // otherwise get the highest score
+      return bScore - aScore;
     }
   });
 
   return sorted.map((s) => s[0]).slice(0, k);
 }
 
+// [[1, 3], [2, 3]];
 const cases = [
   // [
   //   ['smart', 'brilliant', 'studious'],
   //   ['not'],
   //   ['this student is studious', 'the student is smart'],
   //   [1, 2],
-  //   2,
+  //   2, // [1, 2]
   // ],
   // [
   //   ['smart', 'brilliant', 'studious'],
   //   ['not'],
   //   ['this student is not studious', 'the student is smart'],
-  //   [1, 2],
-  //   2,
+  //   [1, 2], // student1 = 2 , student2 = 3
+  //   2, // [2, 1]
   // ],
   // todo: debug this test case
   [
-    ['fkeofjpc', 'qq', 'iio'],
-    ['jdh', 'khj', 'eget', 'rjstbhe', 'yzyoatfyx', 'wlinrrgcm'],
+    ['fkeofjpc', 'qq', 'iio'], // positive
+    ['jdh', 'khj', 'eget', 'rjstbhe', 'yzyoatfyx', 'wlinrrgcm'], // negative
     [
-      'rjstbhe eget kctxcoub urrmkhlmi yniqafy fkeofjpc iio yzyoatfyx khj iio',
-      'gpnhgabl qq qq fkeofjpc dflidshdb qq iio khj qq yzyoatfyx',
+      'rjstbhe eget kctxcoub urrmkhlmi yniqafy fkeofjpc iio yzyoatfyx khj iio', // 7 -- 96537918
+      'gpnhgabl qq qq fkeofjpc dflidshdb qq iio khj qq yzyoatfyx', // 16 - 589204657
       'tizpzhlbyb eget z rjstbhe iio jdh jdh iptxh qq rjstbhe',
       'jtlghe wlinrrgcm jnkdbd k iio et rjstbhe iio qq jdh',
-      'yp fkeofjpc lkhypcebox rjstbhe ewwykishv egzhne jdh y qq qq',
+      'yp fkeofjpc lkhypcebox rjstbhe ewwykishv egzhne jdh y qq qq', // 7 - 43871615
       'fu ql iio fkeofjpc jdh luspuy yzyoatfyx li qq v',
-      'wlinrrgcm iio qq omnc sgkt tzgev iio iio qq qq',
+      'wlinrrgcm iio qq omnc sgkt tzgev iio iio qq qq', // 18 - 239084671
       'd vhg qlj khj wlinrrgcm qq f jp zsmhkjokmb rjstbhe',
     ],
     [
       96537918, 589204657, 765963609, 613766496, 43871615, 189209587, 239084671,
       908938263,
     ],
-    3,
+    3, // [239084671,589204657,43871615]
   ],
 ];
 
