@@ -31,54 +31,43 @@ function invalidTransactions(transactions) {
   let right = transactions.length - 1;
 
   const invalid = [];
-
+  let skip = false;
   // avoid pushing more than once
-  let actualExceedsAmount = false;
-  let debug = 0;
-  const keys = [];
-  while (left < transactions.length && debug < 10) {
-    debug++;
-    console.log(left, right);
-    // ignore own comparisons
-    if (left === right && right !== 0 && left !== transactions.length - 1) continue;
-
+  while (left < transactions.length) {
     const actualLeft = transactions[left].split(",");
     const actualRight = transactions[right].split(",");
 
-    if (actualLeft[2] > 1000 && actualExceedsAmount === false) {
-      invalid.push(actualLeft);
-      actualExceedsAmount = true;
+    // only left will be pushed, otherwise will duplicate
+    // we only want left to be compared against other, right will
+    // be used only as a comparison but it should not be evaluated
+    if (actualLeft[2] > 1000) {
+      invalid.push(actualLeft.join(","));
+      skip = true;
+    } else {
+      const leftName = actualLeft[0];
+      const rightName = actualRight[0];
+      const leftTime = actualLeft[1];
+      const rightTime = actualRight[1];
+      const leftCity = actualLeft[3];
+      const rightCity = actualRight[3];
+  
+      if (leftName === rightName && Math.abs(leftTime - rightTime) <= 60 && leftCity !== rightCity) {
+        invalid.push(actualLeft.join(","));
+        skip = true;
+      }
     }
     
-    const leftName = actualLeft[0];
-    const rightName = actualRight[0];
-    const leftTime = actualLeft[1];
-    const rightTime = actualRight[1];
-    const leftCity = actualLeft[3];
-    const rightCity = actualRight[3];
-
-    const areSameKeys = keys.includes(`${right}${left}`);
-    if (leftName === rightName && Math.abs(leftTime - rightTime) <= 60 && leftCity !== rightCity && !areSameKeys) {
-      console.log('prev keys', keys);
-      console.log('keys to be pushed', left, right);
-      keys.push(`${left}${right}`);
-      
-      invalid.push(actualRight);
-      // dont double push exceeding that have been already pushed
-      if (actualExceedsAmount === false) invalid.push(actualLeft); 
-    }
-
     // move pointers and flags
-    if (right == 0) {
+    if (right == 0 || skip === true) {
       left ++;
       right = transactions.length - 1;
-      actualExceedsAmount = false;
+      skip = false;
     } else {
       right --;
     }
   }
 
-  return invalid.map(i => i.join(","));
+  return invalid;
 }
 
 const cases = [
