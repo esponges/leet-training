@@ -31,8 +31,10 @@ Constraints:
  * @returns {void}
  */
 function rotate(nums, k) {
+  const iterations = k % nums.length;
+
   if (k > nums.length) {
-    for (let i = 0; i < k; i++) {
+    for (let i = 0; i < iterations; i++) {
       const actual = nums[nums.length - 1];
       nums.pop();
       nums.unshift(actual);
