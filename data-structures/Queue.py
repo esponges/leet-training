@@ -69,7 +69,11 @@ print("\nQueue after de-queuing once")
 print(queue1)
 
 #Try de-queueing all the people in the queue
-
+queue1.dequeue()
+queue1.dequeue()
+queue1.dequeue()
+queue1.dequeue()
+print(queue1)
 
 
 
