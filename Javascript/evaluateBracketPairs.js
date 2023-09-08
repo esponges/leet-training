@@ -59,13 +59,34 @@ Each keyi in knowledge is unique. */
  */
 function evaluate(s, knowledge) {
   let replaced = s;
+
   knowledge.forEach((k) => {
     const eval = k[0];
     const replace = k[1];
-    replaced = replaced.replace(`(${eval})`, replace);
+    replaced = replaced.replaceAll(`(${eval})`, replace);
   });
 
-  // todo figure unknown elements
+  if (!replaced.includes('(') && !replaced.includes(')')) return replaced;
+
+  const brackets = [[/* openning brackets */], [/* closing brackets */]];
+  for (let i = 0; i < replaced.length; i++) {
+    const actual = replaced[i];
+
+    // find indexes
+    // left side of array to track openning brackets
+    if (actual === '(') brackets[0].push(i);
+    // right side for closing
+    if (actual === ')') brackets[1].push(i);
+  }
+
+  for (let i = 0; i < brackets[0].length; i++) {
+    const left = brackets[0][i];
+    const right = brackets[1][i];
+    // todo: handle case where it starts with '('
+    const leftReplaced = replaced.slice(0, left);
+    const rightReplaced = replaced.slice(right + 1);
+    replaced = leftReplaced.concat('?').concat(rightReplaced);
+  };
 
   return replaced;
 }
@@ -78,6 +99,7 @@ const cases = [
       ['age', 'two'],
     ],
   ],
+  ['hi(name)', [['a', 'b']]],
 ];
 
 cases.forEach((c) => {
