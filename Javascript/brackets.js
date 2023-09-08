@@ -53,4 +53,27 @@ function isValid(input) {
   })
 }
 
-console.log(isValid(inputs[5]));
+/**
+ * @param {string} s
+ * @returns {boolean}
+ */
+function isValidTwo (s) {
+  if (s.length < 2 || s.length % 2 !== 0) return false;
+
+  let replaced = s;
+  while (replaced.length > 0) {
+    const prev = replaced;
+    replaced = replaced.replace("{}", "").replace("()", "").replace("[]", "");
+
+    // not open-closed pairs found anymore, therefore not valid
+    if (prev === replaced) return false;
+  }
+  // replaced is empty, meaning all had pair to close
+  return true;
+}
+
+// console.log(isValidTwo(inputs[5]));
+
+inputs.forEach(c => {
+  console.log(isValidTwo(c));
+})
