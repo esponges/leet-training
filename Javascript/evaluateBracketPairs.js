@@ -68,7 +68,17 @@ function evaluate(s, knowledge) {
 
   if (!replaced.includes('(') && !replaced.includes(')')) return replaced;
 
-  const brackets = [[/* openning brackets */], [/* closing brackets */]];
+  // todo: this wont work when there're more unknowns in the string
+  // must use cuadratic complexity o(n^2)
+  const brackets = [
+    [
+      /* openning brackets */
+    ],
+    [
+      /* closing brackets */
+    ],
+  ];
+  console.log('now uknowns', replaced);
   for (let i = 0; i < replaced.length; i++) {
     const actual = replaced[i];
 
@@ -78,28 +88,49 @@ function evaluate(s, knowledge) {
     // right side for closing
     if (actual === ')') brackets[1].push(i);
   }
+  console.log('brackets to replace', brackets);
 
   for (let i = 0; i < brackets[0].length; i++) {
+    console.log('replaced', replaced);
     const left = brackets[0][i];
     const right = brackets[1][i];
     // todo: handle case where it starts with '('
     const leftReplaced = replaced.slice(0, left);
     const rightReplaced = replaced.slice(right + 1);
     replaced = leftReplaced.concat('?').concat(rightReplaced);
-  };
+  }
 
   return replaced;
 }
 
 const cases = [
+  // [
+  //   '(name)is(age)yearsold',
+  //   [
+  //     ['name', 'bob'],
+  //     ['age', 'two'],
+  //   ],
+  // ],
+  // ['hi(name)', [['a', 'b']]],
   [
-    '(name)is(age)yearsold',
+    '(fy)(kj)(ege)r',
     [
-      ['name', 'bob'],
-      ['age', 'two'],
+      ['uxhhkpvp', 'h'],
+      ['nriroroa', 'm'],
+      ['wvhiycvo', 'z'],
+      ['qsmfeing', 's'],
+      ['hbcyqulf', 'q'],
+      ['xwgfjnrf', 'b'],
+      ['kfipazun', 's'],
+      ['wnkrtxui', 'u'],
+      ['abwlsese', 'e'],
+      ['iimsmftc', 'h'],
+      ['pafqkquo', 'v'],
+      ['kj', 'tzv'],
+      ['fwwxotcd', 't'],
+      ['yzgjjwjr', 'l'],
     ],
   ],
-  ['hi(name)', [['a', 'b']]],
 ];
 
 cases.forEach((c) => {
