@@ -25,7 +25,7 @@ e.g. [3,6,5,4,8,1,7,2] target = 4 -> [3,1,2,6,5,4,8,7]
 
 */
 
-const { ListNode, createList } = require('./common');
+const { ListNode, createList, getNodeValues } = require('./common');
 
 /**
  * @param {ListNode[]} list
@@ -39,12 +39,41 @@ function partition (list, target) {
   const smaller = new ListNode(-1);
   let smallerCurrent = smaller;
 
-  while(current.next !== null) {
+  while(current !== null) {
     const nextCurrent = current.next;
-    // console.log(nextCurrent);
+    const nextVal = nextCurrent.val;
+    console.log(nextVal);
+    if (nextVal < target) {
+      // push new smaller
+      smallerCurrent.next = new ListNode(nextVal);
+      // and move pointer 
+      smallerCurrent = smallerCurrent.next;
 
-    current = current.next;
+      // skip next value to delete val;
+      current.next = current.next.next;
+      current = current.next;
+    } else {
+      // keep value
+      current = current.next;
+    }
   }
+
+  console.log('fake', getNodeValues(fake));
+  console.log('smaller', getNodeValues(smaller));
+  console.log('smallerCurrent', smallerCurrent);
+
+  // merge both lists
+  // don't remember to remove the first indexes
+  while (smallerCurrent !== null) {
+    if (smallerCurrent.next === null) {
+      smallerCurrent.next = fake.next;
+      break;
+    }
+    else smallerCurrent = smallerCurrent.next;
+  }
+
+  // return joined lists without fake val
+  return smaller.next
 }
 
 const cases = [
