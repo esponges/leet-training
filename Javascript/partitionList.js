@@ -34,10 +34,6 @@ const { ListNode, createList, getNodeValues } = require('./common');
 function partition(head, x) {
   if (head.value === null) return head;
 
-  const fake = new ListNode(-1);
-  fake.next = head;
-  let current = fake;
-
   const left = new ListNode(-1);
   let leftCurrent = left;
 
@@ -71,7 +67,7 @@ function partition(head, x) {
     }
   }
 
-  // return joined lists without fake val
+  // return joined lists without initial fake vals
   // console.log(getNodeValues(left.next))
   return left.next;
 }
