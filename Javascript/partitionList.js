@@ -31,31 +31,27 @@ const { ListNode, createList, getNodeValues } = require('./common');
  * @param {ListNode[]} list
  * @param {number} target
  */
-function partition(list, target) {
-  if (list.value === null) return list;
+function partition(head, x) {
+  if (head.value === null) return head;
 
   const fake = new ListNode(-1);
-  fake.next = list;
+  fake.next = head;
   let current = fake;
 
-  const smaller = new ListNode(-1);
-  let smallerCurrent = smaller;
+  const left = new ListNode(-1);
+  let leftCurrent = left;
 
   const right = new ListNode(-1);
   let rightCurrent = right;
 
-  let count = 0;
   while (current.next !== null) {
     const nextCurrent = current.next;
     const nextVal = nextCurrent.val;
-    console.log('next current', nextVal);
-    if (nextVal < target) {
-      count++;
-      console.log('nextCurrent to list', nextCurrent, ' count ', count);
-      // push new smaller
-      smallerCurrent.next = new ListNode(nextVal);
+    if (nextVal < x) {
+      // push new left
+      leftCurrent.next = new ListNode(nextVal);
       // and move pointer
-      smallerCurrent = smallerCurrent.next;
+      leftCurrent = leftCurrent.next;
 
       // skip next value to delete val;
     } else {
@@ -64,25 +60,20 @@ function partition(list, target) {
     }
     current = current.next;
   }
-
-  console.log('smaller', getNodeValues(smaller));
-  console.log('right', getNodeValues(right));
-  // console.log('smallerCurrent', smallerCurrent);
-
   // merge both lists
   // don't remember to remove the first indexes
-  while (smallerCurrent !== null) {
-    if (smallerCurrent.next === null) {
-      smallerCurrent.next = right.next;
+  while (leftCurrent !== null) {
+    if (leftCurrent.next === null) {
+      leftCurrent.next = right.next;
       break;
     } else {
-      smallerCurrent = smallerCurrent.next;
+      leftCurrent = leftCurrent.next;
     }
   }
 
   // return joined lists without fake val
-  console.log(getNodeValues(smaller.next));
-  return smaller.next;
+  // console.log(getNodeValues(left.next))
+  return left.next;
 }
 
 const cases = [
