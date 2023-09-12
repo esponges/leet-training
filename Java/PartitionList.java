@@ -30,6 +30,10 @@ class PartitionList{
 
         ListNode newHead = leftPartition.next;
 
+        if(leftPartition.next == null){
+            newHead = rigthPartition.next;
+        }
+
         while(leftPartition.next != null){
             leftPartition= leftPartition.next;
         }
