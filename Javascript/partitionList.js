@@ -31,7 +31,9 @@ const { ListNode, createList, getNodeValues } = require('./common');
  * @param {ListNode[]} list
  * @param {number} target
  */
-function partition (list, target) {
+function partition(list, target) {
+  if (list.value === null) return list;
+
   const fake = new ListNode(-1);
   fake.next = list;
   let current = fake;
@@ -39,28 +41,26 @@ function partition (list, target) {
   const smaller = new ListNode(-1);
   let smallerCurrent = smaller;
 
-  while(current !== null) {
+  while (current !== null) {
     const nextCurrent = current.next;
     const nextVal = nextCurrent.val;
-    console.log(nextVal);
+    console.log('next current', nextCurrent);
     if (nextVal < target) {
+      console.log('nextCurrent to list', nextCurrent);
       // push new smaller
       smallerCurrent.next = new ListNode(nextVal);
-      // and move pointer 
+      // and move pointer
       smallerCurrent = smallerCurrent.next;
 
       // skip next value to delete val;
       current.next = current.next.next;
-      current = current.next;
-    } else {
-      // keep value
-      current = current.next;
     }
+    current = current.next;
   }
 
-  console.log('fake', getNodeValues(fake));
-  console.log('smaller', getNodeValues(smaller));
-  console.log('smallerCurrent', smallerCurrent);
+  // console.log('fake', getNodeValues(fake));
+  // console.log('smaller', getNodeValues(smaller));
+  // console.log('smallerCurrent', smallerCurrent);
 
   // merge both lists
   // don't remember to remove the first indexes
@@ -68,20 +68,22 @@ function partition (list, target) {
     if (smallerCurrent.next === null) {
       smallerCurrent.next = fake.next;
       break;
-    }
-    else smallerCurrent = smallerCurrent.next;
+    } else smallerCurrent = smallerCurrent.next;
   }
 
   // return joined lists without fake val
-  return smaller.next
+  console.log(getNodeValues(smaller.next));
+  return smaller.next;
 }
 
 const cases = [
-  [[3,6,5,4,8,1,7,2], 4], 
+  // [[3, 6, 5, 4, 8, 1, 7, 2], 4]
+  // [[1,4,3,2,5,2], 3],
+  [[1,4,3,0,2,5,2], 3]
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   const list = createList(c[0]);
 
   console.log(partition(list, c[1]));
-})
+});
