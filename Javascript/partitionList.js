@@ -41,34 +41,43 @@ function partition(list, target) {
   const smaller = new ListNode(-1);
   let smallerCurrent = smaller;
 
-  while (current !== null) {
+  const right = new ListNode(-1);
+  let rightCurrent = right;
+
+  let count = 0;
+  while (current.next !== null) {
     const nextCurrent = current.next;
     const nextVal = nextCurrent.val;
-    console.log('next current', nextCurrent);
+    console.log('next current', nextVal);
     if (nextVal < target) {
-      console.log('nextCurrent to list', nextCurrent);
+      count++;
+      console.log('nextCurrent to list', nextCurrent, ' count ', count);
       // push new smaller
       smallerCurrent.next = new ListNode(nextVal);
       // and move pointer
       smallerCurrent = smallerCurrent.next;
 
       // skip next value to delete val;
-      current.next = current.next.next;
+    } else {
+      rightCurrent.next = new ListNode(nextVal);
+      rightCurrent = rightCurrent.next;
     }
     current = current.next;
   }
 
-  // console.log('fake', getNodeValues(fake));
-  // console.log('smaller', getNodeValues(smaller));
+  console.log('smaller', getNodeValues(smaller));
+  console.log('right', getNodeValues(right));
   // console.log('smallerCurrent', smallerCurrent);
 
   // merge both lists
   // don't remember to remove the first indexes
   while (smallerCurrent !== null) {
     if (smallerCurrent.next === null) {
-      smallerCurrent.next = fake.next;
+      smallerCurrent.next = right.next;
       break;
-    } else smallerCurrent = smallerCurrent.next;
+    } else {
+      smallerCurrent = smallerCurrent.next;
+    }
   }
 
   // return joined lists without fake val
@@ -79,7 +88,7 @@ function partition(list, target) {
 const cases = [
   // [[3, 6, 5, 4, 8, 1, 7, 2], 4]
   // [[1,4,3,2,5,2], 3],
-  [[1,4,3,0,2,5,2], 3]
+  [[1, 4, 3, 0, 2, 5, 2], 3],
 ];
 
 cases.forEach((c) => {
