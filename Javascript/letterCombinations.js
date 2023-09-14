@@ -24,15 +24,15 @@ Constraints:
 digits[i] is a digit in the range ['2', '9']. */
 
 const dictionary = {
-  1: "",
-  2: "abc",
-  3: "def",
-  4: "ghi",
-  5: "jkl",
-  6: "mno",
-  7: "pqrs",
-  8: "tuv",
-  9: "wxyz",
+  1: '',
+  2: 'abc',
+  3: 'def',
+  4: 'ghi',
+  5: 'jkl',
+  6: 'mno',
+  7: 'pqrs',
+  8: 'tuv',
+  9: 'wxyz',
 };
 
 // Input: digits = "23"
@@ -51,15 +51,35 @@ const dictionary = {
  * @returns {string[]}
  */
 function letterCombination(digits) {
-  const combinations = [];
-
-  // generate array starting from zeros
-  const opts = Array.from(Array(digits.length, () => 0));
-  const iterations = digits.reduce((acc, actual) => acc * dictionary[parseInt(actual)].length, 1);
-
-  let count = 0;
-  // const [a, b, c, d] = opts; // opts will tell us how many combinations we have to do
-  while (count < iterations) {
-
+  if (!digits.length) {
+    return [];
   }
+
+  const digitToLetters = {
+    2: 'abc',
+    3: 'def',
+    4: 'ghi',
+    5: 'jkl',
+    6: 'mno',
+    7: 'pqrs',
+    8: 'tuv',
+    9: 'wxyz',
+  };
+
+  const res = [];
+
+  function backtrack(idx, comb) {
+    if (idx === digits.length) {
+      res.push(comb);
+      return;
+    }
+
+    for (const letter of digitToLetters[digits[idx]]) {
+      backtrack(idx + 1, comb + letter);
+    }
+  }
+
+  backtrack(0, '');
+
+  return res;
 }
