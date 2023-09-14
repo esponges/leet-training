@@ -6,22 +6,6 @@ public class PartinionedPalindrome {
         
     }
 
-    public List<List<String>> partition(String s){
-
-        List<List<String>> outcomeList = new LinkedList<>();
-        int left = 0;
-        int right = 0;
-
-        while(left < s.length() || right < s.length()){
-            
-        }
-
-        
-
-        
-        
-    }
-
     public boolean isPalindrome(String s){
 
         int left = 0;
