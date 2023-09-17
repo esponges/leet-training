@@ -35,17 +35,6 @@ const dictionary = {
   9: 'wxyz',
 };
 
-// Input: digits = "23"
-// Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
-// 2 dimensions
-// [0,0][0,1][0,2][1,0][1,1][1,2][2,0][2,1][2,2]
-
-// Input: digits = "234"
-// [0, 0, 0][1, 0, 0][2, 0, 0]
-// [2, 1, 0][2, 2, 0][2, 2, 1]
-// [0, 2, 0][0, 2, 1][0, 2, 2]
-// [1, 0, 0][1, 0, 1][1, 0, 1]
-
 /**
  * @param {string} digits
  * @returns {string[]}
@@ -69,11 +58,13 @@ function letterCombination(digits) {
   const res = [];
 
   function backtrack(idx, comb) {
+    // this check must be done before starting a recursive call once the condition is met 
     if (idx === digits.length) {
       res.push(comb);
       return;
     }
 
+    // for each letter of the current digit iterate over the next digit
     for (const letter of digitToLetters[digits[idx]]) {
       backtrack(idx + 1, comb + letter);
     }
@@ -83,3 +74,20 @@ function letterCombination(digits) {
 
   return res;
 }
+
+// Input: digits = "23"
+// Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+// i  digitToLetter[digits[idx]]  letter  comb  res 
+// 0  abc                         a        ""   []   
+// 1  def                                  a   []     
+// 2                              d        ad   [ad]      
+// 2                              e        ae   [ad, ae]     
+// 2                              f        af   [ad, ae, af]        
+// 1                                       b         
+// 2  def                         d        bd   [ad, ae, af, bd]       
+// 2  def                         e        be   [ad, ae, af, bd, be]       
+// 2  def                         f        bf   [ad, ae, af, bd, be, bf]
+// 1                                       c         
+// 2  def                         d        cd   [ad, ae, af, bd, be, bf, cd]       
+// 2  def                         e        ce   [ad, ae, af, bd, be, bf, cd, ce]       
+// 2  def                         f        cf   [ad, ae, af, bd, be, bf, cd, ce, cf]        
