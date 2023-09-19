@@ -1,5 +1,3 @@
-
-
 /* 1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K
 Medium
 965
@@ -36,8 +34,8 @@ Explanation: For k = 19 we can use 1 + 5 + 13 = 19. */
  * @param {number[]} k
  * @return {number}
  */
-function findMinFibonnaciNumbers (k) {
-  const fibonacci = [1]; 
+function findMinFibonnaciNumbers(k) {
+  const fibonacci = [1];
   let top = 0;
   let pointer = 0;
   while (top < k) {
@@ -52,42 +50,41 @@ function findMinFibonnaciNumbers (k) {
   }
   console.log(fibonacci);
 
-  let n = 2;
-  let minimum = 0;
-  /**
-   * @param {number} idx 
-   * @param {number[]|undefined} next 
-   * @returns 
-   */
-  function combine (idx, next) {
-    if ((next && next.length) == n) {
-      return;
+  const combs = [];
+  let next = [];
+  let left = 0;
+  let right = fibonacci.length - 1;
+  while (1 < 2) {
+    // break instead of inifiteloop
+    if (left > fibonacci.length - 1) return -1;
+
+    // todo: handle when using combs array
+    const actual = fibonacci[left];
+    const actualRight = fibonacci[right];
+    const sum = [...(next ? next : []), actual, actualRight];
+
+    if (sum.reduce((a, b) => a + b, 0) === k && left !== right) {
+      return sum.length;
+    } else {
+      combs.push(sum);
     }
 
-    for (let i = 0; i < fibonacci.length; i++) {
-      if (i === idx) continue;
-      
-      const sum = [...(next ? next : []), fibonacci[idx], fibonacci[i]];
-      
-      if (sum.reduce((a, b) => a + b, 0)) {
-        minimum = sum.length;
-        return;
-      };
-
-      combine(idx, sum);
+    if (right === 0) {
+      left += 1;
+      right = fibonacci.length - 1;
+    } else {
+      right -= 1;
     }
+    console.log('left', left, 'right', right);
   }
-  
-  combine(0);
-  return minimum;
 }
 
 const cases = [
-  // 7,
-  // 10,
-  19
+  7,
+  10,
+  // 19
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(findMinFibonnaciNumbers(c));
 });
