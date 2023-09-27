@@ -30,6 +30,8 @@ Input: k = 19
 Output: 3 
 Explanation: For k = 19 we can use 1 + 5 + 13 = 19. */
 
+/* Apparently there's a way without brute force */
+
 /**
  * @param {number[]} k
  * @return {number}
