@@ -11,19 +11,17 @@
 // Beats 77.53% runtime and 84.46% memory 
 function firstOcurrence(haystack, needle) {
   const len = needle.length;
-  let firstOcurrence = -1;
 
   if (len > haystack.length) return firstOcurrence;
 
   for (let i = 0; i < haystack.length; i++) {
     const comparison = haystack.slice(i, len + i);
     if (comparison === needle) {
-      firstOcurrence = i;
-      break;
+      return i;
     }
   }
 
-  return firstOcurrence;
+  return -1;
 }
 
 const cases = [
