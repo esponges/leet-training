@@ -38,15 +38,27 @@ It can be shown that 3 is the optimal answer. */
 function minAbsDiff(nums, x) {
   let latestMinDiff;
 
+  // special case
+  if (x === 0) return 0;
+
+  const checked = {};
+
   for (let i = 0; i < nums.length; i++) {
     const outterActual = nums[i];
 
     for (let j = 0; j < nums.length; j++) {
+      // no need to check anymore, already found min
+      if (latestMinDiff === 0) return 0;
+      
       const innerActual = nums[j];
       const diff = Math.abs(outterActual - innerActual);
 
+      const alreadyChecked = checked[`${innerActual}${outterActual}`];
       // too close or same idx
-      if (Math.abs(i - j) < x || i === j) continue;
+      if (Math.abs(i - j) < x || i === j || alreadyChecked) continue;
+
+      // add flag to avoid already made comparisons
+      checked[`${innerActual}${outterActual}`] = true;
 
       if (typeof latestMinDiff === "number") {
         // if this diff is small than the prevMin replace
@@ -66,7 +78,9 @@ function minAbsDiff(nums, x) {
 const cases = [
   [[4, 3, 2, 4], 2],
   [[5, 3, 2, 10, 15], 1],
-  [[1, 2, 3, 4], 3]
+  [[1, 2, 3, 4], 3],
+  [[[330702844,313481959,239224564,609763700,170531905]], 0],
+  // pending Time Limit Exception case with almost 1mb of length lol
 ];
 
 cases.forEach(c => {
