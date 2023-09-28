@@ -36,7 +36,7 @@ It can be shown that 3 is the optimal answer. */
  * @param {number} x 
  */
 function minAbsDiff(nums, x) {
-  let latestMinDiff = [];
+  let latestMinDiff;
 
   for (let i = 0; i < nums.length; i++) {
     const outterActual = nums[i];
@@ -48,20 +48,19 @@ function minAbsDiff(nums, x) {
       // too close or same idx
       if (Math.abs(i - j) < x || i === j) continue;
 
-      if (latestMinDiff.length > 0) {
-        const prevMinDiff = latestMinDiff[2];
+      if (typeof latestMinDiff === "number") {
         // if this diff is small than the prevMin replace
-        if (diff < prevMinDiff) {
-          latestMinDiff = [i, j, diff];
+        if (diff < latestMinDiff) {
+          latestMinDiff = diff;
         }
       // first comparison
       } else {
-        latestMinDiff = [i, j, diff];
+        latestMinDiff = diff;
       }
     }
   }
 
-  return latestMinDiff[2];
+  return latestMinDiff;
 }
 
 const cases = [
