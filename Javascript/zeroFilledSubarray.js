@@ -65,7 +65,23 @@ function zeroFilledSubarray(nums) {
     }
   }
 
-  return subArrays;
+
+  let subIdxCount = 0;
+  Object.values(subArrays).forEach((actual) => {
+    const dividend = actual[0];
+    const occurrences = actual[1];
+
+    let divisor = actual[0];
+    while (divisor > 0) {
+      const quotient = Math.floor(dividend/divisor);
+      const residual = dividend % divisor;
+      subIdxCount += (quotient + residual) * occurrences;
+
+      divisor -= 1;
+    }
+  });
+
+  return subIdxCount;
 }
 
 const cases = [
