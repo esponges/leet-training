@@ -81,6 +81,7 @@ const cases = [
   [[1, 2, 3, 4], 3],
   [[[330702844,313481959,239224564,609763700,170531905]], 0],
   // pending Time Limit Exception case with almost 1mb of length lol
+  // passes 99% of the cases
 ];
 
 cases.forEach(c => {
