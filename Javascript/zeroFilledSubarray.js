@@ -64,20 +64,18 @@ function zeroFilledSubarray(nums) {
       chunkCount = 0;
     }
   }
-
+  console.log(subArrays);
 
   let subIdxCount = 0;
   Object.values(subArrays).forEach((actual) => {
-    const dividend = actual[0];
+    let offset = 1;
+    let subIdx = actual[0];
     const occurrences = actual[1];
 
-    let divisor = actual[0];
-    while (divisor > 0) {
-      const quotient = Math.floor(dividend/divisor);
-      const residual = dividend % divisor;
-      subIdxCount += (quotient + residual) * occurrences;
-
-      divisor -= 1;
+    while (offset <= actual[0]) {
+      subIdxCount += offset * occurrences;
+      offset ++;
+      subIdx --;
     }
   });
 
@@ -88,6 +86,7 @@ const cases = [
   [1, 3, 0, 0, 2, 0, 0, 4],
   [0, 0, 0, 2, 0, 0],
   [2, 10, 2019],
+  [0, 0, 0, 0, 0],
 ];
 
 cases.forEach((c) => {
