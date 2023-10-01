@@ -33,12 +33,30 @@ Output: 0
 Explanation: There is no subarray filled with 0. Therefore, we return 0. */
 
 /**
+ * 
+ * @param {number} num
+ * @returns {number} 
+ */
+function getSubArrayCount (num) {
+  let offset = 1;
+
+  let count = 0;
+  while (offset <= num) {
+    count += offset;
+    offset ++;
+  }
+
+  return count;
+}
+
+/**
  * @param {number []} nums
  * @returns {number}
  */
 function zeroFilledSubarray(nums) {
-  const subArrays = {};
-
+  const values = {};
+  
+  let sum = 0;
   let chunkCount = 0;
   for (let i = 0; i < nums.length; i++) {
     const actual = nums[i];
@@ -48,38 +66,24 @@ function zeroFilledSubarray(nums) {
     }
 
     if ((actual !== 0 || i === nums.length - 1) && chunkCount > 0) {
-      // push to subArrays
       const key = Array(chunkCount)
         .fill()
         .map(() => 0)
         .join('');
 
-      if (subArrays[key]) {
-        subArrays[key] = [chunkCount, subArrays[key][1] + 1];
+      if (values[key]) {
+        sum += values[key];
       } else {
-        subArrays[key] = [chunkCount, 1];
-      }
+        values[key] = getSubArrayCount(chunkCount);
+        sum += values[key];
 
+      }
       // restart count
       chunkCount = 0;
     }
   }
-  console.log(subArrays);
 
-  let subIdxCount = 0;
-  Object.values(subArrays).forEach((actual) => {
-    let offset = 1;
-    let subIdx = actual[0];
-    const occurrences = actual[1];
-
-    while (offset <= actual[0]) {
-      subIdxCount += offset * occurrences;
-      offset ++;
-      subIdx --;
-    }
-  });
-
-  return subIdxCount;
+  return sum;
 }
 
 const cases = [
