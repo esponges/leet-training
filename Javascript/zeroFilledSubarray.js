@@ -86,6 +86,26 @@ function zeroFilledSubarray(nums) {
   return sum;
 }
 
+// solution with o(n)
+function zeroFilledSubarrayBest (nums) {
+  let count = 0;
+  let length = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === 0) {
+      // this will make the length to increase by one every 0
+      // eg. [0, 0, 0] -> 1 - 2 - 3 = 6 
+      length ++;
+      count += length;
+    } else {
+      // just restart lenght and dont increase
+      length = 0;
+    }
+  }
+
+  return count;
+}
+ 
 const cases = [
   [1, 3, 0, 0, 2, 0, 0, 4],
   [0, 0, 0, 2, 0, 0],
@@ -95,4 +115,5 @@ const cases = [
 
 cases.forEach((c) => {
   console.log(zeroFilledSubarray(c));
+  console.log(zeroFilledSubarrayBest(c));
 });
