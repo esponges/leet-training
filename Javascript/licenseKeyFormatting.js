@@ -31,22 +31,22 @@ Explanation: The string s has been split into three parts, each part has 2 chara
 function linceseKeyFormatting(s, k) {
   let count = 0;
 
-  let formatted = [];
+  let formatted = "";
   for (let i = s.length - 1; i >= 0; i--) {
     const actual = s[i].toUpperCase();
     if (actual !== "-") {
       if (count < k) {
-        formatted.unshift(actual);
+        formatted = actual + formatted;
         count ++;
       } else {
-        formatted.unshift("-");
-        formatted.unshift(actual);
+        formatted = "-" + formatted;
+        formatted = actual + formatted;
         count = 1;
       }
     }
   }
 
-  return formatted.join('');
+  return formatted;
 }
 
 const cases = [
