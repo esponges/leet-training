@@ -60,6 +60,8 @@ var insertGreatestCommonDivisors = function(head) {
     if (head.val && !head.next) return head;
 
     function getGreatestCommonInPair (a, b) {
+      if (a === b) return a;
+
       const biggest = Math.max(a, b);
       
       for (let i = biggest - 1; i >= 0; i --) {
