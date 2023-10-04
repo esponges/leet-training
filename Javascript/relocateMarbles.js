@@ -40,54 +40,42 @@ Since 2 is the only occupied position, we return [2]. */
  * @returns {number[]}
  */
 function relocateMarbles(nums, moveFrom, moveTo) {
-  let relocated = nums;
+  const positions = new Map();
 
-  // i j  rel       actual  next from to
-  // 0 0  [1,6,7,8] 1       6    1    2
-  // 1 0  [2,6,7,8] 2       6    7    9
-  // 1 1  [2,6,7,8] 6       7    7    9
-  // 1 2  [2,6,7,8] 7       8    7    9
-  // 2 0  [2,6,8,9] 2       6    2    5
+  // Initialize the positions map with the initial marbles' positions
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
+    positions.set(num, num);
+  }
 
+  // Perform the movements
   for (let i = 0; i < moveFrom.length; i++) {
     const from = moveFrom[i];
     const to = moveTo[i];
 
-    console.log('from ', from);
-    for (let j = 0; j < nums.length; j++) {
-      const actual = nums[j];
-      const next = nums[j + 1];
-      console.log('actual ', actual);
-
-      if (actual === from) {
-        console.log('actual === from', 'i ', i, 'j ', j);
-        const left = j > 0 ? relocated.slice(0, j) : [];
-        if (next > to) {
-          const right = j + 1 <= nums.length - 1 ? relocated.slice(j + 1, nums.length) : [];
-          relocated = [...left, to, ...right];
-          console.log('next > to', relocated);
-          break;
-
-        } else if (next < to) {
-          const right = j + 2 <= nums.length - 1 ? relocated.slice(j + 2, nums.length) : [];
-          relocated = [...left, next, to, ...right];
-          break;
-
-        } else {
-          // next one is the same so just continue
-          continue;
-        }
-      }
+    // Move the marble from position moveFrom[i] to position moveTo[i]
+    if (positions.has(from)) {
+      const marble = positions.get(from);
+      positions.delete(from);
+      // don't be consufed with the marble assignation
+      // since it's a Map we have to assign some value to the key
+      // but what does matters is the key from the map
+      // see the keys() method at the end
+      positions.set(to, marble);
     }
   }
 
-  return relocated;
+  // Collect the occupied positions
+  const result = [...positions.keys()].sort((a, b) => a - b);
+
+  return result;
 }
 
 const cases = [
-  { nums: [1,6,7,8], moveFrom: [1, 7, 2], moveTo: [2, 9, 5] },
+  { nums: [1, 6, 7, 8], moveFrom: [1, 7, 2], moveTo: [2, 9, 5] },
+  { nums: [1, 1, 3, 3], moveFrom: [1, 3], moveTo: [2, 2] },
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(relocateMarbles(c.nums, c.moveFrom, c.moveTo));
 });
