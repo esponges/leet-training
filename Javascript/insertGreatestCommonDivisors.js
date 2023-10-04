@@ -92,6 +92,9 @@ var insertGreatestCommonDivisors = function(head) {
     return head;
 };
 
+// todo: accepted but the runtime is very bad
+// probably missing a smart Math operation to get 
+// biggest common divisor instead the loop
 const cases = [
   [18, 6, 10, 3],
   [7]
