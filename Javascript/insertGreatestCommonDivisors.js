@@ -41,7 +41,7 @@ The number of nodes in the list is in the range [1, 5000].
 https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/
  */
 
-const { createList } = require("./common");
+const { createList, ListNode, getNodeValues } = require("./common");
 
 /**
  * Definition for singly-linked list.
@@ -55,7 +55,39 @@ const { createList } = require("./common");
  * @return {ListNode}
  */
 var insertGreatestCommonDivisors = function(head) {
-    
+    let current = head;
+
+    if (head.val && !head.next) return head;
+
+    function getGreatestCommonInPair (a, b) {
+      const biggest = Math.max(a, b);
+      
+      for (let i = biggest - 1; i >= 0; i --) {
+        const aRemainder = a % i;
+        const bRemainder = b % i;
+
+        if (aRemainder === 0 && bRemainder === 0) {
+          return i;
+        }
+      }
+
+      return -1;
+    }
+
+    while (current && current.next) {
+      const actual = current.val;
+      const next = current.next;
+
+      const biggestCommon = getGreatestCommonInPair(actual, next.val);
+
+      current.next = new ListNode(biggestCommon);
+      current.next.next = next;
+      
+      // move pointer to nextNext - ignore the inserted one
+      current = current.next.next
+    }
+
+    return head;
 };
 
 const cases = [
@@ -65,6 +97,5 @@ const cases = [
 
 cases.forEach(c => {
   const list = createList(c);
-  console.log(list);
-  // insertGreatestCommonDivisors
+  insertGreatestCommonDivisors(list);
 })
