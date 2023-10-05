@@ -62,9 +62,9 @@ var insertGreatestCommonDivisors = function(head) {
     function getGreatestCommonInPair (a, b) {
       if (a === b) return a;
 
-      const biggest = Math.max(a, b);
+      const start = Math.max(a, b);
       
-      for (let i = biggest - 1; i >= 0; i --) {
+      for (let i = start; i >= 0; i --) {
         const aRemainder = a % i;
         const bRemainder = b % i;
 
