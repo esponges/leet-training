@@ -60,24 +60,17 @@ function longestSubarray(nums, limit) {
   let left = 0;
   let right = 1;
   while (right <= nums.length) {
+    // stop checking whenever it's not possible
+    // to have a bigger subarray than the actual
+    if (Math.abs(left - nums.length - 1) <= maxSubs[0].length) break;
+
     const actualSubArray = nums.slice(left, right + 1);
     const min = Math.min(...actualSubArray);
     const max = Math.max(...actualSubArray);
     const diff = Math.abs(max - min);
 
-    const debug = {
-      left,
-      right,
-      actualSubArray,
-      min,
-      diff,
-      max
-    };
-    console.log(debug);
-
     if (diff <= limit && actualSubArray.length > maxSubs[0].length) {
       maxSubs = [actualSubArray, diff];
-      console.log('new max: ', max);maxSubs
     }
 
     if (right === nums.length - 1) {
@@ -87,8 +80,6 @@ function longestSubarray(nums, limit) {
       right++;
     }
   }
-
-  console.log(maxSubs);
 
   return maxSubs[0].length;
 }
