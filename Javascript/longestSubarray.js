@@ -53,28 +53,31 @@ Acceptance Rate
  */
 // brute force approach
 function longestSubarray(nums, limit) {
-  if (nums.length === 1) return 1;
+  if (nums.length === 1) return 0;
 
-  let max = [[nums[0]], 0];
-  
+  let maxSubs = [[nums[0]], 0];
+
   let left = 0;
   let right = 1;
-  let debugg = 0;
-  while (right <= nums.length && debugg < 10) {
-    debugg += 1;
-    const actualLeft = nums[left];
-    const actualSubArray = nums.slice(left + 1, right + 1);
+  while (right <= nums.length) {
+    const actualSubArray = nums.slice(left, right + 1);
     const min = Math.min(...actualSubArray);
-    const diff = Math.abs(actualLeft - min);
-    
-    console.log('left', actualLeft);
-    console.log('subArray', actualSubArray);
-    console.log('min ', min);
-    console.log('diff ', diff);
-    
-    if (diff <= limit) {
-      max = [nums.slice(left, right + 1), diff];
-      console.log('new max: ', max);
+    const max = Math.max(...actualSubArray);
+    const diff = Math.abs(max - min);
+
+    const debug = {
+      left,
+      right,
+      actualSubArray,
+      min,
+      diff,
+      max
+    };
+    console.log(debug);
+
+    if (diff <= limit && actualSubArray.length > maxSubs[0].length) {
+      maxSubs = [actualSubArray, diff];
+      console.log('new max: ', max);maxSubs
     }
 
     if (right === nums.length - 1) {
@@ -85,17 +88,17 @@ function longestSubarray(nums, limit) {
     }
   }
 
-  console.log(max);
+  console.log(maxSubs);
 
-  return max[0].length;
+  return maxSubs[0].length;
 }
 
 const cases = [
   [[8,2,4,7], 4],
-  [[10,1,2,4,7,2], 5],
+  [[10, 1, 2, 4, 7, 2], 5],
   [[4,2,2,2,4,4,2,2], 0]
 ];
 
-cases.forEach(c => {
-  console.log('RESULT' , longestSubarray(c[0], c[1]));
+cases.forEach((c) => {
+  console.log('RESULT', longestSubarray(c[0], c[1]));
 });
