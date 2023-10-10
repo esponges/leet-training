@@ -53,7 +53,7 @@ Acceptance Rate
  */
 // brute force approach
 function longestSubarray(nums, limit) {
-  if (nums.length === 1) return 0;
+  if (nums.length === 1) return limit > 0 ? 1 : 0;
 
   let maxSubs = [[nums[0]], 0];
 
