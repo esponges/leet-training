@@ -52,6 +52,7 @@ Acceptance Rate
  * @return {number}
  */
 // brute force approach
+// todo passed 55/61 cases, however very large arrays are timing out
 function longestSubarray(nums, limit) {
   if (nums.length === 1) return limit > 0 ? 1 : 0;
 
