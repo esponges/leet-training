@@ -20,47 +20,30 @@ const { ListNode, createList, getNodeValues } = require('./common');
  * @param {number} right
  * @returns {ListNode}
  */
+// acepted: good runtime - bad memory
+// todo: figure out how to skip between elements during 
+// the while loop and adding them before right side is reached
 var reverseBetween = function (head, left, right) {
-  // const fake = new ListNode(-1);
-  // fake.next = head;
-  // let current = fake;
   let current = head;
 
   const betweenNums = [];
   const leftNums = [];
   const rightNums = [];
 
+  let count = 0;
   while (current) {
-    // const next = current.next.val;
+    count++;
     const actual = current.val;
-    // console.log({
-    //   next,
-    //   left,
-    //   right,
-    // });
-    if (actual < left) {
+    if (count < left) {
       leftNums.push(actual);
-    } else if (actual > right) {
+    } else if (count > right) {
       rightNums.push(actual);
     } else {
       betweenNums.push(actual);
     }
-
-    // if (next >= left && next <= right) {
-    //   current.next = current.next.next;
-    // }
     current = current.next;
-
-    // if (betweenNums.length > 0) {
-    //   betweenNums.sort((a, b) => b - a);
-    //   for (let i = 0; i < betweenNums.length; i++) {
-    //     current.next = new ListNode(betweenNums[i]);
-    //     current = current.next;
-    //   }
-    //   current.next;
   }
-
-  betweenNums.sort((a,b) => b - a);
+  betweenNums.reverse();
 
   const fake = new ListNode(-1);
   let fakeCurrent = fake;
@@ -72,18 +55,14 @@ var reverseBetween = function (head, left, right) {
     fakeCurrent = fakeCurrent.next;
   });
 
-  // console.log({
-  //   leftNums,
-  //   betweenNums,
-  //   rightNums,
-  // });
 
   return fake.next;
 };
 
 const cases = [
   [[1, 2, 3, 4, 5], 2, 4],
-  [[5], 1]
+  [[5], 1],
+  [[9,8,7,6,5,4,3,2,1,0], 1, 10]
 ];
 
 cases.forEach((c) => {
