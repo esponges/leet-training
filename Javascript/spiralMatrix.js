@@ -45,47 +45,43 @@ const { ListNode, createList, getNodeValues } = require("./common");
  */
 var spiralMatrix = function(m, n, head) {
   let current = head;
-  
-  const directions = {
-    right: 1,
-    down: 2,
-    left: 3,
-    up: 4,
-  };
+
   let row = 0;
   let col = 0;
-  let dir = 1;
+  let dir = 'right';
   const matrix = new Array(m).fill().map(() => new Array(n).fill(-1));
 
   while (current) {
-    // push current offsetting for 0-indexed array
     matrix[row][col] = current.val;
 
     // increase depending what's next;
-    if (dir === directions.right) {
+    // using the -1 check help us to know if
+    // we've already set that number or if we are
+    // out of boundaries (for the first 2 loops)
+    if (dir === 'right') {
       if (col + 1 === n || matrix[row][col + 1] !== -1) {
-        dir = directions.down;
+        dir = 'down';
         row++;
       } else {
         col++;
       }
-    } else if (dir === directions.down) {
+    } else if (dir === 'down') {
       if (row + 1 === m || matrix[row + 1][col] !== -1) {
-        dir = directions.left;
+        dir = 'left';
         col--;
       } else {
         row++;
       }
-    } else if (dir === directions.left) {
+    } else if (dir === 'left') {
       if (col === 0 || matrix[row][col - 1] !== -1) {
-        dir = directions.up;
+        dir = 'up';
         row--;
       } else {
         col--;
       }
-    } else if (dir === directions.up) {
+    } else if (dir === 'up') {
       if (row === 0 || matrix[row - 1][col] !== -1) {
-        dir = directions.right;
+        dir = 'right';
         col++;
       } else {
         row--;
@@ -110,8 +106,8 @@ cases.forEach(c => {
 });
 
 // Input: m = 3, n = 5, head = [3,0,2,6,8,1,7,9,4,2,5,5,0]
-// rowMax colMax dir row col
-// 3      5      1   1   1
+// rowMax colMax dir    row col
+// 3      5      right  0   0
 // 3      5      1   1   2
 // 3      5      1   1   3
 // 3      5      1   1   4
