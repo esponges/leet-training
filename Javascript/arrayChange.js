@@ -49,17 +49,33 @@ operations[i][0] will exist in nums when applying the ith operation.
  * @param {number[][]} operations
  * @return {number[]}
  */
-// pases base cases but gets RTL for large arrays
+// no RTL 71%runtime/5.26% memory boooooo
 var arrayChange = function(nums, operations) {
-  let changed = [...nums];
+  const numsMap = new Map();
 
-  operations.forEach(op => {
-    const target = changed.findIndex(el => el === op[0]);
-
-    changed = [...changed.slice(0, target), op[1], ...changed.slice(target + 1)];
+  nums.forEach((n, i) => {
+    numsMap.set(n, [i, n]);
   });
 
-  return changed;
+  operations.forEach(op => {
+    const target = op[0];
+    const replacement = op[1];
+
+    const index = numsMap.get(target)[0];
+    numsMap.delete(target);
+    numsMap.set(replacement, [index, replacement]);
+  });
+
+  const a = new Array(nums.length).fill();
+
+  numsMap.forEach(n => {
+    const targetIdx = n[0];
+    const targetVal = n[1];
+
+    a[targetIdx] = targetVal;
+  });
+
+  return a;
 };
 
 const cases = [
