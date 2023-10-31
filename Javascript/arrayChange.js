@@ -50,6 +50,7 @@ operations[i][0] will exist in nums when applying the ith operation.
  * @return {number[]}
  */
 // no RTL 71%runtime/5.26% memory boooooo
+// todo: imp memory - probably finding the way to sort map without creating array?
 var arrayChange = function(nums, operations) {
   const numsMap = new Map();
 
@@ -76,6 +77,21 @@ var arrayChange = function(nums, operations) {
   });
 
   return a;
+};
+
+// 50%/76% acceptance
+var arrayChangeOpt2 = function(nums, operations) {
+  const changed = [...nums];
+
+  operations.forEach(op => {
+    const target = op[0];
+    const replacement = op[1];
+
+    const index = changed.findIndex(i => i === target);
+    changed[index] = replacement;
+  });
+
+  return changed;
 };
 
 const cases = [
