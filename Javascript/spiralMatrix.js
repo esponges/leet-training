@@ -1,6 +1,6 @@
 /* 2326. Spiral Matrix IV
-Medium
 677
+Medium
 25
 Companies
 You are given two integers m and n, which represent the dimensions of a matrix.
@@ -36,7 +36,7 @@ The number of nodes in the list is in the range [1, m * n].
 0 <= Node.val <= 1000
 */
 
-const { ListNode } = require("./common");
+const { ListNode, createList, getNodeValues } = require("./common");
 /**
  * 
  * @param {number} m 
@@ -52,87 +52,68 @@ var spiralMatrix = function(m, n, head) {
     left: 3,
     up: 4,
   };
-  let row = 1;
-  let col = 1;
-  let rowMax = m;
-  let colMax = n;
+  let row = 0;
+  let col = 0;
   let dir = 1;
-  const matrix = [[]];
+  const matrix = new Array(m).fill().map(() => new Array(n).fill(-1));
 
-  const stop = [m - 1, n - 1];
-  while (row !== stop[0] && col !== stop[1]) {
+  while (current) {
     // push current offsetting for 0-indexed array
-    matrix[row - 1][col - 1] = current && current.val || -1;
-
-    // move pointer
-    if (current && current.next) {
-      current = current.next;
-    }
+    matrix[row][col] = current.val;
 
     // increase depending what's next;
     if (dir === directions.right) {
-      if (row === rowMax) {
-        rowMax--;
+      if (col + 1 === n || matrix[row][col + 1] !== -1) {
         dir = directions.down;
         row++;
       } else {
         col++;
       }
     } else if (dir === directions.down) {
-      if (col === colMax) {
-        colMax--;
+      if (row + 1 === m || matrix[row + 1][col] !== -1) {
         dir = directions.left;
         col--;
       } else {
         row++;
       }
     } else if (dir === directions.left) {
-      if (row === n - rowMax) {
+      if (col === 0 || matrix[row][col - 1] !== -1) {
         dir = directions.up;
+        row--;
+      } else {
         col--;
+      }
+    } else if (dir === directions.up) {
+      if (row === 0 || matrix[row - 1][col] !== -1) {
+        dir = directions.right;
+        col++;
       } else {
         row--;
       }
-    } else if (dir === directions.up) {
-      if (col === m - colMax) {
-        dir = directions.right;
-        row++;
-      } else {
-        col--;
-      }
     }
+
+    // move pointer
+    current = current.next;
   }
 
   return matrix;
 };
 
-// m  n
-// 1  1
-// 1  2
-// 1  3
-// 1  4
-// 1  5
-// 2  5
-// 3  5
-// 3  4
-// 3  3
-// 3  2
-// 3  1
-// 2  2
-// 2  3
-// 2  4
+const cases = [
+  [[3,0,2,6,8,1,7,9,4,2,5,5,0], 3, 5]
+];
 
+cases.forEach(c => {
+  const list = createList(c[0]);
+  console.log(getNodeValues(list));
+  console.log(spiralMatrix(c[1], c[2], list));
+});
 
-// switch(dir) {
-//   case directions.right:
-//     col++;
-//     break;
-//   case directions.down:
-//     row--;
-//   case directions.left:
-//     col--;
-//   case directions.up:
-//     row ++;
-//   default:
-//     break;
-// }
+// Input: m = 3, n = 5, head = [3,0,2,6,8,1,7,9,4,2,5,5,0]
+// rowMax colMax dir row col
+// 3      5      1   1   1
+// 3      5      1   1   2
+// 3      5      1   1   3
+// 3      5      1   1   4
+// 3      5      1   1   5
+// 3      4      2   2   
