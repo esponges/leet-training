@@ -42,31 +42,41 @@ firstLen + secondLen <= nums.length <= 1000
  * @return {number}
  */
 var maxSumTwoNoOverlap = function(nums, firstLen, secondLen) {
-  let first = [];
-  let second = [];
-  let left = [];
-  let right = [];
-  
-  if (firstLen === 1) {
-    first = [Math.max(nums)];
-  } else {
-    for (let i = firstLen; i <= nums.length; i ++) {
-      let maxPrevSum = 0;
-  
-      const prev = nums.slice(i - firstLen, i);
+  function getSubarrayMaxSum (arr, len) {
+    // when array is smaller than len
+    // no need to check for combinations
+    if (arr.length <= len) return arr;
+
+    let maxPrevSum = 0;
+    let subarray = [];
+    let left = [];
+    let right = [];
+    for (let i = len; i < nums.length; i++) {
+      const prev = arr.slice(i - len, i);
       const sum = prev.reduce((a, b) => a + b, 0);
       
       if (sum > maxPrevSum) {
         maxPrevSum = sum;
-        first = prev;
+        subarray = prev;
+        left = arr.slice(0, i - len);
+        right = arr.slice(i);
       }
     }
+
+    return {
+      maxPrevSum,
+      subarray,
+      left,
+      right
+    }
   }
-  console.log(first);
+
+  // use above function to determine which len has 
+  // the highest sum and pick that combination first
 };
 
 const cases = [
-  [[0,6,5,2,2,5,1,9,4], 1, 2],
+  // [[0,6,5,2,2,5,1,9,4], 1, 2],
   [[3,8,1,3,2,1,8,9,0], 3, 2],
 ];
 
