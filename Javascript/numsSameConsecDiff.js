@@ -31,37 +31,55 @@ Submissions
 Acceptance Rate
 57.7% */
 
-/**
- * @param {number} num
- * @param {number} diff
- * @returns {boolean}
- */
-function getInnerConsecDiff(num, diff) {
-  const nums = num.toString().split('');
-  console.log(nums);
-  for (let i = 0; i < nums.length - 1; i++) {
-    const actual = parseInt(nums[i]);
-    const next = parseInt(nums[i + 1]);
-    console.log({ actual, next, diff });
-    if (Math.abs(actual - next) === diff) continue;
-    else return false;
-  }
-  return true;
-}
 
 /**
  * @param {number} k
  * @param {number} n
  * @returns {array}
- */
-function numsSameConsecDiff(n, k) {}
+*/
+function numsSameConsecDiff(n, k) {
+  let start = '10';
+  
+  
+  if (n > 2) {
+    new Array(n - 2).fill().forEach(_el => start+='0');
+  }
+  
+  const end = parseInt(start + '0');
+  start = parseInt(start);
+  
+  /**
+   * @param {number} num
+   * @param {number} diff
+   * @returns {boolean}
+   */
+  function hasInnerConsecDiff(num, diff) {
+    const nums = num.toString().split('');
+  
+    for (let i = 0; i < nums.length - 1; i++) {
+      const actual = parseInt(nums[i]);
+      const next = parseInt(nums[i + 1]);
+  
+      if (Math.abs(actual - next) === diff) continue;
+      else return false;
+    }
+  
+    return true;
+  }
+  
+  const consec = [];
+  for (let i = start; i < end; i++) {
+    if (hasInnerConsecDiff(i, k)) consec.push(i);
+  }
+
+  return consec;
+}
 
 const cases = [
-  [2, 3],
+  [3, 7],
   [2, 1],
-  //todo: find with n = 1 & 0
 ];
 
 cases.forEach((c) => {
-  console.log(getInnerConsecDiff(182, 7));
+  console.log(numsSameConsecDiff(c[0], c[1]));
 });
