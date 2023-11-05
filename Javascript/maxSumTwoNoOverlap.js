@@ -41,22 +41,33 @@ firstLen + secondLen <= nums.length <= 1000
  * @param {number} secondLen
  * @return {number}
  */
+// TODO: incomplete solution
+// checked over existing solutions but they are all hard to understand
 var maxSumTwoNoOverlap = function(nums, firstLen, secondLen) {
+  function getArraySum (arr) {
+    return arr.reduce((a, b) => a + b, 0);
+  }
+  
   function getSubarrayMaxSum (arr, len) {
     // when array is smaller than len
     // no need to check for combinations
-    if (arr.length <= len) return arr;
+    if (arr.length <= len) return {
+      subarrayMaxSum: getArraySum(arr),
+      subarray: arr,
+      left: [],
+      right: []
+    };
 
-    let maxPrevSum = 0;
+    let subarrayMaxSum = 0;
     let subarray = [];
     let left = [];
     let right = [];
     for (let i = len; i < nums.length; i++) {
       const prev = arr.slice(i - len, i);
-      const sum = prev.reduce((a, b) => a + b, 0);
+      const sum = getArraySum(prev);
       
-      if (sum > maxPrevSum) {
-        maxPrevSum = sum;
+      if (sum > subarrayMaxSum) {
+        subarrayMaxSum = sum;
         subarray = prev;
         left = arr.slice(0, i - len);
         right = arr.slice(i);
@@ -64,7 +75,7 @@ var maxSumTwoNoOverlap = function(nums, firstLen, secondLen) {
     }
 
     return {
-      maxPrevSum,
+      subarrayMaxSum,
       subarray,
       left,
       right
@@ -73,6 +84,18 @@ var maxSumTwoNoOverlap = function(nums, firstLen, secondLen) {
 
   // use above function to determine which len has 
   // the highest sum and pick that combination first
+  const first = getSubarrayMaxSum(nums, firstLen);
+  const second = getSubarrayMaxSum(nums, secondLen);
+  console.log({
+    first,
+    second
+  });
+
+  const max = first.maxPrevSum >= second.maxPrevSum ? first : second;
+  const min = first.maxPrevSum >= second.maxPrevSum ? second : first;
+  let subArrSums = max.maxPrevSum;
+
+  const leftSum = getSubarrayMaxSum(min.left)
 };
 
 const cases = [
