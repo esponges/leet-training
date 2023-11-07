@@ -70,12 +70,14 @@ function numsSameConsecDiff(n, k) {
       else {
         // just need to move next to the next decimal 
         nums[i + 1] = next + 1;
-        const x = [
+        function joinNums() { 
+          return [
           ...nums.slice(0, i + 2), 
           ...nums.slice(i + 2).map(_n => 0)
-        ];
+          ].join('');
+        }
         // ignore 9's
-        const skipTo = next !== 9 ? parseInt(x.join('')) : 0;
+        const skipTo = next !== 9 ? parseInt(joinNums()) : 0;
 
         return { hasInnerDif: false, skipTo }
       };
@@ -102,9 +104,10 @@ function numsSameConsecDiff(n, k) {
 
 const cases = [
   [3, 7],
-  // [2, 1],
+  [2, 1],
+  [7, 3]
   // TLE
-  // [7, 3]
+  // [8, 1]
 ];
 
 cases.forEach((c) => {
