@@ -40,9 +40,14 @@ Acceptance Rate
 function numsSameConsecDiff(n, k) {
   let start = '10';
   
+  function addNExtraZeros(n, initial = '10') {
+    let num = initial;
+    new Array(n).fill().forEach(_el => num+='0');
+    return num;
+  }
   
   if (n > 2) {
-    new Array(n - 2).fill().forEach(_el => start+='0');
+    start = addNExtraZeros(n - 2);
   }
   
   const end = parseInt(start + '0');
@@ -51,25 +56,45 @@ function numsSameConsecDiff(n, k) {
   /**
    * @param {number} num
    * @param {number} diff
-   * @returns {boolean}
+   * @returns {object}
    */
   function hasInnerConsecDiff(num, diff) {
-    const nums = num.toString().split('');
+    // split number as sep numbers
+    const nums = num.toString().split('').map(n => parseInt(n));
   
     for (let i = 0; i < nums.length - 1; i++) {
-      const actual = parseInt(nums[i]);
-      const next = parseInt(nums[i + 1]);
+      const actual = nums[i];
+      const next = nums[i + 1];
   
       if (Math.abs(actual - next) === diff) continue;
-      else return false;
+      else {
+        // just need to move next to the next decimal 
+        nums[i + 1] = next + 1;
+        const x = [
+          ...nums.slice(0, i + 2), 
+          ...nums.slice(i + 2).map(_n => 0)
+        ];
+        // ignore 9's
+        const skipTo = next !== 9 ? parseInt(x.join('')) : 0;
+
+        return { hasInnerDif: false, skipTo }
+      };
     }
   
-    return true;
+    return { hasInnerDif: true, skipTo: undefined };
   }
-  
+
   const consec = [];
   for (let i = start; i < end; i++) {
-    if (hasInnerConsecDiff(i, k)) consec.push(i);
+    const inner = hasInnerConsecDiff(i, k);
+    if (inner.hasInnerDif) {
+      consec.push(i);
+    } else {
+      const { skipTo } = inner;
+      i = !!skipTo
+        ? skipTo - 1 
+        : i; 
+    }
   }
 
   return consec;
@@ -77,7 +102,9 @@ function numsSameConsecDiff(n, k) {
 
 const cases = [
   [3, 7],
-  [2, 1],
+  // [2, 1],
+  // TLE
+  // [7, 3]
 ];
 
 cases.forEach((c) => {
