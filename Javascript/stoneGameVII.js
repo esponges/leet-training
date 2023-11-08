@@ -56,34 +56,53 @@ function stoneGameVII (stones) {
       break;
     }
 
-    const removeLeftmost = remainingStones.slice(1);
-    const removeRightmost = remainingStones.slice(0, remainingStones.length - 1);
-    const leftmostSum = removeLeftmost.reduce((a, b) => a + b, 0);
-    const rightmostSum = removeRightmost.reduce((a, b) => a + b, 0);
+    function sum (arr) {
+      return arr.reduce((a, b) => a + b, 0);
+    }
+
+    function getMoveOpts (remaining) {
+      const removeLeftmost = remaining.slice(1);
+      const removeRightmost = remaining.slice(0, remaining.length - 1);
+      const leftmostSum = sum(removeLeftmost);
+      const rightmostSum = sum(removeRightmost);
+      
+      const maximizedMove = leftmostSum > rightmostSum ? removeLeftmost : removeRightmost;
+      const maximizedMoveSum = sum(maximizedMove); 
+
+      const minimizedMove = leftmostSum > rightmostSum ? removeRightmost : removeLeftmost;
+      const minimizedMoveSum = sum(minimizedMove);
+
+      return {  
+        maximizedMove,
+        maximizedMoveSum,
+        minimizedMove,
+        minimizedMoveSum 
+      }
+    }
 
     // alice will always play with odd diff between arrays
     const turn = (stones.length - remainingStones.length) % 2 === 0 ? 'a' : 'b';
-    
-    console.log({
-      remainingStones,
-      bScore,
-      aScore,
-      turn,
-      removeLeftmost,
-      leftmostSum,
-      removeRightmost,
-      rightmostSum
-    });
-    
-    // todo: figure out what they mean with optimally? left comment in forum
+
+    const { maximizedMove, maximizedMoveSum, minimizedMove, minimizedMoveSum } = getMoveOpts(remaining);
+
     if (turn === 'a') {
-      remainingStones = leftmostSum > rightmostSum ? removeLeftmost : removeRightmost;
-      aScore+= leftmostSum > rightmostSum ? leftmostSum : rightmostSum
+      remainingStones = maximizedMove;
+      aScore += maximizedMoveSum;
     } else {
-      remainingStones = leftmostSum > rightmostSum ? removeRightmost : removeLeftmost;
-      bScore+= leftmostSum > rightmostSum ? rightmostSum : leftmostSum;
-    };
+      // figure out what could be the best movement depending this round pick
+      // and try to minimize Alice picks by chosing the opt that would force her to get less points
+      const { maximizedMoveSum: nextMaxMaxMoveSum } = getMoveOpts(maximizedMove);
+      const { maximizedMoveSum: nextMinMMaxMoveSum } = getMoveOpts(minimizedMove);
+      if (nextMaxMaxMoveSum > nextMinMMaxMoveSum) {
+        remainingStones = minimizedMove;
+        bScore += minimizedMoveSum;
+      } else {
+        remainingStones = maximizedMove;
+        bScore += maximizedMoveSum;
+      }
+    }
   }
+
 
   return aScore - bScore;
 }
