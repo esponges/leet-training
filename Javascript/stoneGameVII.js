@@ -46,6 +46,8 @@ Acceptance Rate
  * @param {number[]} stones
  * @returns {number}
  */
+// 5 / 68 testcases passed
+// https://leetcode.com/problems/stone-game-vii/solutions/1264516/js-python-java-c-easy-dp-solution-w-explanation/
 function stoneGameVII (stones) {
   let remainingStones = [...stones];
   let aScore = 0;
