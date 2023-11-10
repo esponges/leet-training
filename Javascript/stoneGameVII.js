@@ -83,7 +83,8 @@ function stoneGameVII (stones) {
     // alice will always play with odd diff between arrays
     const turn = (stones.length - remainingStones.length) % 2 === 0 ? 'a' : 'b';
 
-    const { maximizedMove, maximizedMoveSum, minimizedMove, minimizedMoveSum } = getMoveOpts(remaining);
+    // todo: refactor to accept 'a' or 'b' and only return depeding on that
+    const { maximizedMove, maximizedMoveSum, minimizedMove, minimizedMoveSum } = getMoveOpts(remainingStones);
 
     if (turn === 'a') {
       remainingStones = maximizedMove;
@@ -91,9 +92,12 @@ function stoneGameVII (stones) {
     } else {
       // figure out what could be the best movement depending this round pick
       // and try to minimize Alice picks by chosing the opt that would force her to get less points
+      // check first passing maximizedMove
       const { maximizedMoveSum: nextMaxMaxMoveSum } = getMoveOpts(maximizedMove);
-      const { maximizedMoveSum: nextMinMMaxMoveSum } = getMoveOpts(minimizedMove);
-      if (nextMaxMaxMoveSum > nextMinMMaxMoveSum) {
+      // then with minimzedMove as arg
+      const { maximizedMoveSum: nextMinMaxMoveSum } = getMoveOpts(minimizedMove);
+      // pick the one that will benefit alice the least
+      if (nextMinMaxMoveSum < nextMaxMaxMoveSum) {
         remainingStones = minimizedMove;
         bScore += minimizedMoveSum;
       } else {
@@ -108,8 +112,8 @@ function stoneGameVII (stones) {
 }
 
 const cases = [
-  [5,3,1,4,2],
-  // [7,90,5,1,100,10,10,2]
+  // [5,3,1,4,2],
+  [7,90,5,1,100,10,10,2]
 ];
 
 cases.forEach(c => {
