@@ -47,7 +47,7 @@ Acceptance Rate
  * @param {string} word
  * @returns {number}
  */
-function longestBeautifulSubstring (word) {
+function longestBeautifulSubstring(word) {
   // cant have beautiful without length >= 5
   if (word.length < 5) return 0;
 
@@ -56,49 +56,46 @@ function longestBeautifulSubstring (word) {
     1: 'e',
     2: 'i',
     3: 'o',
-    4: 'u'
+    4: 'u',
   };
 
   const beautifulStrings = [];
 
   let actualVowel = 0;
-  let beautifulCandidate = "";
+  let beautifulCandidate = '';
   for (let i = 0; i < word.length; i++) {
     const actual = word[i];
 
-    // we've completed a substring
-    if (vowels[actualVowel] === vowels[4] && actual !== vowels[4]) {
-      beautifulStrings.push(beautifulCandidate);
-      beautifulCandidate = "";
-      actualVowel = 0;
-      continue;
-    }
-
     if (actual === vowels[actualVowel]) {
       beautifulCandidate += actual;
-    // actual equals to next vowel
+      // actual equals to next vowel
     } else if (actual === vowels[actualVowel + 1]) {
       actualVowel++;
       beautifulCandidate += actual;
-    } else {
-      // restart flags
-      beautifulCandidate = "";
+    } else if (actual !== vowels[actualVowel] && actual !== vowels[actualVowel + 1]) {
+      actualVowel = 0;
+      beautifulCandidate = '';
+    }
+
+    // we've completed a substring
+    if (actualVowel === 4 && word[i + 1] !== vowels[4]) {
+      beautifulStrings.push(beautifulCandidate);
+      beautifulCandidate = '';
       actualVowel = 0;
     }
   }
-  console.log(beautifulStrings);
 
-  return beautifulStrings.length > 0 
+  return beautifulStrings.length > 0
     ? beautifulStrings.sort((a, b) => a > b)[0].length
-    : 0
+    : 0;
 }
 
 const cases = [
-  "aeiaaioaaaaeiiiiouuuooaauuaeiu",
-  "aeeeiiiioooauuuaeiou",
+  "aeiaaioaaaaeiiiiouuuooaauuaeiu", // good
+  'aeeeiiiioooauuuaeiou',
   "a"
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(longestBeautifulSubstring(c));
-})
+});
