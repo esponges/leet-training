@@ -60,6 +60,7 @@ word consists of lowercase English letters from 'a' to 'j'. */
  * @param {string} word
  * @returns {number}
  */
+// base cases pased, but TLE ...
 function wonderfulSubstrings (word) {
   let left = 0, right = left;
 
@@ -104,8 +105,8 @@ function wonderfulSubstrings (word) {
       left++;
       right = left;
     }
-
-    if (isWonderful(actualString)) wonderfulCount++;
+    if (actualString.length === 1) wonderfulCount ++;
+    else if (isWonderful(actualString)) wonderfulCount++;
   }
 
   return wonderfulCount;
