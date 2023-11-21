@@ -47,6 +47,7 @@ Acceptance Rate
  * @param {string} word
  * @returns {number}
  */
+// accepted with 16/5 :'()
 function longestBeautifulSubstring(word) {
   // cant have beautiful without length >= 5
   if (word.length < 5) return 0;
@@ -66,23 +67,33 @@ function longestBeautifulSubstring(word) {
   for (let i = 0; i < word.length; i++) {
     const actual = word[i];
 
-    if (actual === vowels[actualVowel]) {
-      beautifulCandidate += actual;
+    if (i > 335 && i < 350) {
       console.log({
+        i,
+        actual,
         prev: word[i - 1],
         beautifulCandidate
-      })
-      // actual equals to next vowel
+      });
+    }
+    if (actual === vowels[actualVowel]) {
+      beautifulCandidate += actual;
+      // move to the next word
     } else if (actual === vowels[actualVowel + 1] && !!beautifulCandidate) {
       actualVowel++;
       beautifulCandidate += actual;
     } else if (actual !== vowels[actualVowel] && actual !== vowels[actualVowel + 1]) {
       actualVowel = 0;
       beautifulCandidate = '';
+
+      // edge case: restart candidate right away or the this letter will be lost
+      if (actual === vowels[0]) {
+        beautifulCandidate += actual;
+      }
     }
 
     // we've completed a substring
     if (actualVowel === 4 && word[i + 1] !== vowels[4]) {
+      // console.log(beautifulCandidate);
       beautifulStrings.push(beautifulCandidate.length);
       beautifulCandidate = '';
       actualVowel = 0;
@@ -93,6 +104,7 @@ function longestBeautifulSubstring(word) {
     ? Math.max(...beautifulStrings)
     : 0;
 }
+
 
 const cases = [
   // "aeiaaioaaaaeiiiiouuuooaauuaeiu", // good
