@@ -36,11 +36,14 @@ Constraints:
 To find the maximum frequency of a value consider the biggest elements smaller than or equal to this value
 */
 
+// https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/
+
 /**
  * @param {number[]} nums
  * @param {number} k
  * @returns {number}
  */
+// 67 / 71 cases passed, rest are RTL :()
 function maxFrequency(nums, k) {
   const sorted = nums.sort((a, b) => b - a);
   let remaining = k;
