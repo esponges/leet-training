@@ -40,6 +40,7 @@ They share a common elements nums[4] (0-indexed).
  * @param {number[]} nums
  * @return {boolean}
  */
+// acepted 50/50 - decreased mem usage by not using abstractions lol
 function canChoose (groups, nums) {
   /**
    * 
@@ -52,12 +53,12 @@ function canChoose (groups, nums) {
   
   let grpPointer = 0;
   for (let i = 0; i < nums.length; i++) {
-    const actualGroup = groups[grpPointer];
     if (nums.length - i < actualGroup.length) break;
-
+    
+    const actualGroup = groups[grpPointer];
     const compGroup = nums.slice(i, i + actualGroup.length);
 
-    if (areArraysEqual(actualGroup, compGroup)) {
+    if (actualGroup.every((el, idx) => el === compGroup[idx])) {
       grpPointer ++;
       if (grpPointer >= groups.length) return true;
       // we found a group, add offset to stop comparing
