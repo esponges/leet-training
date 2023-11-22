@@ -44,31 +44,26 @@ To find the maximum frequency of a value consider the biggest elements smaller t
 function maxFrequency(nums, k) {
   const sorted = nums.sort((a, b) => b - a);
   let remaining = k;
-  const cases = [];
+  const cases = [1];
   for (let i = 0; i < sorted.length; i++) {
-    const c = [sorted[i]];
+    const max = sorted[i];
+    let reps = 1;
 
     // console.log({ cAtI: c });
     for (let j = i + 1; j < sorted.length; j++) {
       const actual = sorted[j];
-      const diffToMax = c[0] - actual;
+      const diffToMax = max - actual;
 
-      // console.log({
-      //   c,
-      //   i,
-      //   j,
-      //   actual,
-      //   diffToMax,
-      //   remaining,
-      // });
+      // repeated numbers
+      // if (actual === c[c.length - 1]) {}
+
       if (diffToMax <= remaining) {
-        c.push(c[0]);
+        reps++;
         remaining -= diffToMax;
-
-        if (j === sorted.length - 1) cases.push(c.length);
-      } else if (c.length > 1) {
-        // todo: change to just pass the length
-        cases.push(c.length);
+        // last element
+        if (j === sorted.length - 1) cases.push(reps);
+      } else if (reps > 1) {
+        cases.push(reps);
         break;
       }
     }
@@ -76,8 +71,7 @@ function maxFrequency(nums, k) {
     remaining = k;
   }
 
-  console.log(cases);
-  return cases.length > 0 ? Math.max(...cases) : 1;
+  return Math.max(...cases);
 }
 
 const cases = [
