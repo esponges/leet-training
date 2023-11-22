@@ -45,27 +45,31 @@ function maxFrequency(nums, k) {
   const sorted = nums.sort((a, b) => b - a);
   let remaining = k;
   const cases = [1];
+
+  let setCount = 0;
   for (let i = 0; i < sorted.length; i++) {
     const max = sorted[i];
     let reps = 1;
 
-    // console.log({ cAtI: c });
     for (let j = i + 1; j < sorted.length; j++) {
       const actual = sorted[j];
-      const diffToMax = max - actual;
-
-      // repeated numbers
-      // if (actual === c[c.length - 1]) {}
-
-      if (diffToMax <= remaining) {
+      
+      // handle repetitions
+      if (actual === max) {
         reps++;
-        remaining -= diffToMax;
-        // last element
-        if (j === sorted.length - 1) cases.push(reps);
-      } else if (reps > 1) {
-        cases.push(reps);
-        break;
+      } else {
+        const diffToMax = max - actual;
+        if (diffToMax <= remaining) {
+          reps++;
+          remaining -= diffToMax;
+          // last element
+          if (j === sorted.length - 1) cases.push(reps);
+        } else if (reps > 1) {
+          cases.push(reps);
+          break;
+        }
       }
+      
     }
     // restart count
     remaining = k;
