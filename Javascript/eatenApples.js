@@ -66,7 +66,7 @@ function eatenApples (apples, days) {
   let eaten = 0;
   let keepEating = true;
   let i = 0;
-  while (keepEating && i < 10) {
+  while (keepEating) {
     const backlogApple = backlog.apples[0];
     const todayApples = apples[i];
 
