@@ -67,17 +67,19 @@ function eatenApples (apples, days) {
   let keepEating = true;
   let i = 0;
   while (keepEating && i < 10) {
-    i ++;
     const backlogApple = backlog.apples[0];
     const todayApples = apples[i];
+
+    console.log('start of iteration', { i, backlog });
     if (todayApples > 0 || backlogApple > 0) {
       eaten += 1;
-      
+
       const todayApplesLife = days[i];
       if (backlogApple > 0) {
+        console.log('backlog');
         // remove one day and apple from first to eat
         backlog.days[0] --;
-        backlog.apples[0] --;
+        backlog.apples = backlog.apples.map(day => !!day ? day - 1 : 0);
 
         // if either backlog or life for FIFOs are over, remove them
         if (!backlog.days[0] || !backlog.apples[0]) {
@@ -88,18 +90,19 @@ function eatenApples (apples, days) {
         // add todays apple to backlog
         // only if they have more than one day of life
         if (todayApplesLife > 1) {
-          backlog.apples[backlog.apples.length - 1] = todayApples;
-          backlog.days[backlog.days.length - 1] = todayApplesLife - 1;
+          backlog.apples.push(todayApples);
+          backlog.days.push(todayApplesLife);
         }
-
-
       } else {
+        console.log('no backlog');
         if (todayApplesLife - 1 > 0 && todayApples - 1 > 0) {
           backlog.apples[0] = todayApples - 1;
           backlog.days[0] = todayApplesLife - 1;
         }
       }
     }
+    console.log('end of iteration', { i, backlog });
+    i ++;
     
     if (i > apples.length && !backlog.apples[0]) keepEating = false; 
   }
