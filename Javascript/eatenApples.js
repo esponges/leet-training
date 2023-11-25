@@ -77,9 +77,9 @@ function eatenApples (apples, days) {
       const todayApplesLife = days[i];
       if (backlogApple > 0) {
         console.log('backlog');
-        // remove one day and apple from first to eat
-        backlog.days[0] --;
-        backlog.apples = backlog.apples.map(day => !!day ? day - 1 : 0);
+        // remove one day to all apples and the just eaten apple
+        backlog.days = backlog.days.map(d => d - 1);
+        backlog.apples[0] --;
 
         // if either backlog or life for FIFOs are over, remove them
         if (!backlog.days[0] || !backlog.apples[0]) {
@@ -89,7 +89,7 @@ function eatenApples (apples, days) {
 
         // add todays apple to backlog
         // only if they have more than one day of life
-        if (todayApplesLife > 1) {
+        if (todayApplesLife > 0) {
           backlog.apples.push(todayApples);
           backlog.days.push(todayApplesLife);
         }
@@ -112,7 +112,9 @@ function eatenApples (apples, days) {
 
 const cases = [
   [[1,2,3,5,2],[3,2,1,4,2]],
-  [[3,0,0,0,0,2], [3,0,0,0,0,2]]
+  [[3,0,0,0,0,2], [3,0,0,0,0,2]],
+  // didn't pass
+  [[2,1,10], [2, 10, 1]]
 ];
 
 cases.forEach(c => {
