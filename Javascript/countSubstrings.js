@@ -83,26 +83,41 @@ function countSubstrings (s, t) {
 
   // now compare s substrings with t
   count = 2; left = 0; right = left + count;
+  let diffByOne = 0;
   while (count < s.length) {
-    const actual = t.slice(left, right);
+    const actual = s.slice(left, right);
+    console.log({ actual, count, left, right });
     // compare actual with each of tSubs
     const size = actual.length;
     const compTarget = tSubsStrings[size];
     for (let i = 0; i < compTarget.length; i++) {
       const comp = compTarget[i];
+      // compare actual with target without first
+      if (actual.slice(0, actual.length - 1) === comp.slice(0, comp.length - 1)) {
+        console.log('equals');
+        diffByOne += 1;
+      }
+      // now without last
+      if (actual.slice(1) === comp.slice(1)) {
+        console.log('equals');
+        diffByOne += 1;
+      }
     }
 
     // move to the right the substring
-    if (right < t.length) {
+    if (right < s.length) {
       right++; left++;
     } else {
       count++; left = 0; right = left + count;
     }
   }
+
+  return diffByOne;
 }
 
 const cases = [
-  ['aba', 'baba']
+  ['aba', 'baba'],
+  ['ab', 'bb']
 ];
 
 cases.forEach(c => {
