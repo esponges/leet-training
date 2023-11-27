@@ -55,18 +55,21 @@ https://leetcode.com/problems/count-substrings-that-differ-by-one-character/
  * @return {number}
  */
 function countSubstrings (s, t) {
-  const tSubsStrings = [];
+  const tSubsStrings = {};
 
   // get T substrings
-  let count = 1;
-  let left = 0;
-  let right = left + count;
-  let debug = 0;
+  // don't really need length = 1 subs
+  let count = 2, left = 0, right = left + count;
   while (count < t.length) {
-    debug++;
     const actual = t.slice(left, right);
-    tSubsStrings.push(actual);
-    console.log({ actual, left, right, count })
+    // tSubsStrings.push(actual);
+    // group by size
+    const size = actual.length;
+    if (tSubsStrings[size]) {
+      tSubsStrings[size].push(actual);
+    } else {
+      tSubsStrings[size] = [actual];
+    }
 
     // move to the right the substring
     if (right < t.length) {
@@ -76,8 +79,26 @@ function countSubstrings (s, t) {
     }
     // increase subsstring size and start over
   }
-
   console.log(tSubsStrings);
+
+  // now compare s substrings with t
+  count = 2; left = 0; right = left + count;
+  while (count < s.length) {
+    const actual = t.slice(left, right);
+    // compare actual with each of tSubs
+    const size = actual.length;
+    const compTarget = tSubsStrings[size];
+    for (let i = 0; i < compTarget.length; i++) {
+      const comp = compTarget[i];
+    }
+
+    // move to the right the substring
+    if (right < t.length) {
+      right++; left++;
+    } else {
+      count++; left = 0; right = left + count;
+    }
+  }
 }
 
 const cases = [
