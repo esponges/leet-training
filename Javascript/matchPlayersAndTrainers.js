@@ -67,6 +67,39 @@ function matchPlayersAndTrainers (players, trainers) {
   return count;
 }
 
+// try using pointers instead
+// this passes 85/93%
+function matchPlayersAndTrainers (players, trainers) {
+  // it won't pass if not passing callback to `sort` why?
+  players.sort((a, b) => a - b);
+  trainers.sort((a, b) => a - b);
+
+  let i = 0;
+  let j = 0;
+  let count = 0;
+  while (j < trainers.length) {
+    const p = players[i];
+    const t = trainers[j];
+
+    // trainer fit to player
+    if (t >= p) {
+      count ++;
+      // and move to next options
+      i++;
+      j++
+    } else {
+      // try to find a match to the actual
+      // player with the next trainer
+      j++
+    }
+  }
+
+  return count;
+}
+
+// [4, 7, 9]
+// [2, 5, 8, 8]
+
 const cases = [
   [[4,7,9], [8,2,5,8]],
   [[1,1,1], [10]]
