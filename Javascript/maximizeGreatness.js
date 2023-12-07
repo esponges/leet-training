@@ -41,9 +41,10 @@ Acceptance Rate
  * @param {number[]} nums
  * @returns {number}
  */
+// 1067 / 1072 testcases passed with rate limit exceeded
 function maximizeGreatness(nums) {
   const numsCopy = [...nums];
-  let availableSorted = numsCopy.sort((a, b) => b - a);
+  const availableSorted = numsCopy.sort((a, b) => b - a);
 
   let count = 0;
   for (actual of nums) {
@@ -53,14 +54,20 @@ function maximizeGreatness(nums) {
     } else {
       // go over remaining sorted
       // check closest bigger num
-      // probably improve using map to track idx
+      let prev = [];
+      let start = actual === prev[0] ? prev[1] : 0;
       for (let i = 0; i < availableSorted.length; i++) {
         const next = availableSorted[i + 1];
         const act = availableSorted[i];
         if (actual < act && (actual >= next || next === undefined)) {
           count++;
           // remove this opt from array of available
-          availableSorted = [...availableSorted.slice(0, i), ...availableSorted.slice(i + 1)];
+          // availableSorted = [...availableSorted.slice(0, i), ...availableSorted.slice(i + 1)];
+          // splicing is faster than recreating array
+          availableSorted.splice(i, 1);
+          // save actual to check if we could save some iterations
+          // with the next move
+          prev = [actual, i - 1];
           break;
         }
       }
@@ -70,11 +77,35 @@ function maximizeGreatness(nums) {
   return count;
 }
 
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maximizeGreatnessEfficient = function(nums) {
+  nums.sort((a,b) => a - b)
+  let res = 0;
+  let j = 1;
+  for(let i = 0; i < nums.length; i++){
+    const actual = nums[i];
+    // move pointer until a bigger option is found
+      while(j < nums.length && nums[j] <= actual){
+          j++;
+      }
+      // now increase count and move to the next nums[i]
+      if(j < nums.length && nums[j] > actual){
+          j++;
+          res++;
+      }
+  }
+  
+  return res
+};
+
 const cases = [
   [1, 3, 5, 2, 1, 3, 1],
   [1, 2, 3, 4],
 ];
 
 cases.forEach((c) => {
-  console.log(maximizeGreatness(c));
+  console.log(maximizeGreatnessEfficient(c));
 });
