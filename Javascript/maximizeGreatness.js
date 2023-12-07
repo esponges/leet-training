@@ -43,33 +43,31 @@ Acceptance Rate
  */
 function maximizeGreatness(nums) {
   const numsCopy = [...nums];
-  let sortedNums = nums.sort((a, b) => b - a);
+  let availableSorted = numsCopy.sort((a, b) => b - a);
 
   let count = 0;
-  for (actual of numsCopy) {
-    console.log({ actual, sortedNums });
-    if (actual >= sortedNums[0] || actual === sortedNums[0]) {
+  for (actual of nums) {
+    if (actual >= availableSorted[0] || actual === availableSorted[0]) {
       // remove smaller
-      console.log('bigest');
-      sortedNums.pop();
+      availableSorted.pop();
     } else {
       // go over remaining sorted
       // check closest bigger num
       // probably improve using map to track idx
-      for (let i = 0; i < sortedNums.length; i++) {
-        const next = sortedNums[i + 1];
-        const act = sortedNums[i];
-        console.log({ act, next });
+      for (let i = 0; i < availableSorted.length; i++) {
+        const next = availableSorted[i + 1];
+        const act = availableSorted[i];
         if (actual < act && (actual >= next || next === undefined)) {
           count++;
-          // remove this opt from array
-          sortedNums = [...sortedNums.slice(0, i), ...sortedNums.slice(i + 1)];
+          // remove this opt from array of available
+          availableSorted = [...availableSorted.slice(0, i), ...availableSorted.slice(i + 1)];
+          break;
         }
       }
     }
   }
  
-  console.log(count);
+  return count;
 }
 
 const cases = [
