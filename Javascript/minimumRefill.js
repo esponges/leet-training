@@ -73,41 +73,46 @@ function minimumRefill (plants, capacityA, capacityB) {
   let remainingB = capacityB;
   let refills = 0;
 
-  // abstract code
   function alliceWaters (plantA) {
+    // console.log({ plantA, remainingA });
     if (plantA <= remainingA) {
       remainingA -= plantA;
+      // console.log('allice has enough');
     } else {
+      // console.log('allice refills')
       refills++;
-      remainingA = capacityA;
+      remainingA = capacityA - plantA;
     }
   }
   function bobWaters (plantB) {
     if (plantB <= remainingB) {
       remainingB -= plantB;
+      // console.log('bob has enough');
     } else {
+      // console.log('bob refills');
       refills++;
-      remainingB = capacityB;
+      remainingB = capacityB - plantB;
     }
+    console.log({ plantB, remainingB });
   }
 
   while (left <= right) {
     const plantA = plants[left];
     const plantB = plants[right];
-    console.log({ left, right });
+    // console.log("========")
+    // console.log({ left, right });
 
     if (left !== right) {
       alliceWaters(plantA);
       bobWaters(plantB);
     } else {
-      if (remainingA > remainingB) {
-        // alice waters
-        alliceWaters(plantA);
-      } else if (remainingA === remainingB) {
-        // alice waters
+      // console.log('same plant', { remainingA, remainingB, plantA });
+      // they water same so above logic must come in
+      if (remainingA >= remainingB) {
+        // alice waters since has more
         alliceWaters(plantA);
       } else {
-        // bob waters
+        // bob waters since has more
         bobWaters(plantB);
       }
     }
@@ -119,9 +124,11 @@ function minimumRefill (plants, capacityA, capacityB) {
 }
 
 const cases = [
-  [[2,2,3,3], 5, 5],
-  [[2,2,3,3], 3, 4],
-  [[5], 10, 8]
+  // [[2,2,3,3], 5, 5],
+  // [[2,2,3,3], 3, 4],
+  // [[5], 10, 8],
+  // didn't pass
+  [[1,2,4,4,5], 6, 5]
 ];
 
 cases.forEach(c => {
