@@ -66,8 +66,9 @@ https://leetcode.com/problems/watering-plants-ii/
  * @param {number} capacityB
  * @return {number}
  */
-// passed 92%/28%
-// why so much memory? probably too many flags
+// passed 100%/92%
+// did very well after removing abstractions in the code
+// so it looks repetition has better memory usage than abstraction lol...
 function minimumRefill(plants, capacityA, capacityB) {
   let left = 0;
   let remaining = [capacityA, capacityB];
