@@ -68,44 +68,47 @@ https://leetcode.com/problems/watering-plants-ii/
  */
 // passed 92%/28%
 // why so much memory? probably too many flags
-function minimumRefill (plants, capacityA, capacityB) {
+function minimumRefill(plants, capacityA, capacityB) {
   let left = 0;
   let remaining = [capacityA, capacityB];
   let right = plants.length - 1;
   let refills = 0;
-
-  function alliceWaters (plantA) {
-    if (plantA <= remaining[0]) {
-      remaining[0] -= plantA;
-    } else {
-      refills++;
-      remaining[0] = capacityA - plantA;
-    }
-  }
-  function bobWaters (plantB) {
-    if (plantB <= remaining[1]) {
-      remaining[1] -= plantB;
-    } else {
-      refills++;
-      remaining[1] = capacityB - plantB;
-    }
-  }
 
   while (left <= right) {
     const plantA = plants[left];
     const plantB = plants[right];
 
     if (left !== right) {
-      alliceWaters(plantA);
-      bobWaters(plantB);
+      if (plantA <= remaining[0]) {
+        remaining[0] -= plantA;
+      } else {
+        refills++;
+        remaining[0] = capacityA - plantA;
+      }
+      if (plantB <= remaining[1]) {
+        remaining[1] -= plantB;
+      } else {
+        refills++;
+        remaining[1] = capacityB - plantB;
+      }
     } else {
       // they water same so above logic must come in
       if (remaining[0] >= remaining[1]) {
         // alice waters since has more
-        alliceWaters(plantA);
+        if (plantA <= remaining[0]) {
+          remaining[0] -= plantA;
+        } else {
+          refills++;
+          remaining[0] = capacityA - plantA;
+        }
       } else {
         // bob waters since has more
-        bobWaters(plantB);
+        if (plantB <= remaining[1]) {
+          remaining[1] -= plantB;
+        } else {
+          refills++;
+          remaining[1] = capacityB - plantB;
+        }
       }
     }
     left++;
@@ -116,13 +119,13 @@ function minimumRefill (plants, capacityA, capacityB) {
 }
 
 const cases = [
-  [[2,2,3,3], 5, 5],
-  [[2,2,3,3], 3, 4],
+  [[2, 2, 3, 3], 5, 5],
+  [[2, 2, 3, 3], 3, 4],
   [[5], 10, 8],
   // didn't pass
-  [[1,2,4,4,5], 6, 5]
+  [[1, 2, 4, 4, 5], 6, 5],
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(minimumRefill(c[0], c[1], c[2]));
-})
+});
