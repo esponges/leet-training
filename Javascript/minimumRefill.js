@@ -66,49 +66,41 @@ https://leetcode.com/problems/watering-plants-ii/
  * @param {number} capacityB
  * @return {number}
  */
+// passed 92%/28%
+// why so much memory? probably too many flags
 function minimumRefill (plants, capacityA, capacityB) {
   let left = 0;
-  let remainingA = capacityA;
+  let remaining = [capacityA, capacityB];
   let right = plants.length - 1;
-  let remainingB = capacityB;
   let refills = 0;
 
   function alliceWaters (plantA) {
-    // console.log({ plantA, remainingA });
-    if (plantA <= remainingA) {
-      remainingA -= plantA;
-      // console.log('allice has enough');
+    if (plantA <= remaining[0]) {
+      remaining[0] -= plantA;
     } else {
-      // console.log('allice refills')
       refills++;
-      remainingA = capacityA - plantA;
+      remaining[0] = capacityA - plantA;
     }
   }
   function bobWaters (plantB) {
-    if (plantB <= remainingB) {
-      remainingB -= plantB;
-      // console.log('bob has enough');
+    if (plantB <= remaining[1]) {
+      remaining[1] -= plantB;
     } else {
-      // console.log('bob refills');
       refills++;
-      remainingB = capacityB - plantB;
+      remaining[1] = capacityB - plantB;
     }
-    console.log({ plantB, remainingB });
   }
 
   while (left <= right) {
     const plantA = plants[left];
     const plantB = plants[right];
-    // console.log("========")
-    // console.log({ left, right });
 
     if (left !== right) {
       alliceWaters(plantA);
       bobWaters(plantB);
     } else {
-      // console.log('same plant', { remainingA, remainingB, plantA });
       // they water same so above logic must come in
-      if (remainingA >= remainingB) {
+      if (remaining[0] >= remaining[1]) {
         // alice waters since has more
         alliceWaters(plantA);
       } else {
@@ -124,9 +116,9 @@ function minimumRefill (plants, capacityA, capacityB) {
 }
 
 const cases = [
-  // [[2,2,3,3], 5, 5],
-  // [[2,2,3,3], 3, 4],
-  // [[5], 10, 8],
+  [[2,2,3,3], 5, 5],
+  [[2,2,3,3], 3, 4],
+  [[5], 10, 8],
   // didn't pass
   [[1,2,4,4,5], 6, 5]
 ];
