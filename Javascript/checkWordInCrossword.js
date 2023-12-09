@@ -66,31 +66,53 @@ function checkWordInCrossword(board, word) {
 
     function wordFits (opt) {
       let consec = 0;
+      let fitsIn = false;
       for (let i = 0; i < opt.length; i++) {
         if (opt[i] !== '#') consec++;
         else consec = 0;
 
-        if (consec >= word.length) return true;
+        if (consec >= word.length) {
+          fitsIn = true;
+          break;
+        };
+        // check if correct logic to avoid keep checking
         // if (opt.length - 1 - i < word.length) return false;
       }
+
+      if (fitsIn === false) return false;
       
-      return false;
+      const reversed = word.split('').reverse().join('');
+      let streak = 0;
+      fitsIn = false;
+      // check if somehow fits in the available spaces
+      for (let i = 0; i < opt.length; i++) {
+        if (opt[i] === ' ') streak++;
+        else if (opt[i] === word[streak] || opt[i] === reversed[streak]) streak++;
+        else streak = 0;
+
+        console.log({streak});
+        console.log(opt[i+1] === undefined, opt[i + 1] !== ' ', word.length === streak);
+        console.log((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak);
+
+        if ((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak) fitsIn = true;
+      }
+      console.log({ fitsIn });
+      return fitsIn;
     }
+
 
     // check vertical opts
     if (!isVertical) {
       const row = board[i];
       console.log({row});
-      const fitsIn = wordFits(row);
-      console.log({ fitsIn });
+      if (wordFits(row)) return true;
     // check horizontal opts
     } else {
       const col = board.map((row) => {
         return row[i - m];
       });
       console.log({col});
-      const fitsIn = wordFits(col);
-      console.log({ fitsIn });
+      if (wordFits(col)) return true;
     }
   }
 
@@ -99,8 +121,8 @@ function checkWordInCrossword(board, word) {
 
 const cases = [
   [[["#", " ", "#"], [" ", " ", "#"], ["#", "c", " "]], "abc"],
-  // [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
-  // [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
+  [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
+  [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
   // [[["#", " "], [" ", " "], ["#", " "]], "ca"]
 ];
 
