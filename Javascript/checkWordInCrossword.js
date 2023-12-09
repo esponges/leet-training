@@ -64,14 +64,33 @@ function checkWordInCrossword(board, word) {
   for (let i = 0; i < m + n; i ++) {
     const isVertical = i >= m;
 
+    function wordFits (opt) {
+      let consec = 0;
+      for (let i = 0; i < opt.length; i++) {
+        if (opt[i] !== '#') consec++;
+        else consec = 0;
+
+        if (consec >= word.length) return true;
+        // if (opt.length - 1 - i < word.length) return false;
+      }
+      
+      return false;
+    }
+
     // check vertical opts
     if (!isVertical) {
       const row = board[i];
+      console.log({row});
+      const fitsIn = wordFits(row);
+      console.log({ fitsIn });
     // check horizontal opts
     } else {
       const col = board.map((row) => {
         return row[i - m];
       });
+      console.log({col});
+      const fitsIn = wordFits(col);
+      console.log({ fitsIn });
     }
   }
 
@@ -80,9 +99,9 @@ function checkWordInCrossword(board, word) {
 
 const cases = [
   [[["#", " ", "#"], [" ", " ", "#"], ["#", "c", " "]], "abc"],
-  [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
-  [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
-  [[["#", " "], [" ", " "], ["#", " "]], "ca"]
+  // [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
+  // [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
+  // [[["#", " "], [" ", " "], ["#", " "]], "ca"]
 ];
 
 cases.forEach(c => {
