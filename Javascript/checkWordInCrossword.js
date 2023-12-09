@@ -63,7 +63,16 @@ function checkWordInCrossword(board, word) {
   const n = board[0].length;
   for (let i = 0; i < m + n; i ++) {
     const isVertical = i >= m;
-    console.log({ isVertical });
+
+    // check vertical opts
+    if (!isVertical) {
+      const row = board[i];
+    // check horizontal opts
+    } else {
+      const col = board.map((row) => {
+        return row[i - m];
+      });
+    }
   }
 
   return false;
