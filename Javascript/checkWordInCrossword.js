@@ -90,13 +90,17 @@ function checkWordInCrossword(board, word) {
         else if (opt[i] === word[streak] || opt[i] === reversed[streak]) streak++;
         else streak = 0;
 
-        console.log({streak});
-        console.log(opt[i+1] === undefined, opt[i + 1] !== ' ', word.length === streak);
-        console.log((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak);
+        // console.log({streak});
+        // console.log(opt[i+1] === undefined, opt[i + 1] !== ' ', word.length === streak);
+        // console.log((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak);
 
-        if ((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak) fitsIn = true;
+        if ((opt[i+1] === undefined || opt[i + 1] === '#') && word.length === streak) {
+          // console.log('fits in', { opt, streak, word });
+          fitsIn = true;
+          break;
+        }
       }
-      console.log({ fitsIn });
+      // console.log({ fitsIn });
       return fitsIn;
     }
 
