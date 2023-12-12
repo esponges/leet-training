@@ -64,6 +64,11 @@ function checkWordInCrossword(board, word) {
   for (let i = 0; i < m + n; i ++) {
     const isVertical = i >= m;
 
+    /**
+     * 
+     * @param {string[]} opt 
+     * @returns {boolean}
+     */
     function wordFits (opt) {
       let consec = 0;
       let fitsIn = false;
@@ -86,8 +91,13 @@ function checkWordInCrossword(board, word) {
       fitsIn = false;
       // check if somehow fits in the available spaces
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i] === ' ') streak++;
-        else if (opt[i] === word[streak] || opt[i] === reversed[streak]) streak++;
+        const prev = opt[i - 1];
+        if (opt[i] === ' ') {
+          // handle first letter
+          if (streak === 0) {
+            if ((prev === undefined || prev === "#")) streak++;
+          } else streak ++;
+        } else if (opt[i] === word[streak] || opt[i] === reversed[streak]) streak++;
         else streak = 0;
 
         // console.log({streak});
@@ -108,14 +118,13 @@ function checkWordInCrossword(board, word) {
     // check vertical opts
     if (!isVertical) {
       const row = board[i];
-      console.log({row});
       if (wordFits(row)) return true;
     // check horizontal opts
     } else {
       const col = board.map((row) => {
         return row[i - m];
       });
-      console.log({col});
+      // console.log({col});
       if (wordFits(col)) return true;
     }
   }
@@ -127,7 +136,7 @@ const cases = [
   [[["#", " ", "#"], [" ", " ", "#"], ["#", "c", " "]], "abc"],
   [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
   [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
-  // [[["#", " "], [" ", " "], ["#", " "]], "ca"]
+  [[["z"," "],["z"," "]], "a"]
 ];
 
 cases.forEach(c => {
