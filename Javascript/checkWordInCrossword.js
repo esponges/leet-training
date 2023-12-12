@@ -79,11 +79,10 @@ function checkWordInCrossword(board, word) {
         if (consec >= word.length) {
           fitsIn = true;
           break;
-        };
-        // check if correct logic to avoid keep checking
-        // if (opt.length - 1 - i < word.length) return false;
+        }
       }
 
+      // console.log({ opt, word });
       if (fitsIn === false) return false;
       
       const reversed = word.split('').reverse().join('');
@@ -91,14 +90,17 @@ function checkWordInCrossword(board, word) {
       fitsIn = false;
       // check if somehow fits in the available spaces
       for (let i = 0; i < opt.length; i++) {
-        const prev = opt[i - 1];
-        if (opt[i] === ' ') {
+        const prevOpt = opt[i - 1];
+        const actualOpt = opt[i];
+        // console.log({ prevOpt, actualOpt, streak });
+        if (actualOpt === ' ') {
           // handle first letter
           if (streak === 0) {
-            if ((prev === undefined || prev === "#")) streak++;
+            if ((prevOpt === undefined || prevOpt === "#")) streak++;
           } else streak ++;
-        } else if (opt[i] === word[streak] || opt[i] === reversed[streak]) streak++;
-        else streak = 0;
+        } else if (actualOpt === word[streak] || (actualOpt === reversed[streak])) {
+          streak++;
+        } else streak = 0;
 
         // console.log({streak});
         // console.log(opt[i+1] === undefined, opt[i + 1] !== ' ', word.length === streak);
@@ -133,10 +135,11 @@ function checkWordInCrossword(board, word) {
 }
 
 const cases = [
-  [[["#", " ", "#"], [" ", " ", "#"], ["#", "c", " "]], "abc"],
-  [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
-  [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
-  [[["z"," "],["z"," "]], "a"]
+  // [[["#", " ", "#"], [" ", " ", "#"], ["#", "c", " "]], "abc"],
+  // [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
+  // [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
+  // [[["z"," "],["z"," "]], "a"],
+  [[[" "],["b"],[" "],["a"]], "abcd"]
 ];
 
 cases.forEach(c => {
