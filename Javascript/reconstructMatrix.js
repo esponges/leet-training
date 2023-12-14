@@ -57,16 +57,57 @@ https://leetcode.com/problems/reconstruct-a-2-row-binary-matrix/
  */
 
 function reconstructMaxtrix(upper, lower, colsum) {
-  if (upper + lower < colsum.reduce((a, b) => a + b, 0)) {
+  if (upper + lower !== colsum.reduce((a, b) => a + b, 0)) {
     return [];
   }
+
+  let leftUpper = upper;
+  let leftLower = lower;
+  const newUpper = [];
+  const newLower = [];
+
+  for (let i = 0; i < colsum.length; i++) {
+    const actual = colsum[i];
+    const prevIsUpper = newUpper[i - 1] === 1 && newLower[i - 1] === 0;
+
+    // todo: add case when both leftUpper and leftLower are 0
+    // fill the rest of both arrays and return the output
+
+    // upper takes prio when sum is 1 as last move with 1 was not done on upper
+    if (actual === 1) {
+      if (leftUpper > 0 && (!prevIsUpper || leftLower === 0)) {
+        newUpper.push(1);
+        leftUpper--;
+        newLower.push(0);
+      } else {
+        newUpper.push(0);
+        newLower.push(1);
+        leftLower--;
+      }
+      // both should be pushed with 0
+    } else if (actual === 0) {
+      newLower.push(0);
+      leftLower--;
+      newUpper.push(0);
+      leftUpper--;
+      // actual === 2 therefore both should be pushed with 1
+    } else {
+      newLower.push(1);
+      leftLower--;
+      newUpper.push(1);
+      leftUpper--;
+    }
+  }
+
+  return [newUpper, newLower];
 }
 
-
 const cases = [
-  [2, 3, [2,2,1,1]]
+  // [2, 1, [1,1,1]], // passed
+  // [2, 3, [2, 2, 1, 1]], // passed
+  [5, 5, [2,1,2,0,1,0,1,2,0,1]]
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(reconstructMaxtrix(c[0], c[1], c[2]));
 });
