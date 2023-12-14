@@ -86,7 +86,7 @@ function checkWordInCrossword(board, word) {
       if (fitsIn === false) return false;
       
       const reversed = word.split('').reverse().join('');
-      let streak = 0;
+      let streak = [];
       fitsIn = false;
       // check if somehow fits in the available spaces
       for (let i = 0; i < opt.length; i++) {
@@ -95,19 +95,14 @@ function checkWordInCrossword(board, word) {
         // console.log({ prevOpt, actualOpt, streak });
         if (actualOpt === ' ') {
           // handle first letter
-          if (streak === 0) {
-            if ((prevOpt === undefined || prevOpt === "#")) streak++;
+          if (streak.length === 0) {
+            if ((prevOpt === undefined || prevOpt === "#")) streak.push(word[i]);
           } else streak ++;
         } else if (actualOpt === word[streak] || (actualOpt === reversed[streak])) {
-          streak++;
-        } else streak = 0;
+          streak.push(word[i]);
+        } else streak = [];
 
-        // console.log({streak});
-        // console.log(opt[i+1] === undefined, opt[i + 1] !== ' ', word.length === streak);
-        // console.log((opt[i+1] === undefined || opt[i + 1] !== ' ') && word.length === streak);
-
-        if ((opt[i+1] === undefined || opt[i + 1] === '#') && word.length === streak) {
-          // console.log('fits in', { opt, streak, word });
+        if ((opt[i+1] === undefined || opt[i + 1] === '#') && word.length === streak.length) {
           fitsIn = true;
           break;
         }
@@ -139,6 +134,7 @@ const cases = [
   // [[[" ", "#", "a"], [" ", "#", "c"], [" ", "#", "a"]], "ac"],
   // [[["#", " ", "#"], [" ", " ", "#"], ["#", " ", "c"]], "ca"],
   // [[["z"," "],["z"," "]], "a"],
+  // this case doesnt pass 161/165
   [[[" "],["b"],[" "],["a"]], "abcd"]
 ];
 
