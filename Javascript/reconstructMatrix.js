@@ -70,8 +70,15 @@ function reconstructMaxtrix(upper, lower, colsum) {
     const actual = colsum[i];
     const prevIsUpper = newUpper[i - 1] === 1 && newLower[i - 1] === 0;
 
-    // todo: add case when both leftUpper and leftLower are 0
+    // both leftUpper and leftLower are 0
+    // no need to keep looping
     // fill the rest of both arrays and return the output
+    if (leftLower === 0 && leftUpper === 0) {
+      const fill = new Array(colsum.length - 1 - i).fill(0);
+      newUpper.push(...fill);
+      newLower.push(...fill);
+      break;
+    }
 
     // upper takes prio when sum is 1 as last move with 1 was not done on upper
     if (actual === 1) {
