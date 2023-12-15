@@ -68,7 +68,7 @@ function reconstructMaxtrix(upper, lower, colsum) {
 
   for (let i = 0; i < colsum.length; i++) {
     const actual = colsum[i];
-    const prevIsUpper = newUpper[i - 1] === 1 && newLower[i - 1] === 0;
+    const shouldBeUpper = newUpper[i - 1] === 0;
 
     // both leftUpper and leftLower are 0
     // no need to keep looping
@@ -81,9 +81,9 @@ function reconstructMaxtrix(upper, lower, colsum) {
     }
 
     // upper takes prio when sum is 1 as last move with 1 was not done on upper
-    console.log({ i, actual, leftUpper, leftLower, prevIsUpper });
+    console.log({ i, actual, leftUpper, leftLower, shouldBeUpper });
     if (actual === 1) {
-      if (leftUpper > 0 && (!prevIsUpper || leftLower === 0)) {
+      if (leftUpper > 0 && (shouldBeUpper || leftLower === 0)) {
         console.log('go upper');
         newUpper.push(1);
         leftUpper--;
@@ -117,7 +117,8 @@ const cases = [
   // [2, 3, [2, 2, 1, 1]], // passed
   // [5, 5, [2,1,2,0,1,0,1,2,0,1]] // passed
   // [4, 2, [1,2,1,2,0]] //  passed
-  [3, 2, [2,1,1,0,0,1]]
+  // [3, 2, [2,1,1,0,0,1]]
+  [4, 2, [1,2,1,2,0]]
 ];
 
 cases.forEach((c) => {
