@@ -68,7 +68,8 @@ function reconstructMaxtrix(upper, lower, colsum) {
 
   for (let i = 0; i < colsum.length; i++) {
     const actual = colsum[i];
-    const shouldBeUpper = newUpper[i - 1] === 0;
+    const shouldBeUpper = 
+      newUpper[i - 1] === 0 || i === 0 || newLower[i - 1] === 1;
 
     // both leftUpper and leftLower are 0
     // no need to keep looping
@@ -107,6 +108,7 @@ function reconstructMaxtrix(upper, lower, colsum) {
       newUpper.push(1);
       leftUpper--;
     }
+    console.log({ newUpper, newLower });
   }
 
   return [newUpper, newLower];
