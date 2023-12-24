@@ -76,13 +76,13 @@ function displayTable(orders) {
     const idx = itemsArr.findIndex((el) => el === food);
     console.log({ tableNum, food, idx });
     if (row) {
-      tables[tableNum][idx] = tables[tableNum][idx] + 1;
+      tables[tableNum][idx] = (parseInt(tables[tableNum][idx]) + 1).toString();
       // create new row
     } else {
       // find index from
-      const arr = new Array(itemsArr.length - 1).fill(0);
-      tables[tableNum] = [parseInt(tableNum), ...arr];
-      tables[tableNum][idx] = 1;
+      const arr = new Array(itemsArr.length - 1).fill("0");
+      tables[tableNum] = [tableNum, ...arr];
+      tables[tableNum][idx] = "1";
     }
   }
 
