@@ -86,10 +86,7 @@ function displayTable(orders) {
     }
   }
 
-  return [
-    itemsArr,
-    ...Object.values(tables)
-  ]
+  return [itemsArr, ...Object.values(tables)];
 }
 
 const cases = [
@@ -100,6 +97,18 @@ const cases = [
     ['Carla', '5', 'Water'],
     ['Carla', '5', 'Ceviche'],
     ['Rous', '3', 'Ceviche'],
+  ],
+  [
+    ['James', '12', 'Fried Chicken'],
+    ['Ratesh', '12', 'Fried Chicken'],
+    ['Amadeus', '12', 'Fried Chicken'],
+    ['Adam', '1', 'Canadian Waffles'],
+    ['Brianna', '1', 'Canadian Waffles'],
+  ],
+  [
+    ['Laura', '2', 'Bean Burrito'],
+    ['Jhon', '2', 'Beef Burrito'],
+    ['Melissa', '2', 'Soda'],
   ],
 ];
 
