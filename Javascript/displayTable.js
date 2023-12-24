@@ -60,11 +60,13 @@ function displayTable(orders) {
   const tables = {};
   const items = {};
 
+  // create items hashmap 
   for (o of orders) {
     food = o[2];
     items[food] = undefined;
   }
 
+  // use the keys from the map to create the header row
   const itemsArr = ['Table', ...Object.keys(items).sort()];
 
   for (o of orders) {
@@ -72,19 +74,22 @@ function displayTable(orders) {
     const food = o[2];
     const row = tables[tableNum];
 
-    // order already exist, just sum
+    // find index of food item - we should always find it
     const idx = itemsArr.findIndex((el) => el === food);
+
+    // order already exist, just sum the food item
     if (row) {
+      // increment food item count as string
       tables[tableNum][idx] = (parseInt(tables[tableNum][idx]) + 1).toString();
-      // create new row
     } else {
-      // find index from
+      // create new row
       const arr = new Array(itemsArr.length - 1).fill("0");
       tables[tableNum] = [tableNum, ...arr];
       tables[tableNum][idx] = "1";
     }
   }
 
+  // return the values
   return [itemsArr, ...Object.values(tables)];
 }
 
@@ -114,3 +119,15 @@ const cases = [
 cases.forEach((c) => {
   console.log(displayTable(c));
 });
+
+
+/* 
+I iniatially thought of using a hashmap to store the orders, but then I realized that the table number is not unique, 
+so I would have to use a hashmap of hashmaps, which would be a pain to sort and iterate over. 
+So I decided to use an array of arrays instead, where the first array would be the header and the rest would be the rows. 
+I would then sort the header and the rows would be sorted automatically. 
+I would then iterate over the orders and add them to the table array. 
+If the table already exist, I would just sum the food item, otherwise I would create a new row and add the food item. 
+Finally I would return the header and the values of the table hashmap.
+
+*/
