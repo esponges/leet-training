@@ -55,7 +55,7 @@ https://leetcode.com/problems/display-table-of-food-orders-in-a-restaurant/
  * @param {string[][]} orders
  * @return {string[][]}
  */
-
+// 100/100 yeah buddy!!!
 function displayTable(orders) {
   const tables = {};
   const items = {};
@@ -74,7 +74,6 @@ function displayTable(orders) {
 
     // order already exist, just sum
     const idx = itemsArr.findIndex((el) => el === food);
-    console.log({ tableNum, food, idx });
     if (row) {
       tables[tableNum][idx] = (parseInt(tables[tableNum][idx]) + 1).toString();
       // create new row
