@@ -56,59 +56,63 @@ https://leetcode.com/problems/reconstruct-a-2-row-binary-matrix/
  * @returns {number[][]}
  */
 
+// accepted 82/73 wohooo
 function reconstructMaxtrix(upper, lower, colsum) {
-  if (upper + lower !== colsum.reduce((a, b) => a + b, 0)) {
+  let doubleCount = colsum.filter(el => el === 2).length;
+  if (upper + lower !== colsum.reduce((a, b) => a + b, 0)
+  // if doublecount exceeds either it means we cant satisfy lower & upper
+    || doubleCount > upper || doubleCount > lower
+  ) {
     return [];
   }
 
-  let leftUpper = upper;
-  let leftLower = lower;
+  // must allocate elements four when both upper and lower add
+  let leftUpper = upper - doubleCount;
+  let leftLower = lower - doubleCount;
+
   const newUpper = [];
   const newLower = [];
 
   for (let i = 0; i < colsum.length; i++) {
     const actual = colsum[i];
-    const shouldBeUpper = 
-      newUpper[i - 1] === 0 || i === 0 || newLower[i - 1] === 1;
-
-    // both leftUpper and leftLower are 0
-    // no need to keep looping
+    
+    // all allocations were made, no need to keep looping
     // fill the rest of both arrays and return the output
-    if (leftLower === 0 && leftUpper === 0) {
+    if (leftLower === 0 && leftUpper === 0 && doubleCount === 0) {
       const fill = new Array(colsum.length - i).fill(0);
       newUpper.push(...fill);
       newLower.push(...fill);
       break;
     }
-
+    
+    // usually first will be upper then lower and so on
+    const shouldBeUpper = 
+      newUpper[i - 1] === 0 
+      || i === 0 
+      || newLower[i - 1] === 1;
+    
     // upper takes prio when sum is 1 as last move with 1 was not done on upper
-    console.log({ i, actual, leftUpper, leftLower, shouldBeUpper });
     if (actual === 1) {
-      if (leftUpper > 0 && (shouldBeUpper || leftLower === 0)) {
-        console.log('go upper');
+      if (leftUpper > 0 
+        && (shouldBeUpper || leftLower === 0)) {
         newUpper.push(1);
         leftUpper--;
         newLower.push(0);
       } else {
-        console.log('go lower');
         newUpper.push(0);
         newLower.push(1);
         leftLower--;
       }
       // both should be pushed with 0
     } else if (actual === 0) {
-      console.log('go 0');
       newLower.push(0);
       newUpper.push(0);
+      doubleCount --;
       // actual === 2 therefore both should be pushed with 1
     } else {
-      console.log('go 2');
       newLower.push(1);
-      leftLower--;
       newUpper.push(1);
-      leftUpper--;
     }
-    console.log({ newUpper, newLower });
   }
 
   return [newUpper, newLower];
@@ -118,9 +122,9 @@ const cases = [
   // [2, 1, [1,1,1]], // passed
   // [2, 3, [2, 2, 1, 1]], // passed
   // [5, 5, [2,1,2,0,1,0,1,2,0,1]] // passed
-  // [4, 2, [1,2,1,2,0]] //  passed
+  [4, 2, [1,2,1,2,0]] //  passed
   // [3, 2, [2,1,1,0,0,1]]
-  [4, 2, [1,2,1,2,0]]
+  // [4, 2, [1,2,1,2,0]] // passed
 ];
 
 cases.forEach((c) => {
