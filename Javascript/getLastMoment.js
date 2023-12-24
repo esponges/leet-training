@@ -63,6 +63,7 @@ https://leetcode.com/problems/last-moment-before-all-ants-fall-out-of-a-plank/
  * @param {number[]} right
  * @return {number}
  */
+// super overkill, see solution below
 function getLastMoment(n, left, right) {
   if (left.length === 0 || right.length === 0)
     return left.length ? left.length - 1 : right.length - 1;
@@ -97,15 +98,27 @@ function getLastMoment(n, left, right) {
     }
   }
 
+  console.log({plank, distances});
   return Math.max(...distances);
+}
+
+// just grab the ant that will make the longest run
+// regardles of it's going left or right
+// ignore the collissions, that's not necessary
+// 86/47 accepted
+function idealSol(n, left, right) {
+  const leftMax = Math.max(...left);
+  const rightMin = Math.min(...right);
+  return Math.max(leftMax, n - rightMin);
 }
 
 const cases = [
   [4, [4, 3], [0, 1]],
   [7, [], [0, 1, 2, 3, 4, 5, 6, 7]],
   [7, [0, 1, 2, 3, 4, 5, 6, 7], []],
+  [20, [4, 7, 15], [9, 3, 13, 10]]
 ];
 
 cases.forEach((c) => {
-  console.log(getLastMoment(c[0], c[1], c[2]));
+  console.log(idealSol(c[0], c[1], c[2]));
 });
