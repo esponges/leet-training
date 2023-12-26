@@ -49,7 +49,9 @@ function findLeastNumOfUniqueInts(arr, k) {
   const uniqueToRemove = [];
 
   vol.forEach((val, key) => {
-    if (val === 1) uniqueToRemove.push(key);
+    if (val === 1) {
+      uniqueToRemove.push(key)
+    };
   });
 
   for (n of uniqueToRemove) {
@@ -59,26 +61,36 @@ function findLeastNumOfUniqueInts(arr, k) {
 
   console.log({ vol, uniqueToRemove, arr });
 
-  const rest = uniqueToRemove.length - k;
+  let rest = k - uniqueToRemove.length;
 
+  const remaining = new Set(arr);
   if (rest > 0) {
-    const repeatedRemoved = [];
-    for (let i = 0; i < k; i++) {
-      const actual = arr[i];
-      if (!repeatedRemoved.includes(actual)) {
-        arr.splice(i, 1);
-        repeatedRemoved.push(actual);
+    const canBeRemoved = new Set();
+    console.log({ rest });
+    for (n of arr) {
+      if (rest <= 0) break;
+
+      if (rest >= vol.get(n)) {
+        canBeRemoved.add(n);
+        rest -= vol.get(n);
       }
     }
-    console.log({ repeatedRemoved, arr });
+    console.log({ canBeRemoved });
+
+    if (canBeRemoved.size > 0) {
+      canBeRemoved.forEach(el => {
+        remaining.delete(el);
+      });
+    }
   }
 
-  return new Set(arr).size;
+  return remaining.size;
 }
 
 const cases = [
   [[5, 5, 4], 1],
   [[4, 3, 1, 1, 3, 3, 2], 3],
+  [[2,1,1,3,3,3], 3]
 ];
 
 cases.forEach((c) => {
