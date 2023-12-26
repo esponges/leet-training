@@ -34,7 +34,7 @@ https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/
  * @returns {number}
  */
 function findLeastNumOfUniqueInts(arr, k) {
-  if (k === 0) return arr.length;
+  if (k === 0) return new Set(arr).size;
 
   const vol = new Map();
   for (n of arr) {
@@ -50,6 +50,8 @@ function findLeastNumOfUniqueInts(arr, k) {
 
   vol.forEach((val, key) => {
     if (val === 1) {
+      // stop when we should not remove any more
+      if (uniqueToRemove.length > k - 1) return false;
       uniqueToRemove.push(key)
     };
   });
@@ -88,9 +90,10 @@ function findLeastNumOfUniqueInts(arr, k) {
 }
 
 const cases = [
-  [[5, 5, 4], 1],
-  [[4, 3, 1, 1, 3, 3, 2], 3],
-  [[2,1,1,3,3,3], 3]
+  // [[5, 5, 4], 1],
+  // [[4, 3, 1, 1, 3, 3, 2], 3],
+  // [[2,1,1,3,3,3], 3],
+  [[2,4,1,8,3,5,1,3], 3]
 ];
 
 cases.forEach((c) => {
