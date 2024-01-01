@@ -40,56 +40,65 @@ https://leetcode.com/problems/remove-k-digits/description/
 */
 
 /**
- * @param {string} nums
+ * @param {string} num
  * @param {number} k
  * @return {string}
  */
-function removeKDigits(nums, k) {
-  const toDelete = nums.length - k;
-  if (k === nums.length) return "0";
+function removeKDigits(num, k) {
+  const toDelete = num.length - k;
+  if (k === num.length) return "0";
 
-  const arr = nums.split('').map((n, i) => [parseInt(n), i]);
+  const arr = num.split('').map((n, i) => [parseInt(n), i]);
 
   // sort asc using val as ref
   arr.sort((a, b) => {
     const [aVal, _aIdx] = a;
     const [bVal, _bIdx] = b;
 
-    return bVal - aVal;
+    return aVal - bVal;
   });
+  console.log({arr});
 
   let res = '';
-  let right = arr.length - 1;
+  let right = 0;
   let prevIdx = -1;
   let zeroPref = false;
   while (res.length < toDelete) {
     const [actualVal, actualIdx] = arr[right];
     // ignore els that are to the left side - non eligible
     if (actualIdx <= prevIdx) {
-      right --; 
+      right ++; 
       continue;
     };
     // check if enough space to the right
     const diff = toDelete - res.length;
 
-    if (nums.length - actualIdx >= diff) {
+    console.log({ actualIdx, diff, actualVal, res});
+    if (num.length - actualIdx >= diff) {
       if (actualVal > 0) zeroPref = true;
-      res += zeroPref ? actualVal : ' ';
+      res += zeroPref ? actualVal : '.';
       prevIdx = actualIdx;
       // restart loop
-      right = arr.length - 1;
+      right = 0;
     } else {
-      right--;
+      right++;
     }
+    console.log('end' , { actualIdx, diff, actualVal, res});
   }
 
-  return res.replace(' ', '');
+  // handle k = 1 and 0 res
+  const replaced = res.replaceAll('.', '');
+  return !!parseInt(replaced) ? replaced : '0';
 }
 
 const cases = [
-  ['1432219', 3],
-  ["10200", 1],
-  ["10", 2]
+  // ['1432219', 3],
+  // ["10200", 1],
+  // ["10", 2],
+  // ["10", 1],
+  // ["100", 1]
+  // ["112", 1],
+  ["10001", 1]
 ];
 
 cases.forEach((c) => {
