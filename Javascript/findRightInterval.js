@@ -91,7 +91,7 @@ function findRightIntervals(intervals) {
       // console.log('didnt');
       // iterate over the next ints to find possible right interval
       // todo: write a fn to find closest value to start with?
-      const start = cache && cache[0] >= endI ? cache[1] - 1 : 0;
+      const start = endI >= cache && cache[0] ? cache[1] - 1 : 0;
       for (let i = start; i < ordered.length; i++) {
         const actual = ordered[i];
         const [startJ, endJ] = actual[0];
