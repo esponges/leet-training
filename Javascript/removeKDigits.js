@@ -45,7 +45,7 @@ https://leetcode.com/problems/remove-k-digits/description/
  * @return {string}
  */
 function removeKDigits(num, k) {
-  const toDelete = num.length - k;
+  const toKeep = num.length - k;
   if (k === num.length) return "0";
 
   const arr = num.split('').map((n, i) => [parseInt(n), i]);
@@ -57,13 +57,17 @@ function removeKDigits(num, k) {
 
     return aVal - bVal;
   });
-  console.log({arr});
+
+  // handle large same num strings
+  if (arr[0] === arr[toKeep]) {
+    return new Array(toKeep).fill(arr[0]).join('');
+  }
 
   let res = '';
   let right = 0;
   let prevIdx = -1;
   let zeroPref = false;
-  while (res.length < toDelete) {
+  while (res.length < toKeep) {
     const [actualVal, actualIdx] = arr[right];
     // ignore els that are to the left side - non eligible
     if (actualIdx <= prevIdx) {
@@ -71,7 +75,7 @@ function removeKDigits(num, k) {
       continue;
     };
     // check if enough space to the right
-    const diff = toDelete - res.length;
+    const diff = toKeep - res.length;
 
     console.log({ actualIdx, diff, actualVal, res});
     if (num.length - actualIdx >= diff) {
