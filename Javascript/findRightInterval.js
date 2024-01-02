@@ -78,6 +78,7 @@ function findRightIntervals(intervals) {
 
   const res = [];
   // find closest interval where startj >= endi
+  let cache;
   for (let i = 0; i < intervals.length; i++) {
     const int = intervals[i];
     // first try exact match
@@ -90,11 +91,13 @@ function findRightIntervals(intervals) {
       // console.log('didnt');
       // iterate over the next ints to find possible right interval
       // todo: write a fn to find closest value to start with?
-      for (let i = 0; i < ordered.length; i++) {
+      const start = cache && cache[0] >= endI ? cache[1] - 1 : 0;
+      for (let i = start; i < ordered.length; i++) {
         const actual = ordered[i];
         const [startJ, endJ] = actual[0];
         if (startJ >= endI) {
           res.push(actual[1]);
+          cache = [startJ, i];
           break;
         }
       }
@@ -107,17 +110,18 @@ function findRightIntervals(intervals) {
 }
 
 const cases = [
-  [[1, 2]],
-  [
-    [3, 4],
-    [2, 3],
-    [1, 2],
-  ],
-  [
-    [1, 4],
-    [2, 3],
-    [3, 4],
-  ],
+  // [[1, 2]],
+  // [
+  //   [3, 4],
+  //   [2, 3],
+  //   [1, 2],
+  // ],
+  // [
+  //   [1, 4],
+  //   [2, 3],
+  //   [3, 4],
+  // ],
+  [[1,2],[2,3],[0,1],[3,4]]
   // didn't pass
   // [
   //   [-100, -98],
