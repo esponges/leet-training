@@ -74,7 +74,8 @@ function findRightIntervals(intervals) {
 
   const res = [];
   // find closest interval where startj >= endi
-  for (let int of intervals) {
+  for (let i = 0; i < intervals.length; i++) {
+    const int = intervals[i];
     // first try exact match
     const [startI, endI] = int;
     if (endI === ints[endI]) {
@@ -83,18 +84,16 @@ function findRightIntervals(intervals) {
     } else {
       // iterate over the next ints to find possible right interval
       // todo: write a fn to find closest value to start with?
-      let found = false;
       for (let i = 0; i < ordered.length; i++) {
         const actual = ordered[i];
         const [startJ, endJ] = actual[0];
         if (startJ >= endI) {
           res.push(actual[1]);
-          found = true;
           break;
         }
       }
       // not found
-      if (!found) res.push(-1);
+      if (res.length !== i + 1) res.push(-1);
     }
   }
 
