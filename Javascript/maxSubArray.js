@@ -41,14 +41,14 @@ https://leetcode.com/problems/maximum-subarray/
  * @return {number}
  */
 function maxSubArray(nums) {
-  let max = 0;
+  let max = null;
   for (let i = 0; i < nums.length; i++) {
     for (let j = 0; j < nums.length - i; j++) {
       const subArray = nums.slice(j, j + i + 1);
       const sum = subArray.reduce((acc, actual) => {
         return acc + actual;
       }, 0);
-      if (sum > max) max = sum;
+      if (sum > max || max === null) max = sum;
     }
   }
 
@@ -56,9 +56,11 @@ function maxSubArray(nums) {
 }
 
 const cases = [
-  [-2,1,-3,4,-1,2,1,-5,4],
-  [1],
-  [5,4,-1,7,8]
+  // [-2,1,-3,4,-1,2,1,-5,4],
+  // [1],
+  // [5,4,-1,7,8],
+  // [-1,0],
+  [-1]
 ];
 
 cases.forEach(c => {
