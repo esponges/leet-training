@@ -43,22 +43,36 @@ function isIsomorphic(s, t) {
     const actualS = s[i];
     const actualT = t[i];
 
+    // if any of them is repeated or and the
+    // other not then it can't  be isomorphic
+    if (
+      (!occurS[actualS] && occurT[actualT]) ||
+      (occurS[actualS] && !occurT[actualT])
+    )
+      return false;
+
+
+    // remove 0 index to avoid falsy values
     if (!occurS[actualS] && !occurT[actualT]) {
-      occurS[actualS] = i;
-      occurT[actualT] = i;
+      occurS[actualS] = (i + 1).toString();
+      occurT[actualT] = (i + 1).toString();
     } else {
       if (occurS[actualS] !== occurT[actualT]) return false;
-      occurS[actualS] = occurS[actualS] + i;
-      occurT[actualT] = occurT[actualT] + i;
+      occurS[actualS] = occurS[actualS] + (i + 1).toString();
+      occurT[actualT] = occurT[actualT] + (i + 1).toString();
     }
   }
-
-  console.log(occurS, occurT);
 
   return true;
 }
 
-const cases = [['egg', 'add'], ['foo', 'bar'], ['paper', 'title']];
+const cases = [
+  ['egg', 'add'],
+  ['foo', 'bar'],
+  ['paper', 'title'],
+  ['ab', 'aa'],
+  ['aba', 'baa']
+];
 
 cases.forEach((c) => {
   console.log(isIsomorphic(c[0], c[1]));
