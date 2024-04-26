@@ -40,6 +40,8 @@ https://leetcode.com/problems/maximum-subarray/
  * @param {number[]} nums
  * @return {number}
  */
+// this brute force of course RTLs
+// try "divide and conquer" as per the follow up comment
 function maxSubArray(nums) {
   let max = null;
   for (let i = 0; i < nums.length; i++) {
