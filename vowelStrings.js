@@ -58,7 +58,7 @@ function vowelStrings(words, queries) {
   for (let i = 0; i < words.length; i++) {
     const w = words[i];
     if (vocals.includes(w[0]) && vocals.includes(w[w.length - 1])) {
-      valid[i] = w;
+      valid[i] = [i, w];
     } else {
       valid[i] = undefined;
     }
@@ -68,12 +68,8 @@ function vowelStrings(words, queries) {
 
   const res = [];
   for (q of queries) {
-    const sliced = valid.slice(q[0], q[1] + 1);
-    let count = 0;
-    sliced.forEach(s => {
-      if (!!s) count++;
-    });
-    res.push(count);
+    const sliced = valid.slice(q[0], q[1] + 1).filter(s => !!s);
+    res.push(sliced.length);
   }
 
   return res;
