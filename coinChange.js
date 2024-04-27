@@ -36,26 +36,30 @@ Constraints:
  * @param {number} amount
  * @return {number}
  */
+
+/* 
+  got like 50 cases but this is a naive approach
+  since it won't cover more complex situations
+  check recursion example
+*/
 function amountChange(coins, amount) {
   // first sort ascending
-  let stop = 10;
+  coins.sort((a, b) => b - a);
 
   let i = 0;
   let total = 0;
   let rest = amount;
-  while (stop < 5 || i < coins.length) {
+  while (i < coins.length) {
     const actual = coins[i];
     const r = rest % actual;
     // we can use this coin since
     // the rest is divisible by it
     if (r < rest) {
       const count = Math.floor(rest / actual);
-      console.log({ count });
       total += count;
       rest -= count * actual;
     } 
     i++;
-    stop++;
   }
   
   if (rest > 0) return -1
