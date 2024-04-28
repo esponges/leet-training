@@ -67,10 +67,26 @@ function vowelStrings(words, queries) {
   console.log({ valid });
 
   const res = [];
+  let cache = {};
   for (q of queries) {
-    const sliced = valid.slice(q[0], q[1] + 1).filter(s => !!s);
-    res.push(sliced.length);
+    if (cache[q[0]] && cache[q[0]][q[1]]) {
+      res.push(cache[q[0]][q[1]]);
+      continue;
+    }
+
+    let c = 0;
+
+    for (let i = q[0]; i < q[1] + 1; i++) {
+      if (!!valid[i]) c++;
+    }
+
+    cache[q[0]] = {
+      [q[1]]: c,
+    };
+
+    res.push(c);
   }
+  console.log({ cache });
 
   return res;
 }
