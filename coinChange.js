@@ -41,6 +41,8 @@ Constraints:
   got like 50 cases but this is a naive approach
   since it won't cover more complex situations
   check recursion example
+
+  check this solution https://leetcode.com/problems/coin-change/solutions/2827728/javascript-with-recursion-memorize-explained-easy-to-understand/
 */
 function amountChange(coins, amount) {
   // first sort ascending

@@ -67,7 +67,7 @@ function vowelStrings(words, queries) {
   console.log({ valid });
 
   const res = [];
-  let cache = {};
+  const cache = {};
   for (q of queries) {
     if (cache[q[0]] && cache[q[0]][q[1]]) {
       res.push(cache[q[0]][q[1]]);
@@ -91,6 +91,32 @@ function vowelStrings(words, queries) {
   return res;
 }
 
+const vowels = { a: true, e: true, i: true, o: true, u: true };
+var solution = function(words, queries) {
+    for (let index = 0; index < words.length; index++) {
+        if (vowels[words[index][0]] && vowels[words[index][words[index].length - 1]]) {
+            if (!index) {
+                words[index] = 1;
+            } else {
+                words[index] = 1 + words[index - 1];
+            }
+        } else {
+            if (!index) {
+                words[index] = 0;
+            } else {
+                words[index] = words[index - 1];
+            }
+        }
+    }
+    const output = [];
+    for (let index = 0; index < queries.length; index++) {
+        const [startIndex, endIndex] = queries[index];
+        let len = words[endIndex] - (words[startIndex - 1] || 0);
+        output.push(len);
+    }
+    return output;
+};
+
 const cases = [
   [
     ['aba', 'bcb', 'ece', 'aa', 'e'],
@@ -111,5 +137,6 @@ const cases = [
 ];
 
 cases.forEach((c) => {
-  console.log(vowelStrings(c[0], c[1]));
+  // console.log(vowelStrings(c[0], c[1]));
+  console.log(solution(c[0], c[1]));
 });
