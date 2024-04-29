@@ -43,51 +43,57 @@ s[i] is a digit from '1' to '9'.
 https://leetcode.com/problems/partition-string-into-substrings-with-values-at-most-k/
 */
 
+/* 
+  ACCEPTED: 78%/75%
+*/
+
 /**
  * @param {string} s
  * @param {number} k
  * @returns {number}
  */
 function minimumPartition(s, k) {
+  if (parseInt(s) === k) return 1;
+
   let rest = s;
   let good = 0;
-  let subs = [];
-  let debug = 0;
   const chunk = k.toString().split('').length;
 
-  while (rest && rest.length > 0 && debug <= 10) {
+  let prev = '';
+  while (rest && rest.length > 0) {
     // 1 digit k so all the substr should be smaller than k otherwise it's -1
     let actual = rest.slice(0, chunk);
-    if ((chunk === 1 && parseInt(actual) < k) || chunk > 1) {
+
+    if (actual === prev) {
+      rest = rest.slice(actual.length);
+      good++;
+    } else if ((chunk === 1 && parseInt(actual) <= k) || chunk > 1) {
       // good
-      if (parseInt(actual) < k) {
+      if (parseInt(actual) <= k) {
         rest = rest.slice(actual.length);
-        subs.push(actual); // debug - remove
         good++;
         continue;
       }
-  
+
       // won't fit, try do for -1 digit
       actual = actual.slice(0, actual.length - 1);
-      subs.push(actual); // debug - remove
       rest = rest.slice(actual.length);
       good++;
     } else {
       return -1;
     }
-    
-    debug++;
+    prev = actual;
   }
-  console.log({ debug, good });
 
   return good;
-} 
+}
 
 const cases = [
   ["165462", 60],
-  ["238182", 5]
+  ["238182", 5],
+  ['75734379996162298577', 7],
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(minimumPartition(c[0], c[1]));
-})
+});
