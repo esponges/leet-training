@@ -41,6 +41,7 @@ https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/
  * @param {number[]} nums
  * @returns {number}
  */
+// passed but too slow
 function minOperations(nums) {
   const occurrences = {};
 
