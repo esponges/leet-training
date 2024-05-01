@@ -20,8 +20,6 @@
       const mem = [];
       let input = document.getElementById('input');
       let actual;
-      let prev = mem[0];
-      let hasValues = input && prev;
       let operation;
       
       if (mem.length === 0) input.value = '0';
@@ -29,16 +27,27 @@
       function onChange(e) {
         e.preventDefault();
         const val = e.target.value;
-        actual = val;
+        actual = parseInt(val);
       }
-
       input.addEventListener('input', onChange);
 
       function add(e) {
         e.preventDefault();
-
-        console.log({ actual, prev, e});
+        let operation = 'add';
+        const prev = mem[mem.length - 1];
+        console.log(prev)
+        if (prev >= 0) {
+          mem.push(actual);
+          res = actual + prev;
+          mem.push(res);
+          input.value = res;
+          actual = res; 
+        } else {
+          mem.push(actual);
+        }
+        console.log(mem);
       }
+
       document.getElementById('add').addEventListener('click', add);
     </script>
   </body>
