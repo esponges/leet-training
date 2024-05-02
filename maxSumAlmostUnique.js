@@ -56,8 +56,6 @@ https://leetcode.com/problems/maximum-sum-of-almost-unique-subarray/
  * @returns {number}
  */
 function maxSumAlmostUnique(nums, m, k) {
-  const subarrays = [];
-
   // keep track of max
   let max = 0;
   // first build subarrays
@@ -75,20 +73,15 @@ function maxSumAlmostUnique(nums, m, k) {
     }
 
     let uniques = 0;
-    // console.log({ occs, sum });
     Object.values(occs).forEach(val => {
       if (val === 1) uniques++;
       if (uniques === m) {
-        subarrays.push(sub);
         if (sum > max) max = sum;
         return false;
       }
     });
   }
 
-  // console.log({subarrays, max});
-
-  // console.log({ almostUniques });
   return max;
 }
 
