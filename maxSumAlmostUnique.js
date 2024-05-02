@@ -72,14 +72,9 @@ function maxSumAlmostUnique(nums, m, k) {
       sum += s;
     }
 
-    let uniques = 0;
-    Object.values(occs).forEach(val => {
-      if (val === 1) uniques++;
-      if (uniques === m) {
-        if (sum > max) max = sum;
-        return false;
-      }
-    });
+    if (Object.keys(occs).length >= m) {
+      if (sum > max) max = sum;
+    }
   }
 
   return max;
