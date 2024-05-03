@@ -60,9 +60,15 @@ https://leetcode.com/problems/minimum-absolute-difference-between-elements-with-
 function minAbsoluteDifference(nums, x) {
   let i = 0, j = x;
   let min = Infinity;
+  const cache = {};
   while (j < nums.length) {
     const left = nums[i];
     const right = nums[j];
+    const diff = j - i;
+
+    const str = [left, diff, right].join('.');
+    if (cache[str]) continue;
+    cache[str]++;
 
     const abs = Math.abs(left - right);
     if (abs < min) min = abs;
