@@ -57,17 +57,19 @@ https://leetcode.com/problems/snail-traversal/description/
  * @param {number} rowsCount
  * @param {number} colsCount
  */
-Array.prototype.snail = (rowsCount,colsCount) => {
-  const arr = this;
+// accepted 50/50... better than prev lol
+Array.prototype.snail = (rowsCount, colsCount) => {
   if (rowsCount * colsCount !== this.length) return [];
 
   let row = 0;
-  let res = new Array(rowsCount).fill([]); // [[], [], [], [], []]
-  let dir = true; // down
-  for (a of arr) {
-    res[row] = [...res[row], a];
+  let res = Array(rowsCount)
+    .fill([])
+    .map(() => []); // if don't make this we won't be able to use `push` lol
+  let dir = true;
+  for (a of this) {
+    res[row].push(a);
     if (dir) {
-      if (row < rowsCount) row++;
+      if (row < rowsCount - 1) row++;
       else dir = false;
     } else {
       if (row > 0) row--;
@@ -76,14 +78,17 @@ Array.prototype.snail = (rowsCount,colsCount) => {
   }
 
   return res;
-}
+};
 
 const cases = [
-  [[19, 10, 3, 7, 9, 8, 5, 2, 1, 17, 16, 14, 12, 18, 6, 13, 11, 20, 4, 15], 5, 4],
-  [[1,3], 2, 2]
+  [
+    [19, 10, 3, 7, 9, 8, 5, 2, 1, 17, 16, 14, 12, 18, 6, 13, 11, 20, 4, 15],
+    5,
+    4,
+  ],
+  [[1, 3], 2, 2],
 ];
 
-
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(c[0].snail(c[1], c[2]));
 });
