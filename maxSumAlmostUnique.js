@@ -56,13 +56,20 @@ https://leetcode.com/problems/maximum-sum-of-almost-unique-subarray/
  * @returns {number}
  */
 function maxSumAlmostUnique(nums, m, k) {
+  // avoid repeating already evaluated arrays
+  const cache = {};
   // keep track of max
   let max = 0;
   // first build subarrays
   for (let i = 0; i + k <= nums.length; i++) {
     const sub = nums.slice(i, i + k);
+    const str = sub.join('');
+
+    if (cache[str]) continue;
+
     const occs = {};
     let sum = 0;
+    
     for (s of sub) {
       if (!occs[s]) {
         occs[s] = 1;
@@ -75,17 +82,18 @@ function maxSumAlmostUnique(nums, m, k) {
     if (Object.keys(occs).length >= m) {
       if (sum > max) max = sum;
     }
+    cache[str] = 1;
   }
 
   return max;
 }
 
 const cases = [
-  [[2,6,7,3,1,7], 3, 4],
-  [[5,9,9,2,4,5,4], 1, 3],
-  [[1,2,1,2,1,2,1], 3, 3]
+  [[2, 6, 7, 3, 1, 7], 3, 4],
+  [[5, 9, 9, 2, 4, 5, 4], 1, 3],
+  [[1, 2, 1, 2, 1, 2, 1], 3, 3],
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(maxSumAlmostUnique(c[0], c[1], c[2]));
 });
