@@ -64,34 +64,44 @@ function compareVersion(version1, version2) {
   let d1 = 0;
   let d2 = 0;
 
+  if (version1.length === 1 && version2.length === 1) {
+    if (version1 < version2) return -1;
+    else if (version1 > version2) return 1;
+    return 0;
+  }
+
   for (let i = 0; i < Math.max(version1.length, version2.length); i++) {
     const actual1 = version1[i];
     const actual2 = version2[i];
     if (actual1 !== '.') {
-      if (actual1 && (actual1 === '0' && version1[i+1] === '.' || actual1 !== '0')) {
-        v1[d1] ? v1[d1] = v1[d1] + actual1 : v1[d1] = actual1;
+      if (actual1 === '0' && version1[i+1] === '.' || actual1 !== '0') {
+        const rev = actual1 || '0';
+        v1[d1] ? v1[d1] = v1[d1] + rev : v1[d1] = actual1;
       }
     } else {
       d1++;
     }
     if (actual2 !== '.') {
-      if (actual2 && (actual2 === '0' && version2[i+1] === '.' || actual2 !== '0')) {
-        v2[d2] ? v2[d2] = v2[d2] + actual2 : v2[d2] = actual2;
+      if (actual2 === '0' && version2[i+1] === '.' || actual2 !== '0') {
+        const rev = actual2 || '0';
+        v2[d2] ? v2[d2] = v2[d2] + rev : v2[d2] = actual2;
       }
     } else {
       d2++;
     }
   }
 
-  for (let i = 0; i < v1.length; i++) {
-    const actual1 = parseInt(v1[i]);
-    const actual2 = parseInt(v2[i]);
+  for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
+    const actual1 = v1[i];
+    const actual2 = v2[i];
+    const next1 = v1[i + 1];
+    const next2 = v2[i + 1];
 
     // handle last revision where one is 0 and other doesn't exists (0 implicit)
-    if (!actual1 && !actual2) return;
+    if (!actual1 && !next1 && !actual2 && !next2) return;
 
-    if (actual1 < actual2) return -1;
-    if (actual1 > actual2) return 1;
+    if (actual1 < actual2 || !actual1 && actual2) return -1;
+    if (actual1 > actual2 || actual1 && !actual2) return 1;
   }
 
   return 0
@@ -100,7 +110,9 @@ function compareVersion(version1, version2) {
 const cases = [
   ["1.01", "1.001"],
   ["1.0", "1.0.0"],
-  ["0.1", "1.1"]
+  ["0.1", "1.1"],
+  ["1.0.1", "1"],
+  ["1.0", "1.1"]
 ];
 
 cases.forEach(c => {
