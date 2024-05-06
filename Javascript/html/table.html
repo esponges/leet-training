@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculator</title>
+  </head>
+  <body id="main">
+    Hi
+  </body>
+  <script>
+  async function getData() {
+    const data = await new Promise((res, rej) => {
+      setTimeout(() => {
+        res([
+          'foo',
+          'bar'
+        ]);
+      }, 2000);
+    });
+
+    return data;
+  }
+
+  async function handleData() {
+    const data = await getData();
+
+    const list = document.createElement('ul');
+
+    data.forEach(el => {
+      const li = document.createElement('li');
+      li.textContent = el;
+      list.append(li);
+    })
+
+    document.getElementById('main').append(list);
+  }
+
+  handleData();
+
+  </script>
+</html>
