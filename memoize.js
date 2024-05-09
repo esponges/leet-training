@@ -89,7 +89,7 @@ let callCount = 0;
 function memoize(fn) {
     return function(...args) {
         const str = JSON.stringify(args);
-        if (!calls[str]) {
+        if (!calls[str] === undefined) { // consider '00' args
             const res = fn(...args);
             calls[str] = res;
             callCount++;
