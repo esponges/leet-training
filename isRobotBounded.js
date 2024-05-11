@@ -72,15 +72,11 @@ Seen this question in a real interview before?
  * @param {string} instructions
  * @returns {boolean}
  */
+// acepted ~50/50
 function isRobotBounded(instructions) {
   let dir = 1;
   let loc = [0, 0];
 
-  "GGLLGG"
-  // - 1 [0, 0]
-  // G 1 [0, 1]
-  // G 1 [0, 2]
-  // L 
   for (ins of instructions) {
     const move = ins === 'G';
   
@@ -103,6 +99,7 @@ function isRobotBounded(instructions) {
     }
   }
 
+  // the robot only makes circles when return to 0,0 or changing dir (not north)
   return dir !== 1 || (loc[0] === 0 && loc[1] === 0);
 }
 
