@@ -66,31 +66,55 @@ function minOperationsToMultiGrid (grid, x) {
   // make unidimensional 
   const nums = [...grid[0], ...grid[1]];
 
+  // check if they are divisible by x
+  // otherwise they can't be equaled
+  if (x > 1) {
+    const remainder = nums[0] % x;
+    for (n of nums) {
+      if (n % x !== remainder) false;
+    }
+  }
+
   function bubbleSort (arr, left, right) {
-    console.log({ arr });
     if (left === right) return arr;
 
-    // left 0 
-    // right 3
-    const subArray = arr.slice(left, right + 1);
-    for (let i = 0; i < subArray.length; i++) {
-      const left = subArray[i];
-      const right = subArray[i + 1];
+    for (let i = 0; i < right; i++) {
+      const left = arr[i];
+      const right = arr[i + 1];
 
       if (left > right) {
-        subArray[i] = right;
-        subArray[i + 1] = left;
+        arr[i] = right;
+        arr[i + 1] = left;
       }
     }
 
-    return bubbleSort([...subArray.slice(0, right), ...arr.slice(right)], 0, right - 1);
+    return bubbleSort(arr, 0, right - 1);
   }
 
-  const sorted = bubbleSort(nums, 0, nums.length - 1);
+  const sorted = bubbleSort(nums, 0, nums.length);
+  console.log({sorted});
+
+  // find middle spot
+  const middle = Math.ceil(Math.max(...sorted)/Math.min(...sorted));
+  console.log({ middle });
+
+  let moves = 0;
+  for (n of sorted) {
+    if (n !== middle) {
+      // 2 - 4 
+      moves += Math.abs(((n - middle) / x));
+    }
+    console.log({moves}, n, (n - middle / x));
+  }
+
+  return moves;
 }
 
 const cases = [
-  [[[2,4],[6,8]], 2]
+  [[[2,4],[6,8]], 2],
+  [[[1,5],[2,3]], 1],
+  [[[1,2],[3,4]], 2]
+
 ];
 
 cases.forEach(c => {
