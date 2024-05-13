@@ -51,53 +51,94 @@ https://leetcode.com/problems/restore-the-array-from-adjacent-pairs/
 */
 
 /**
- * 
+ *
  * @param {number[][]} adjacentPairs
- * @returns {number[]} 
+ * @returns {number[]}
  */
 function restoreArray(adjacentPairs) {
-  const all = [];
-  adjacentPairs.forEach(pair => { 
-    all.push(...pair);
-  });
-  
-  // map preseves order and object doesn't
-  const freq = new Map();
-  for (let i = 0; i < all.length; i++) {
-    const actual = all[i];
-    if (!freq.has(actual)) {
-      // add to map with one count
-      freq.set(actual, 1);
-    } else {
-      // increase freq
-      freq.set(actual, freq.get(actual) + 1);
-    }
-  }
-  
-  const nums = [];
-  // now iterate over the map placing first the first single element
-  freq.forEach((val, key) => {
-    if (!Array.isArray(nums[0])) {
-      if (val > 1) nums.push(key); 
-      // forEach can't reassing therefore we'll use an array
-      // to mark the number as being first
-      else nums.unshift([key]);
-    } else {
-      nums.push(key);
-    }
-  });
-  // remove first being array
-  nums[0] = nums[0][0];
+  // const all = [];
+  // adjacentPairs.forEach(pair => {
+  //   all.push(...pair);
+  // });
 
-  return nums;
+  // // map preseves order and object doesn't
+  // const freq = new Map();
+  // for (let i = 0; i < all.length; i++) {
+  //   const actual = all[i];
+  //   if (!freq.has(actual)) {
+  //     // add to map with one count
+  //     freq.set(actual, 1);
+  //   } else {
+  //     // increase freq
+  //     freq.set(actual, freq.get(actual) + 1);
+  //   }
+  // }
+
+  // const nums = [];
+  // // now iterate over the map placing first the first single element
+  // freq.forEach((val, key) => {
+  //   if (!Array.isArray(nums[0])) {
+  //     if (val > 1) nums.push(key);
+  //     // forEach can't reassing therefore we'll use an array
+  //     // to mark the number as being first
+  //     else nums.unshift([key]);
+  //   } else {
+  //     nums.push(key);
+  //   }
+  // });
+  // // remove first being array
+  // nums[0] = nums[0][0];
+
+  // return nums;
+
+  const occs = {};
+  const restored = [];
+
+  if (adjacentPairs.length === 1) return adjacentPairs[0];
+
+  for (pair of adjacentPairs) {
+    let left, right;
+    // order asc
+    if (pair[0] < pair[1]) {
+      left = pair[0];
+      right = pair[1];
+    } else {
+      left = pair[1];
+      right = pair[0];
+    }
+
+    const newOccs = [];
+    // -2 [-2] 1 [-2, 4, 1] -3 [-2, 4, 1, -3]
+    if (!occs[left]) {
+      newOccs.push(left);
+      occs[left] = true;
+    }
+    // 4 [-2, 4] 4 [...]
+    if (!occs[right]) {
+      newOccs.push(right);
+      occs[right] = true;
+    }
+
+    restored.push(...newOccs);
+  }
+
+  return restored;
 }
 
 const cases = [
-  [[2,1],[3,4],[3,2]],
-  [[4,-2],[1,4],[-3,1]],
-  [[100000,-100000]]
+  [
+    [2, 1],
+    [3, 4],
+    [3, 2],
+  ],
+  [
+    [4, -2],
+    [1, 4],
+    [-3, 1],
+  ],
+  [[100000, -100000]],
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(restoreArray(c));
-})
+});
