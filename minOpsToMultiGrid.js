@@ -71,10 +71,17 @@ function minOperationsToMultiGrid (grid, x) {
   if (x > 1) {
     const remainder = nums[0] % x;
     for (n of nums) {
-      if (n % x !== remainder) false;
+      if (n % x !== remainder) return -1;
     }
   }
 
+  /**
+   * 
+   * @param {number[]} arr 
+   * @param {number} left 
+   * @param {number} right 
+   * @returns {number[]}
+   */
   function bubbleSort (arr, left, right) {
     if (left === right) return arr;
 
@@ -92,19 +99,15 @@ function minOperationsToMultiGrid (grid, x) {
   }
 
   const sorted = bubbleSort(nums, 0, nums.length);
-  console.log({sorted});
 
   // find middle spot
-  const middle = Math.ceil(Math.max(...sorted)/Math.min(...sorted));
-  console.log({ middle });
+  const middle = Math.ceil(sorted.reduce((a, b) => a + b, 0) / sorted.length);
 
   let moves = 0;
   for (n of sorted) {
     if (n !== middle) {
-      // 2 - 4 
       moves += Math.abs(((n - middle) / x));
     }
-    console.log({moves}, n, (n - middle / x));
   }
 
   return moves;
