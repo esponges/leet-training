@@ -55,82 +55,63 @@ https://leetcode.com/problems/restore-the-array-from-adjacent-pairs/
  * @param {number[][]} adjacentPairs
  * @returns {number[]}
  */
+// bad performance, maybe try with map instead?
 function restoreArray(adjacentPairs) {
-  // const all = [];
-  // adjacentPairs.forEach(pair => {
-  //   all.push(...pair);
-  // });
+  const map = {};
+  
+  // create map with ocurrences
+  for ([left, right] of (adjacentPairs)) {
+    if (!map[left]) {
+      map[left] = [right];
+    } else map[left].push(right);
 
-  // // map preseves order and object doesn't
-  // const freq = new Map();
-  // for (let i = 0; i < all.length; i++) {
-  //   const actual = all[i];
-  //   if (!freq.has(actual)) {
-  //     // add to map with one count
-  //     freq.set(actual, 1);
-  //   } else {
-  //     // increase freq
-  //     freq.set(actual, freq.get(actual) + 1);
-  //   }
-  // }
-
-  // const nums = [];
-  // // now iterate over the map placing first the first single element
-  // freq.forEach((val, key) => {
-  //   if (!Array.isArray(nums[0])) {
-  //     if (val > 1) nums.push(key);
-  //     // forEach can't reassing therefore we'll use an array
-  //     // to mark the number as being first
-  //     else nums.unshift([key]);
-  //   } else {
-  //     nums.push(key);
-  //   }
-  // });
-  // // remove first being array
-  // nums[0] = nums[0][0];
-
-  // return nums;
-
-  const occs = {};
-  const restored = [];
-
-  if (adjacentPairs.length === 1) return adjacentPairs[0];
-
-  for (pair of adjacentPairs) {
-    let left, right;
-    // order asc
-    if (pair[0] < pair[1]) {
-      left = pair[0];
-      right = pair[1];
-    } else {
-      left = pair[1];
-      right = pair[0];
-    }
-
-    const newOccs = [];
-    // -2 [-2] 1 [-2, 4, 1] -3 [-2, 4, 1, -3]
-    if (!occs[left]) {
-      newOccs.push(left);
-      occs[left] = true;
-    }
-    // 4 [-2, 4] 4 [...]
-    if (!occs[right]) {
-      newOccs.push(right);
-      occs[right] = true;
-    }
-
-    restored.push(...newOccs);
+    if (!map[right]) {
+      map[right] = map[right] = [left]; 
+    } else map[right].push(left);
   }
 
-  return restored;
+  // find first occurrence with only one val
+  // meaning that is starting point
+  let next;
+  const entries = Object.entries(map);
+  for ([key, values] of entries) {
+    if (values.length === 1) {
+      next = key;
+      break;
+    }
+  }
+
+  const res = [parseInt(next), map[next][0]];
+  next = map[next][0];
+  while (res.length <= adjacentPairs.length) {
+    const [left, right] = map[next];
+    
+    // just need to compare with the last two
+    // no need to find in the rest of the array
+    // since we are sure that left or right won't be present there
+    // because we used either left of right as previous `next`
+    if (left !== res[res.length - 1] && left !== res[res.length - 2]) {
+      next = left;
+      res.push(left);
+    } else {
+      next = right;
+      res.push(right);
+    }
+  }
+
+  return res;
 }
 
 const cases = [
+  // {1: [2], 2: [1, 3], 3: [4, 2], 4: [3]}
+  // [1, 2] -> [1, 2, 3] -> [1, 2, 3, 4]
   [
     [2, 1],
     [3, 4],
     [3, 2],
   ],
+  // {-2: [4], 4: [-2, 1], 1: [4, -3]: -3 [1] }
+  // [-2, 4] -> [-2, 4, 1] -> [-2, 4, 1, -3]
   [
     [4, -2],
     [1, 4],
