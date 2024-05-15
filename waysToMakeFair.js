@@ -67,30 +67,17 @@ function waysToMakeFair(nums) {
     combs.push(newArr);
   }
 
-  const oddEvenCombs = new Array(combs.length)
-    .fill(null)
-    .map((_) => ({ odd: [], even: [] }));
-
+  let count = 0;
   for (let i = 0; i < combs.length; i++) {
     const c = combs[i];
+    let even = 0;
+    let odd = 0;
     for (let j = 0; j < c.length; j++) {
       const actual = c[j];
-      if (j % 2 !== 0) oddEvenCombs[i].odd.push(actual);
-      else oddEvenCombs[i].even.push(actual);
+      if (j % 2 === 0) even += actual;
+      else odd += actual;
     }
-  }
-
-  const memo = {};
-  // make obj with sums
-  let count = 0;
-  for (els of oddEvenCombs) {
-    const oddStr = els.odd.join('+');
-    const evenStr = els.even.join('+');
-
-    if (!memo[oddStr]) memo[oddStr] = els.odd.reduce((a, b) => a + b, 0);
-    if (!memo[evenStr]) memo[evenStr] = els.even.reduce((a, b) => a + b, 0);
-
-    if (memo[oddStr] === memo[evenStr]) count++;
+    if (even === odd) count ++;
   }
 
   return count;
