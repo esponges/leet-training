@@ -35,22 +35,26 @@
     const navbar = document.createElement('navbar');
     const body = document.body.append(navbar);
 
-    let untoggled;
-    function toggleDisplay (e, id) {
+    let prev;
+    function toggleDisplay(e, id) {
       e.preventDefault();
+      // id   1     1 2
+      // prev null  1 1
+      if (!!prev) {
+        const prevUl = document.getElementById(`ul__${prev}`);
+        prevUl.style.display = 'none';
+      }
 
       const targetUl = document.getElementById(`ul__${id}`);
-      
-      if (untoggled === id) {
+      if (targetUl.style.display === 'block' && prev !== id) {
         targetUl.style.display = 'none';
       } else {
         targetUl.style.display = 'block';
       }
-      
-      untoggled = id;
+      prev = id;
     }
 
-    sections.forEach(s => {
+    sections.forEach((s) => {
       const wrapper = document.createElement('div');
       wrapper.textContent = s.title;
       wrapper.style.margin = '10px 0px';
@@ -63,7 +67,7 @@
       ul.id = `ul__${s.id}`;
       wrapper.append(ul);
 
-      s.children?.forEach(c => {
+      s.children?.forEach((c) => {
         const link = document.createElement('a');
         link.textContent = c.name;
         link.href = c.url;
