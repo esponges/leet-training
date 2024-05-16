@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Navbar</title>
+    <meta />
+    <meta />
+  </head>
+  <body id="main"></body>
+  <script>
+    const sections = [
+      {
+        id: 'cats',
+        title: 'Cats',
+        children: [
+          { name: 'Pewee', url: '' },
+          { name: 'Don', url: '' },
+          { name: 'Misifus', url: '' },
+        ],
+      },
+      {
+        id: 'dogs',
+        title: 'Dogs',
+        children: [
+          { name: 'Astro', url: '' },
+          { name: 'Cofee', url: '' },
+          { name: 'Chewbacca', url: '' },
+        ],
+      },
+      {
+        id: 'sharks',
+        title: 'Sharks',
+      },
+    ];
+
+    const navbar = document.createElement('navbar');
+    const body = document.body.append(navbar);
+
+    let untoggled;
+    function toggleDisplay (e, id) {
+      e.preventDefault();
+
+      const targetUl = document.getElementById(`ul__${id}`);
+      
+      if (untoggled === id) {
+        targetUl.style.display = 'none';
+      } else {
+        targetUl.style.display = 'block';
+      }
+      
+      untoggled = id;
+    }
+
+    sections.forEach(s => {
+      const wrapper = document.createElement('div');
+      wrapper.textContent = s.title;
+      wrapper.style.margin = '10px 0px';
+      wrapper.id = `wrapper__${s.id}`;
+
+      wrapper.addEventListener('click', (e) => toggleDisplay(e, s.id));
+
+      const ul = document.createElement('ul');
+      ul.style.display = 'none';
+      ul.id = `ul__${s.id}`;
+      wrapper.append(ul);
+
+      s.children?.forEach(c => {
+        const link = document.createElement('a');
+        link.textContent = c.name;
+        link.href = c.url;
+
+        const heading = document.createElement('li');
+
+        heading.append(link);
+        ul.append(heading);
+      });
+
+      navbar.append(wrapper);
+    });
+  </script>
+</html>
