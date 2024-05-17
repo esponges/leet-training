@@ -38,15 +38,14 @@
     let prev;
     function toggleDisplay(e, id) {
       e.preventDefault();
-      // id   1     1 2
-      // prev null  1 1
-      if (!!prev) {
+      
+      if (!!prev && prev !== id) {
         const prevUl = document.getElementById(`ul__${prev}`);
         prevUl.style.display = 'none';
       }
 
       const targetUl = document.getElementById(`ul__${id}`);
-      if (targetUl.style.display === 'block' && prev !== id) {
+      if (targetUl.style.display === 'block') {
         targetUl.style.display = 'none';
       } else {
         targetUl.style.display = 'block';
@@ -56,11 +55,13 @@
 
     sections.forEach((s) => {
       const wrapper = document.createElement('div');
-      wrapper.textContent = s.title;
+      const button = document.createElement('button');
+      wrapper.append(button);
+      button.id = `wrapper__${s.id}`;
+      button.textContent = s.title;
       wrapper.style.margin = '10px 0px';
-      wrapper.id = `wrapper__${s.id}`;
 
-      wrapper.addEventListener('click', (e) => toggleDisplay(e, s.id));
+      button.addEventListener('click', (e) => toggleDisplay(e, s.id));
 
       const ul = document.createElement('ul');
       ul.style.display = 'none';
