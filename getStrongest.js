@@ -57,8 +57,8 @@ https://leetcode.com/problems/the-k-strongest-values-in-an-array/
 
 cases = [
   [[1, 2, 3, 4, 5], 2],
-  [[1, 1, 3, 5, 5], 2],
-  [[6, 7, 11, 7, 6, 8], 5],
+  // [[1, 1, 3, 5, 5], 2],
+  // [[6, 7, 11, 7, 6, 8], 5],
 ];
 /**
  * @param {number[]} arr
@@ -68,24 +68,25 @@ cases = [
  */
 
 
-function getStrongest(arr, k) {
-  function bubbleSort(nums, left, right) {
-    if (left === right) return nums;
-    for (let i = left; i < right; i++) {
-      const actual = nums[i];
-      const next = nums[i + 1];
-      
-      if (actual > next) {
-        nums[i + 1] = actual;
-        nums[i] = next;
-      }
+// just to practice...
+function bubbleSort(nums, left, right) {
+  if (left === right) return nums;
+  for (let i = left; i < right; i++) {
+    const actual = nums[i];
+    const next = nums[i + 1];
+    
+    if (actual > next) {
+      nums[i + 1] = actual;
+      nums[i] = next;
     }
-
-    return bubbleSort(nums, left, right - 1);
   }
 
-  const ordered = bubbleSort(arr, 0, arr.length);
-  console.log({ordered});
+  return bubbleSort(nums, left, right - 1);
+}
+
+function getStrongest(arr, k) {
+  const ordered = arr.sort((a, b) => a - b);
+  // const ordered = bubbleSort(arr, 0, arr.length);
   let median;
 
   if (ordered.length % 2 !== 0) {
@@ -98,6 +99,10 @@ function getStrongest(arr, k) {
     median = (ordered[left] + ordered[right]) / 2;
   }
 
+  arr.sort((a, b) => Math.abs(a - median) - Math.abs(b - median));
+  arr.reverse();
+
+  return arr.slice(0, k);
 }
 
 
