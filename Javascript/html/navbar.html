@@ -6,6 +6,12 @@
     <meta />
   </head>
   <body id="main"></body>
+  <style>
+    navbar {
+      padding: 20px;
+      margin: 0 auto;
+    }
+  </style>
   <script>
     const sections = [
       {
@@ -33,6 +39,8 @@
     ];
 
     const navbar = document.createElement('navbar');
+    navbar.id = 'navbar'
+    navbar.style.display = 'flex';
     const body = document.body.append(navbar);
 
     let prev;
@@ -42,13 +50,19 @@
       if (!!prev && prev !== id) {
         const prevUl = document.getElementById(`ul__${prev}`);
         prevUl.style.display = 'none';
-      }
 
+        const prevBtn = document.getElementById(`wrapper__${prev}`);
+        prevBtn.style.background = 'unset';
+      }
+      
+      const targetBtn = document.getElementById(`wrapper__${id}`);
       const targetUl = document.getElementById(`ul__${id}`);
       if (targetUl.style.display === 'block') {
         targetUl.style.display = 'none';
+        targetBtn.style.background = 'unset';
       } else {
         targetUl.style.display = 'block';
+        targetBtn.style.background = 'gray'
       }
       prev = id;
     }
