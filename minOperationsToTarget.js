@@ -72,49 +72,46 @@ function modify(arr, opt, idx) {
  * @returns {number}
  */
 function minOperations(nums) {
-  let arr = [...nums];
+  const evenEls = [];
+  const oddEls = [];
 
-  function areAllElsEven(array) {
-    let sum = 0;
-    for (let i = 0; i < array.length; i++) {
-      if (array[i] % 2 !== 0) return false;
-      // keep traversing to get sum
-      sum += array[i];
-    }
-    return true;
-  }
-
-  let sum = arr.reduce((a, b) => a + b, 0);
+  let sum = nums.reduce((a, b) => {
+    if (b % 2 !== 0) oddEls.push(b);
+    else evenEls.push(a); 
+    return a + b;
+  }, 0);
   let moves = 0;
-  while (sum !== 0) {
-    const isEven = areAllElsEven(arr);
 
-    if (isEven) {
-      arr = modify(arr, 1);
-      sum = sum / 2;
+  while (sum !== 0) {
+    // last step just needs one extra move
+    // since 2/2 = 1
+    if (sum === 1) {
       moves++;
-    } else {
-      // find first uneven el and reduce it by 1
-      let first;
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i] % 2 !== 0) {
-          first = i;
-          break;
-        }
+      return moves;
+    }
+
+    if (oddEls.length === 0) {
+      // div is odd then extra step is required
+      if (sum % 2 !== 0) {
+        moves ++;
+        sum -= 1;
       }
 
-      arr = modify(arr, 0, first);
-      sum--;
-      moves++;
-    }
-  }
+      sum = sum / 2;
+    } else {
+      // find first uneven el and reduce it by 1
+      oddEls[oddEls.length - 1]--;
+      if (oddEls[oddEls.length - 1] % 2 === 0) oddEls.pop();
 
-  return moves;
+      sum--;
+    }
+    moves++;
+  }
 }
 
 const cases = [
-  [1,5],
-  [2,2],
+  // [1,5],
+  // [2,2],
   [4, 2, 5]
 ];
 
