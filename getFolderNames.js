@@ -60,7 +60,7 @@ function parseFileName(n, mem) {
   let name = '';
 
   // no version at all
-  if (n[n.length - 1] !== ')') return [n, version, mem];
+  if (n[n.length - 1] !== ')' || n.length === 1) return [n, version, mem];
 
   // a(1)b(2)
   //   a ( 1 ) b
@@ -113,12 +113,14 @@ function parseFileName(n, mem) {
 function getFolderNames(names) {
   for (let i = 0; i < names.length; i++) {
     const [name, version, mem] = parseFileName(names[i]);
-    console.log(name, version);
+    console.log({name, version})
   }
 }
 
 const cases = [
-  [/* 'pes', 'fifa', 'gta', 'pes(2019)',  */'pes(1)a(2)'],
+  // ['pes', 'fifa', 'gta', 'pes(2019)'],
+  // edge cases
+  ['pes(1)a(2)', 'a(', 'a'],
   // ['gta', 'gta(1)', 'gta', 'avalon'],
   // ['onepiece', 'onepiece(1)', 'onepiece(2)', 'onepiece(3)', 'onepiece'],
 ];
