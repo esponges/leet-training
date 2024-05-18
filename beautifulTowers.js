@@ -87,7 +87,7 @@ function beautifulTowers(heights) {
   }
   
   const right = heights.slice(peakIdx);
-  let rightMax;
+  let rightMax = peak;
   for (let i = 1; i < right.length; i++) {
     console.log({ sum });
     const actual = right[i];
@@ -114,7 +114,8 @@ function beautifulTowers(heights) {
 const cases = [
   [5,3,4,1,1],
   [6,5,3,9,2,7],
-  [3,2,5,5,2,3]
+  [3,2,5,5,2,3],
+  [2,4,5,2,5,5,2,1,1,3]
 ];
 
 cases.forEach(c => console.log(beautifulTowers(c)));

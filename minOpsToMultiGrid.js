@@ -63,6 +63,8 @@ https://leetcode.com/problems/minimum-operations-to-make-a-uni-value-grid/descri
  * @returns {number}
  */
 function minOperationsToMultiGrid (grid, x) {
+  if (grid.length <= 1) return 0;
+
   // make unidimensional 
   const nums = [...grid[0], ...grid[1]];
 
@@ -100,13 +102,24 @@ function minOperationsToMultiGrid (grid, x) {
 
   const sorted = bubbleSort(nums, 0, nums.length);
 
-  // find middle spot
-  const middle = Math.ceil(sorted.reduce((a, b) => a + b, 0) / sorted.length);
+  // find median
+  let median;
+
+  const len = sorted.length;
+  if (len / 2 !== 0) {
+    // odd length, just get the middle value
+    median = sorted[Math.floor(len/2)];
+  } else {  
+    // even length, calculate avg value of two mid values
+    const left = Math.floor(len/2) - 1;
+    const right = Math.ceil(len/2) - 1;
+    median = (left + right) / 2;
+  }
 
   let moves = 0;
   for (n of sorted) {
-    if (n !== middle) {
-      moves += Math.abs(((n - middle) / x));
+    if (n !== median) {
+      moves += Math.abs(((n - median) / x));
     }
   }
 

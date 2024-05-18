@@ -18,7 +18,7 @@ Return the number of indices that you could choose such that after the removal, 
 
 Example 1:
 
-Input: nums = [2,1,6,4]
+Input: nums =   [2,1,6,4]
 Output: 1
 Explanation:
 Remove index 0: [1,6,4] -> Even sum: 1 + 4 = 5. Odd sum: 6. Not fair.
@@ -61,34 +61,55 @@ https://leetcode.com/problems/ways-to-make-a-fair-array/
  * @returns {number}
  */
 function waysToMakeFair(nums) {
-  const combs = [];
+  let oddSum = 0;
+  let evenSum = 0;
   for (let i = 0; i < nums.length; i++) {
-    const newArr = [...nums.slice(0, i), ...nums.slice(i + 1)];
-    combs.push(newArr);
+    const actual = nums[i];
+    if (i % 2 === 0) evenSum += actual;
+    else oddSum += actual;
   }
+  // oddSum 5
+  // evenSum 8
 
   let count = 0;
-  for (let i = 0; i < combs.length; i++) {
-    const c = combs[i];
-    let even = 0;
-    let odd = 0;
-    for (let j = 0; j < c.length; j++) {
-      const actual = c[j];
-      if (j % 2 === 0) even += actual;
-      else odd += actual;
+  for (let i = 0; i < nums.length; i++) {
+    // [_2, 1, 6, 4];
+    // [2, _1, 6, 4];
+    const actual = nums[i];
+    let tempOdd = oddSum;
+    let tempEven = evenSum;
+
+    if (i % 2 === 0) {
+      tempEven -= actual;
+    } else {
+      tempOdd -= actual;
     }
-    if (even === odd) count ++;
+    
+    if (tempOdd === tempEven) count++;
   }
 
   return count;
 }
 
 const cases = [
-  [2,1,6,4],
+  [2, 1, 6, 4],
   [1, 1, 1],
   [1, 2, 3],
 ];
 
-cases.forEach(c => {
+cases.forEach((c) => {
   console.log(waysToMakeFair(c));
 });
+
+
+// [2, 1, 6, 4] even = 2 + 6 = 8, odd = 1 + 4 = 5
+//  0  1  2  3
+
+// [ , 1, 6, 4] even = 1 + 4 = 5, odd = 6 // not fair 
+//     0  1  2
+// [2,  , 6, 4] // even 2 + 4 = 6, odd = 6 // fair
+//  0     1  2
+// [2, 1,  , 4] // even 2 + 4 = 6, odd = 1 // un fair 
+//  0  1     2  
+// [2, 1, 6,  ] // even 2 + 6 = 8, odd = 1 // un fair
+//  0, 1, 2

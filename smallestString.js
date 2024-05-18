@@ -78,7 +78,9 @@ const alphabet = {
   r: "q",
   s: "r",
   t: "s",
-  w: "t",
+  u: "s",
+  v: "u",
+  w: "v",
   x: "w",
   y: "x",
   z: "y"
@@ -104,7 +106,8 @@ var smallestString = function (s) {
 const cases = [
   "cbabc",
   "acbbc",
-  "leetcode"
+  "leetcode", 
+  "u"
 ];
 
 cases.forEach(c => {

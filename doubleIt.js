@@ -63,7 +63,8 @@ function doubleIt(head) {
     actual.val = parseInt(val);
     if (actual.next) {
       actual = actual.next;
-    } else {
+      // if we're already over skip this
+    } else if (i + 1 !== double.length) {
       const n = new ListNode(parseInt(double[i + 1]));
       // skip next iteration 
       i++;
@@ -82,5 +83,6 @@ const cases = [
 
 cases.forEach(c => {
   const list = createList(c);
-  console.log(doubleIt(list));
+  const res = doubleIt(list);
+  console.log(getNodeValues(res));
 })
