@@ -79,11 +79,17 @@ function discountOdd(arr) {
  * @param {number[]} nums
  * @returns {number}
  */
+// - use the opposite approach of taking nums to 0 instead
+// - you are not forced to use the helper method
 function minOperations(nums) {
   let moves = 0;
 
   while (true) {
+    // we are done after discount the last odds that
+    // come from 2/2 = 1 . eg. [0, 1, 0, 1] -> [0, 0, 0, 0]
     const [newArr, count, isDone] = discountOdd(nums);
+    // you can only make one discount per moves
+    // therefore we increase 1 move per discounted odd
     moves += count;
     let arr = newArr;
 
@@ -92,6 +98,7 @@ function minOperations(nums) {
     }
 
     const halvedArr = halve(arr);
+    // halves is one moe
     moves++;
     arr = halvedArr;
 
