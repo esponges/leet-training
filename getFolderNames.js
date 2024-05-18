@@ -55,17 +55,13 @@ Acceptance Rate
 https://leetcode.com/problems/making-file-names-unique/
 */
 
-function parseFileName(n, mem) {
+function parseFileName(n) {
   let version = '';
   let name = '';
 
   // no version at all
-  if (n[n.length - 1] !== ')' || n.length === 1) return [n, version, mem];
+  if (n[n.length - 1] !== ')' || n.length === 1) return [n, 0];
 
-  // a(1)b(2)
-  //   a ( 1 ) b
-  // v  (
-  // n a(1)b
   for (let i = 0; i < n.length; i++) {
     const actual = n[i];
     // b
@@ -84,9 +80,8 @@ function parseFileName(n, mem) {
     } else if (version.length > 0 && version[version.length - 1] !== ')') {
       version += actual;
       continue;
-    };
+    }
 
-    // cases ab(1)b
     if (version.length === 0 || version[version.length - 1] === ')') {
       if (version[version.length - 1] === ')') {
         name += version + actual;
@@ -97,13 +92,17 @@ function parseFileName(n, mem) {
     }
 
     // cases ab(aaa( <- never closes version in the last string el so there's no version at all
-    if (version.length > 0 && version[version.length - 1] !== ')' && i + 1 === name.length) {
+    if (
+      version.length > 0 &&
+      version[version.length - 1] !== ')' &&
+      i + 1 === name.length
+    ) {
       name += version;
       version = '';
     }
   }
 
-  return [name, version, mem];
+  return [name, parseInt(version.slice(0 + 1, version.length - 1))];
 }
 
 /**
@@ -111,18 +110,31 @@ function parseFileName(n, mem) {
  * @returns {string[]}
  */
 function getFolderNames(names) {
+  const mem = {};
+  const newNames = [];
   for (let i = 0; i < names.length; i++) {
-    const [name, version, mem] = parseFileName(names[i]);
-    console.log({name, version})
+    const actual = names[i];
+    const [name, version] = parseFileName(actual);
+    if (name in mem === false) {
+      mem[name] = 0;
+      newNames.push(actual);
+    } else if (name in mem && !!version && version !== mem[name] + 1 && version > mem[name]) {
+      newNames.push(actual);
+    } else {
+      mem[name]++;
+      newNames.push(name + '(' + mem[name] + ')');
+    }
   }
+
+  return newNames;
 }
 
 const cases = [
-  // ['pes', 'fifa', 'gta', 'pes(2019)'],
-  // edge cases
+  ['pes', 'fifa', 'gta', 'pes(2019)'],
+  // // edge cases
   ['pes(1)a(2)', 'a(', 'a'],
-  // ['gta', 'gta(1)', 'gta', 'avalon'],
-  // ['onepiece', 'onepiece(1)', 'onepiece(2)', 'onepiece(3)', 'onepiece'],
+  ['gta', 'gta(1)', 'gta', 'avalon'],
+  ['onepiece', 'onepiece(1)', 'onepiece(2)', 'onepiece(3)', 'onepiece'],
 ];
 
 cases.forEach((c) => {
