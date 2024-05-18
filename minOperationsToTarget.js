@@ -53,18 +53,26 @@ Acceptance Rate
 
 https://leetcode.com/problems/minimum-numbers-of-function-calls-to-make-target-array/
 */
-
-function modify(arr, opt, idx) {
-  // decrease target idx by 1
-  if (opt === 0) {
-    arr[idx] = arr[idx] - 1;
-  } else if (opt === 1) {
-    // divide them all by 2
-    for (let i = 0; i < arr.length; i++) {
-      arr[i] = arr[i] / 2;
-    }
+function halve(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = arr[i] / 2;
   }
   return arr;
+}
+
+function discountOdd(arr) {
+  let isDone = true;
+  let count = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] % 2 !== 0) {
+      count++;
+      arr[i]--;
+    }
+    if (arr[i] !== 0) {
+      isDone = false;
+    }
+  }
+  return [arr, count, isDone];
 }
 
 /**
@@ -72,52 +80,33 @@ function modify(arr, opt, idx) {
  * @returns {number}
  */
 function minOperations(nums) {
-  let arr = [...nums];
-
-  function areAllElsEven(array) {
-    let sum = 0;
-    for (let i = 0; i < array.length; i++) {
-      if (array[i] % 2 !== 0) return false;
-      // keep traversing to get sum
-      sum += array[i];
-    }
-    return true;
-  }
-
-  let sum = arr.reduce((a, b) => a + b, 0);
   let moves = 0;
-  while (sum !== 0) {
-    const isEven = areAllElsEven(arr);
 
-    if (isEven) {
-      arr = modify(arr, 1);
-      sum = sum / 2;
-      moves++;
-    } else {
-      // find first uneven el and reduce it by 1
-      let first;
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i] % 2 !== 0) {
-          first = i;
-          break;
-        }
-      }
+  while (true) {
+    const [newArr, count, isDone] = discountOdd(nums);
+    moves += count;
+    let arr = newArr;
 
-      arr = modify(arr, 0, first);
-      sum--;
-      moves++;
+    if (isDone) {
+      break;
     }
+
+    const halvedArr = halve(arr);
+    moves++;
+    arr = halvedArr;
+
   }
 
   return moves;
 }
 
 const cases = [
-  [1,5],
-  [2,2],
-  [4, 2, 5]
+  // [1, 5],
+  // [2, 2],
+  // [4, 2, 5],
+  [3, 2, 2, 4],
 ];
 
-cases.forEach(c => {
-  console.log(minOperations(c))
-})
+cases.forEach((c) => {
+  console.log(minOperations(c));
+});
