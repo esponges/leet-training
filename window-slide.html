@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Window Slide Excercise</title>
+    <body id='root'>
+      <h2>Window Slide Example</h2>
+      <div id='content'>
+        <h3>Here are the inputs</h3>
+      </div>
+    </body>
+    <style>
+      form {
+        display: inline-grid;
+      }
+    </style>
+    <script>
+      const els = [
+        { label: 'foo0' },
+        { label: 'foo1' },
+        { label: 'foo2' },
+        { label: 'foo3' },
+        { label: 'foo4' },
+        { label: 'foo5' },
+      ];
+
+      const limit = 3;
+
+      function createInput (content) {
+        const label = document.createElement('label');
+        label.htmlFor = content;
+        label.textContent = content;
+        const input = document.createElement('input');
+        input.id = content;
+        input.placeholder = content;
+        input.ariaLabel = `An input with the following label: ${content}`;
+
+        return { label, input };
+      }
+
+      const form = document.createElement('form');
+      form.id = 'form';
+      const contentDiv = document.getElementById('content');
+      contentDiv.append(form);
+
+      for (let i = 0; i < limit; i++) {
+        const { label, input } = createInput(els[i].label);
+        form.append(label);
+        form.append(input);
+      }
+    </script>
+  </head>
+</html>
