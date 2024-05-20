@@ -48,7 +48,7 @@ var rob = function(nums) {
   function traverse(arr) {
       if (arr.length <= 1) return arr[0] || 0;
       
-      let max = 0;
+      let maxVal = 0;
       const occs = {};
 
       for (let i = 0; i < arr.length; i++) {
@@ -57,29 +57,31 @@ var rob = function(nums) {
           if (!occs[actual]) occs[actual] = [i];
           else occs[actual].push(i);
 
-          if (actual > max) max = actual;
+          if (actual > maxVal) maxVal = actual;
       }
 
-      const maxVal = max;
+      if (maxVal === 0 || nums.length <= 2) return 0;
+
       const sums = [];
 
       for (repIdx of occs[maxVal]) {
-          const left = arr.slice(0, repIdx - 1);
-          const right = arr.slice(repIdx + 2);
+          const left = repIdx > 1 ? arr.slice(0, repIdx - 1) : [];
+          const right = repIdx > arr.length - 2 ? arr.slice(repIdx + 2): [];
 
           const res = maxVal + traverse(left) + traverse(right);
           sums.push(res);
       }
 
-      return Math.max(sums);
+      return Math.max(...sums);
   }
 
   return traverse(nums);
 };
 
 const cases = [
-  [1,2,3,1],
-  [2,7,9,3,1],
+  [1,1,1]
+  // [1,2,3,1],
+  // [2,7,9,3,1],
 ];
 
 cases.forEach(c => console.log(rob(c))); 
