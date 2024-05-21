@@ -17,6 +17,7 @@
 
       .input-container {
         display: inline-grid;
+        height: 40px;
       }
     </style>
     <script>
@@ -35,6 +36,7 @@
         const container = document.createElement('div');
         container.classList.add('input-container');
         container.classList.add(content);
+        container.id = `input-container-${content}`
         container.append(label);
         container.append(input);
 
@@ -58,6 +60,7 @@
       let observer;
       let left = 0;
       let right = limit;
+      let topOffset = 0;
       function observerCallback(entries) {
         entries.forEach((e) => {
           console.log({
@@ -66,14 +69,25 @@
           });
 
           // add one more if were in the end of the list
-          if (e && e.target && e.target.className.includes(right - 1) && e.isIntersecting && right >= els.length) {
-            // todo: remove last observer
+          if (e && e.target && e.target.className.includes(right - 1) && e.isIntersecting && right < els.length) {
             const newInput = createInput(`foo${right}`);
             form.append(newInput);
+
+            // remove tail input
+            const tailInput = document.getElementById(`input-container-foo${left}`);
+            tailInput.remove();
+  
             right++;
             left++;
+          
+            // offset the height of the form to compensate for the removed element
+            topOffset += 20;
+            const newTail = document.getElementById(`input-container-foo${left}`);
+            newTail.style.marginTop = `${topOffset}px`;
 
-            // todo: update observer with latest forms
+            // todo: increase element height to make the virtualization
+            // todo: move window
+
             observer.disconnect();
             observer = new IntersectionObserver(observerCallback, {
               root: document.querySelector('#root'),
@@ -84,8 +98,6 @@
             containers.forEach(c => {
               observer.observe(c);
             })
-            // todo: move window
-            // todo: increase element height to make the virtualization
           }
         });
       }
