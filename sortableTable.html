@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>table</title>
+  </head>
+  <style>
+    th {
+      cursor: pointer;
+    }
+  </style>
+  <body></body>
+  <script>
+    const els = ['aa', 'ab', 'ba'];
+
+    let order = 'asc';
+
+    function createTable(els) {
+      const id = 'table';
+
+      // drop prev rows if not initial render
+      const table = document.getElementById(id);
+      if (!!table) table.remove();
+
+      const newTable = document.createElement('table');
+      newTable.id = id;
+
+      const tableHeaderRow = document.createElement('tr');
+      const tableHeader = document.createElement('th');
+      tableHeader.append(`item (${order})`);
+      tableHeader.id = 'table__header';
+      tableHeaderRow.append(tableHeader);
+      newTable.append(tableHeader);
+
+      els.forEach((el) => {
+        const tableData = document.createElement('td');
+        tableData.append(el);
+        const tableRow = document.createElement('tr');
+        tableRow.append(tableData);
+        newTable.append(tableRow);
+        document.body.append(newTable);
+      });
+    }
+    createTable(els);
+
+    const tableHeader = document.getElementById('table__header');
+    function handleHeaderClick(e) {
+      order = order === 'asc' ? 'desc' : 'asc';
+      tableHeader.textContent = `item (${order})`;
+    }
+    tableHeader.addEventListener('click', handleHeaderClick);
+
+  </script>
+</html>
