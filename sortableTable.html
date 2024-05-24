@@ -10,9 +10,15 @@
   </style>
   <body></body>
   <script>
-    const els = ['aa', 'ab', 'ba'];
+    const els = ['ia', 'aa', 'ab', 'ba'];
 
-    let order = 'asc';
+    let order = 1;
+
+    function getOrderLabel(o) {
+      if (o === 1) return '';
+      if (o === 2) return 'asc';
+      if (o === 3) return 'desc';
+    }
 
     function createTable(els) {
       const id = 'table';
@@ -26,7 +32,7 @@
 
       const tableHeaderRow = document.createElement('tr');
       const tableHeader = document.createElement('th');
-      tableHeader.append(`item (${order})`);
+      tableHeader.append(`item (${getOrderLabel(order)})`);
       tableHeader.id = 'table__header';
       tableHeaderRow.append(tableHeader);
       newTable.append(tableHeader);
@@ -42,12 +48,43 @@
     }
     createTable(els);
 
+    const memo = {
+      unsorted: [...els],
+    };
+
     const tableHeader = document.getElementById('table__header');
     function handleHeaderClick(e) {
-      order = order === 'asc' ? 'desc' : 'asc';
-      tableHeader.textContent = `item (${order})`;
+      e.preventDefault();
+      order = order + 1 > 3 ? 1 : order + 1;
+
+      if (order === 1) createTable(memo.unsorted);
+      if ((order === 2 && memo.asc) || (order === 3 && memo.desc)) {
+        createTable(order === 2 ? memo.asc : memo.desc);
+      } else {
+        els.sort((a, b) => {
+          if (order === 2) {
+            // sort asc
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+          } else {
+            // sort desc
+            if (a > b) return -1;
+            if (a < b) return 1;
+            return 0;
+          }
+        });
+
+        // memoize
+        if (order === 2) {
+          memo.asc = els;
+        } else { 
+          memo.desc = els;
+        }
+
+        createTable(els);
+      }
     }
     tableHeader.addEventListener('click', handleHeaderClick);
-
   </script>
 </html>
