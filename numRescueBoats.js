@@ -48,24 +48,27 @@ https://leetcode.com/problems/boats-to-save-people/description/
  * @param {number} limit
  * @returns {number}
  */
-// [3,5,3,4], limit = 5
 function numRescueBoats(people, limit) {
   people.sort((a, b) => b - a);
-  // [5, 4, 3, 3]
   
-  let count = 0; // 1 2
-  let boatCount = 0; // 0 3 0 3 0
-  let i = people.length - 1; // 3 2 2 1
-  while (people.length > 0) {
-    const actual = people[i]; // 3 3 3 4
-    if (boatCount + actual <= limit) { // 3 6 3 7
-      boatCount += people.pop();
-      if (people.length === 0) count ++;
-      i--;
+  let count = 0;
+  let right = people.length - 1;
+  let left = 0;
+  while (left < right) {
+    const light = people[right];
+    const heavy = people[left];
+
+    if (light + heavy <= limit) {
+      // send heavy & light
+      left ++;
+      right --;
     } else {
-      count ++;
-      boatCount = 0;
+      // send heavy only
+      left ++;
     }
+    count ++;
+
+    if (left === right) count ++;
   }
   
   return count;
@@ -75,6 +78,7 @@ const cases = [
   [[1,2], 3],
   [[3,2,2,1], 3],
   [[3,5,3,4], 5],
+  [[5,1,4,2], 6]
 ];
 
 cases.forEach(c => {
