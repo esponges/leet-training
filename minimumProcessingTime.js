@@ -67,17 +67,19 @@ https://leetcode.com/problems/minimum-processing-time/
  * @param {number[]} tasks
  * @returns {number} 
  */
+// 100% mem 50% runtime
 function minimumProcessingTime(processorTime, tasks) {
   tasks.sort((a, b) => a - b);
   processorTime.sort((a, b) => b - a);
 
-  const times = [];
   const interval = tasks.length / processorTime.length;
   let actualProcessor = 0;
   let processor = processorTime[actualProcessor];
+  let maxTime = 0;
   for (let i = 0; i < tasks.length; i++) {
     const task = tasks[i];
-    times.push(task + processor); 
+    const sum = task + processor;
+    if (sum > maxTime) maxTime = sum; 
 
     if (i + 1 >= interval * (actualProcessor + 1)) {
       actualProcessor++;
@@ -85,7 +87,7 @@ function minimumProcessingTime(processorTime, tasks) {
     }
   }
 
-  return Math.max(...times);
+  return maxTime;
 }
 
 const cases = [
