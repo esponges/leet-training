@@ -54,16 +54,19 @@ Acceptance Rate
  * @return {number}
  */
 var kthFactor = function (n, k) {
-  function iterate(val, actual, nums, limit) {
-    if (nums.length === limit) return nums[nums.length - 1];
+  function iterate(val, actual, last, count, limit) {
     if (actual > val) return -1;
+    
+    if (val % actual === 0) {
+      count++;
+      last = actual;
+      if (count === limit) return last;
+    };
 
-    if (val % actual === 0) nums.push(actual);
-
-    return iterate(val, actual + 1, nums, limit);
+    return iterate(val, actual + 1, last, count, limit);
   }
 
-  return iterate(n, 1, [], k);
+  return iterate(n, 1, undefined, 0, k);
 };
 
 const cases = [
