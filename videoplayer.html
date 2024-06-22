@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Player</title>
+  </head>
+  <body id="main">
+   <label for="video">Enter your video URL:</label>
+    <input id="video" type="text" />
+    <button id="play">Play</button>
+    <!-- iframe container -->
+    <div id="iframe-container"></div>
+  </body>
+  <script>
+    function createIframe (e) {
+      e.preventDefault();
+
+      const url = document.getElementById('video').value;
+      
+      const iframe = document.createElement('iframe');
+      iframe.classList.add('embed-responsive-item');
+      iframe.allowFullscreen = "true"
+      iframe.setAttribute('sandbox', '');
+      iframe.src = url;
+
+      const iframeContainer = document.getElementById('iframe-container');
+      iframeContainer.append(iframe);
+    }
+
+    const button = document.getElementById('play');
+    button.addEventListener('click', createIframe);
+  </script>
+</html>
