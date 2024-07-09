@@ -32,7 +32,6 @@ https://leetcode.com/problems/largest-time-for-given-digits/description/
 */
 
 function largestTimeFromDigits(array) {
-  const valid = [];
   let max = [-1, -1, -1, -1];
 
   function isBiggerValid(hour, prevMax) {
@@ -57,9 +56,8 @@ function largestTimeFromDigits(array) {
     return false;
   }
 
-  function backtrack(actual, visited, valid, maxHour, arr) {
+  function backtrack(actual, visited, maxHour, arr) {
     if (actual.length === 4) {
-      visited.push(actual);
       if (isBiggerValid(actual, max)) max = actual;
       return;
     }
@@ -67,14 +65,14 @@ function largestTimeFromDigits(array) {
     for (let i = 0; i <= arr.length; i++) {
       if (visited[i] == false) {
         visited[i] = true;
-        backtrack([...actual, arr[i]], visited, valid, maxHour, arr);
+        backtrack([...actual, arr[i]], visited, maxHour, arr);
         visited[i] = false;
       }
     }
   }
 
   const visitedInitial = new Array(array.length).fill(false);
-  backtrack([], visitedInitial, valid, max, array);
+  backtrack([], visitedInitial, max, array);
 
   for (m of max) {
     if (m < 0) return '';
