@@ -31,6 +31,7 @@ arr.length == 4
 https://leetcode.com/problems/largest-time-for-given-digits/description/
 */
 
+// wohooo accepted great runtime (>95% bad memory <40%)
 function largestTimeFromDigits(array) {
   let max = [-1, -1, -1, -1];
 
@@ -64,8 +65,10 @@ function largestTimeFromDigits(array) {
 
     for (let i = 0; i <= arr.length; i++) {
       if (visited[i] == false) {
+        // don't consider this index next backtrack iteration
         visited[i] = true;
         backtrack([...actual, arr[i]], visited, maxHour, arr);
+        // backtrack false to try next loop iteration
         visited[i] = false;
       }
     }
@@ -74,6 +77,7 @@ function largestTimeFromDigits(array) {
   const visitedInitial = new Array(array.length).fill(false);
   backtrack([], visitedInitial, max, array);
 
+  // any -1 indicates that there was no valid combination
   for (m of max) {
     if (m < 0) return '';
   }
