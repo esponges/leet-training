@@ -74,17 +74,17 @@ function compareVersion(version1, version2) {
     const actual1 = version1[i];
     const actual2 = version2[i];
     if (actual1 !== '.') {
-      if (actual1 === '0' && version1[i+1] === '.' || actual1 !== '0') {
+      if ((actual1 === '0' && version1[i + 1] === '.') || actual1 !== '0') {
         const rev = actual1 || '0';
-        v1[d1] ? v1[d1] = v1[d1] + rev : v1[d1] = actual1;
+        v1[d1] ? (v1[d1] = v1[d1] + rev) : (v1[d1] = actual1);
       }
     } else {
       d1++;
     }
     if (actual2 !== '.') {
-      if (actual2 === '0' && version2[i+1] === '.' || actual2 !== '0') {
+      if ((actual2 === '0' && version2[i + 1] === '.') || actual2 !== '0') {
         const rev = actual2 || '0';
-        v2[d2] ? v2[d2] = v2[d2] + rev : v2[d2] = actual2;
+        v2[d2] ? (v2[d2] = v2[d2] + rev) : (v2[d2] = actual2);
       }
     } else {
       d2++;
@@ -100,21 +100,62 @@ function compareVersion(version1, version2) {
     // handle last revision where one is 0 and other doesn't exists (0 implicit)
     if (!actual1 && !next1 && !actual2 && !next2) return;
 
-    if (actual1 < actual2 || !actual1 && actual2) return -1;
-    if (actual1 > actual2 || actual1 && !actual2) return 1;
+    if (actual1 < actual2 || (!actual1 && actual2)) return -1;
+    if (actual1 > actual2 || (actual1 && !actual2)) return 1;
   }
 
-  return 0
+  return 0;
+}
+
+// accepted with good runtime ~75% and bad memory ~32%
+function compareVersion2(version1, version2) {
+  const rev1 = [];
+  const rev2 = [];
+  let acc1 = ''; // 1
+  let acc2 = ''; // 1
+  const max = Math.max(version1.length, version2.length);
+  for (let i = 0; i < max; i++) {
+    const act1 = version1[i]; // 1
+    const act2 = version2[i]; // 1
+
+    if (act1 === '.') {
+      rev1.push(parseInt(acc1));
+      acc1 = '';
+    } else acc1 += act1;
+    if (act2 === '.') {
+      rev2.push(parseInt(acc2));
+      acc2 = '';
+    } else acc2 += act2;
+
+    if (i + 1 == max) {
+      rev1.push(parseInt(acc1));
+      rev2.push(parseInt(acc2));
+    }
+  }
+
+  let i = 0;
+  let next = rev1[i] ?? rev2[i];
+  while (next >= 0) {
+    const act1 = rev1[i] || 0;
+    const act2 = rev2[i] || 0;
+
+    if (act1 < act2) return -1;
+    if (act1 > act2) return 1;
+
+    i++;
+    next = rev1[i] ?? rev2[i];
+  }
+  return 0;
 }
 
 const cases = [
-  ["1.01", "1.001"],
-  ["1.0", "1.0.0"],
-  ["0.1", "1.1"],
-  ["1.0.1", "1"],
-  ["1.0", "1.1"]
+  // ['1.01', '1.001'],
+  // ['1.0', '1.0.0'],
+  // ['0.1', '1.1'],
+  ['1.0.1', '1'],
+  // ['1.0', '1.1'],s
 ];
 
-cases.forEach(c => {
-  console.log(compareVersion(c[0], c[1]));
-})
+cases.forEach((c) => {
+  console.log(compareVersion2(c[0], c[1]));
+});
