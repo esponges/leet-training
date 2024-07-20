@@ -34,26 +34,25 @@ https://leetcode.com/problems/repeated-dna-sequences/
  * @return {string[]}
  */
 
+new Set().forEach
+
 function findRepeatedDnaSequences(s) {
   const cache = {};
 
+  const repsSet = new Set();
   for (let i = 0; i < s.length - 9; i++) {
-    const subs = s.slice(i, i + 10);
-    if (!cache[subs]) {
-      cache[subs] = 1;
-    } else {
-      cache[subs] = cache[subs] + 1;
-    }
+      const subs = s.slice(i, i + 10);
+      if (!cache[subs]) {
+          cache[subs] = 1;
+      } else {
+          repsSet.add(subs);
+      }
   }
 
-  const reps = [];
-  Object.entries(cache).map(([k, val], idx) => {
-    if (val > 1) {
-      reps.push(k);
-    }
-  });
+  const arr = [];
+  repsSet.forEach(v => arr.push(v));
 
-  return reps;
+  return arr;
 }
 
 const cases = ['AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT', 'AAAAAAAAAAAAA'];
