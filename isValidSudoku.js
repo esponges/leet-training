@@ -59,36 +59,60 @@ https://leetcode.com/problems/valid-sudoku/description/
  * @returns {boolean}
  */
 function validateSudoku(board) {
-  let squares = {};
+  let squares = { 1: {}, 2: {}, 3: {} };
   for (let i = 0; i < 9; i++) {
     // validate rows and cols axis
     let memoY = {};
     let memoZ = {};
     for (let j = 0; j < 9; j++) {
+      // each 3 lines Y axis restart memo
+      if (i % 3 == 0 && j == 0) {
+        // console.log('restart');
+        squares = { 1: {}, 2: {}, 3: {} };
+      };
+
       // validate rows
       const actualZ = board[i][j];
-      if (!memoZ[actualZ]) memoZ[actualZ] = true;
-      else if (actualZ != '.') {
-        console.log('row not valid', { memoZ, actualZ, i, j });
-        return false
-      };
+      if (actualZ != '.') {
+        if (!memoZ[actualZ]) memoZ[actualZ] = true;
+        else {
+          // console.log('row not valid', { memoZ, actualZ, i, j });
+          return false;
+        }
+
+        // val squares
+        if (j <= 2) {
+          if (!squares[1][actualZ]) squares[1][actualZ] = true;
+          else {
+            // console.log('here 1', actualZ, squares);
+            return false;
+          }
+        } else if (j >= 3 && j <= 5) {
+          if (!squares[2][actualZ]) squares[2][actualZ] = true;
+          else {
+            // console.log('here 2');
+            return false;
+          }
+        } else {
+          // console.log('pop 3');
+          if (!squares[3][actualZ]) squares[3][actualZ] = true;
+          else {
+            // console.log('here 3');
+            return false;
+          }
+        }
+      }
 
       // validate cols
       const actualY = board[j][i];
       if (!memoY[actualY]) memoY[actualY] = true;
       else if (actualY != '.') {
-        console.log('col not valid', { memoY, actualY, i, j });
+        // console.log('col not valid', { memoY, actualY, i, j });
         return false;
-      };
+      }
 
+      // console.log({ squares, i, j });
       // validate squares
-      const vect = `${i}${j}`;
-      console.log({vect});
-      if (!squares[vect]) squares[vect] = true;
-      else if (i != '.' && j != '.') {
-        console.log('vect not valid', {vect, i, j, squares });
-        return false;
-      };
     }
   }
 
@@ -117,6 +141,17 @@ const cases = [
     ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
     ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
     ['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+  ],
+  [
+    ['.', '.', '.', '.', '5', '.', '.', '1', '.'],
+    ['.', '4', '.', '3', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '3', '.', '.', '1'],
+    ['8', '.', '.', '.', '.', '.', '.', '2', '.'],
+    ['.', '.', '2', '.', '7', '.', '.', '.', '.'],
+    ['.', '1', '5', '.', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '2', '.', '.', '.'],
+    ['.', '2', '.', '9', '.', '.', '.', '.', '.'],
+    ['.', '.', '4', '.', '.', '.', '.', '.', '.'],
   ],
 ];
 
