@@ -58,6 +58,7 @@ https://leetcode.com/problems/valid-sudoku/description/
  * @param {number[][]} board
  * @returns {boolean}
  */
+// accepted: great runtime 100~ and 50~ space
 function validateSudoku(board) {
   let squares = { 1: {}, 2: {}, 3: {} };
   for (let i = 0; i < 9; i++) {
@@ -65,9 +66,8 @@ function validateSudoku(board) {
     let memoY = {};
     let memoZ = {};
     for (let j = 0; j < 9; j++) {
-      // each 3 lines Y axis restart memo
+      // each 3 looped lines Y axis restart memo
       if (i % 3 == 0 && j == 0) {
-        // console.log('restart');
         squares = { 1: {}, 2: {}, 3: {} };
       };
 
@@ -75,44 +75,26 @@ function validateSudoku(board) {
       const actualZ = board[i][j];
       if (actualZ != '.') {
         if (!memoZ[actualZ]) memoZ[actualZ] = true;
-        else {
-          // console.log('row not valid', { memoZ, actualZ, i, j });
-          return false;
-        }
+        else return false;
 
         // val squares
         if (j <= 2) {
           if (!squares[1][actualZ]) squares[1][actualZ] = true;
-          else {
-            // console.log('here 1', actualZ, squares);
-            return false;
-          }
+          else return false;
         } else if (j >= 3 && j <= 5) {
           if (!squares[2][actualZ]) squares[2][actualZ] = true;
-          else {
-            // console.log('here 2');
-            return false;
-          }
+          else return false;
         } else {
           // console.log('pop 3');
           if (!squares[3][actualZ]) squares[3][actualZ] = true;
-          else {
-            // console.log('here 3');
-            return false;
-          }
+          else return false;
         }
       }
 
       // validate cols
       const actualY = board[j][i];
       if (!memoY[actualY]) memoY[actualY] = true;
-      else if (actualY != '.') {
-        // console.log('col not valid', { memoY, actualY, i, j });
-        return false;
-      }
-
-      // console.log({ squares, i, j });
-      // validate squares
+      else if (actualY != '.') return false;
     }
   }
 
