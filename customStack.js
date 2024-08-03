@@ -58,7 +58,7 @@ https://leetcode.com/problems/design-a-stack-with-increment-operation/descriptio
 */
 
 
-// accepted but bad runtime and memory usage
+// 100 runtime yeahhh
 /**
  * @param {number} maxSize
  */
@@ -93,10 +93,9 @@ CustomStack.prototype.pop = function() {
 * @return {void}
 */
 CustomStack.prototype.increment = function(k, val) {
-  if (this.stack.length < k) {
-      this.stack = this.stack.map(el => el + val);
-  } else {
-      this.stack = [...this.stack.slice(0, k).map(el => el + val), ...this.stack.slice(k)];
+  let iter = k > this.stack.length ? this.stack.length : k;
+  for (let i = 0; i < iter; i++) {
+      this.stack[i] += val;
   }
 };
 
