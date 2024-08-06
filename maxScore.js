@@ -55,36 +55,28 @@ https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/descripti
  * @param {number} k
  * @return {number}
  */
-var maxScore = function(cardPoints, k) {
-  const scores = [];
+var maxScore = function (cardPoints, k) {
+  function drawcard(cards, movesLeft, maxS, acc) {
+    if (movesLeft == 0) {
+      return Math.max(maxS, acc);
+    }
 
-  function drawcard(cards, movesLeft, pointed, acc) {
-      if (movesLeft == 0) {
-          pointed.push(acc);
-          return;
-      }
-
-      for (let i = 0; i < 2; i++) {
-          if (i == 0) {
-              // left move
-              const leftRemoved = cards.slice(1);
-              const left = cards[0]; // 1
-              drawcard(leftRemoved, movesLeft - 1, pointed, acc + left);
-          } else {
-              // right move
-              const rightRemoved = [...cards];
-              drawcard(rightRemoved, movesLeft - 1, pointed, acc + rightRemoved.pop());
-          }
-      }
+    const leftRemoved = cards.slice(1);
+    const left = cards[0];
+    const rightRemoved = [...cards];
+    return Math.max(
+      drawcard(leftRemoved, movesLeft - 1, maxS, acc + left),
+      drawcard(rightRemoved, movesLeft - 1, maxS, acc + rightRemoved.pop())
+    );
   }
 
-  drawcard(cardPoints, k, scores, 0);
-
-  return Math.max(...scores);
+  return drawcard(cardPoints, k, 0, 0);
 };
 
 const cases = [
-  [[1,2,3,4,5,6,1], 3],
-  [[2,2,2], 2],
-  [[9,7,7,9,7,7,9], 7]
+  [[1, 2, 3, 4, 5, 6, 1], 3],
+  [[2, 2, 2], 2],
+  [[9, 7, 7, 9, 7, 7, 9], 7],
 ];
+
+cases.forEach((c) => console.log(maxScore(c[0], c[1])));
