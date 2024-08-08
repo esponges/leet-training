@@ -68,7 +68,9 @@ function largestMultipleOfThree(digits) {
   const trackList = new Array(digits.length).fill(false);
   backtrack(digits, trackList, '', multiples);
 
-  return Math.max(...multiples);
+  if (multiples.length == 0) return '';
+
+  return Math.max(...multiples).toString();
 }
 
 const cases = [[8, 1, 9], [8, 6, 7, 1, 0], [1]];
