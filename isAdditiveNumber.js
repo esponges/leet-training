@@ -59,29 +59,57 @@ https://leetcode.com/problems/additive-number/description/
  * @param {string} num
  * @return {boolean}
  */
-var isAdditiveNumber = function(num) {
-  // 112358
-  function backtrack(str, actual, nextIdx, paths) {
-      if (nextIdx >= str.length) return;
+// var isAdditiveNumber = function(num) {
+//   // 112358
+//   function backtrack(str, actual, nextIdx, paths) {
+//       if (nextIdx >= str.length) return;
 
-      for (let i = nextIdx; i < num.length; i++) {
-          const maybePair = str.slice(nextIdx, i + 1); 
-          const sum = parseInt(actual) + parseInt(maybePair); 
-          const endStr = i + 1 + sum.toString().length; 
-          const maybeSum = str.slice(i + 1, endStr);
+//       for (let i = nextIdx; i < num.length; i++) {
+//           const maybePair = str.slice(nextIdx, i + 1); 
+//           const sum = parseInt(actual) + parseInt(maybePair); 
+//           const endStr = i + 1 + sum.toString().length; 
+//           const maybeSum = str.slice(i + 1, endStr);
 
-          if (sum == parseInt(maybeSum)) {
-              paths += maybePair;
-              backtrack(str, maybeSum, endStr, paths);
-          }
+//           if (sum == parseInt(maybeSum)) {
+//               paths += maybePair;
+//               backtrack(str, maybeSum, endStr, paths);
+//           }
+//       }
+//   }
+
+//   const debug = num[0];
+//   backtrack(num, num[0], 1, debug);
+
+//   return debug == num;
+// };
+
+var backtrack = (num, idx, subs) => {
+  if (idx == num.length) return false;
+  
+  for (let i = idx; i < num.length; i++) {
+    const actual = num.slice(idx, i + 1);
+    for (let j = i + 1; j < num.length; j++) {
+      subs += actual;
+      const next = num.slice(i + 1, j + 1);
+      if (subs + next == num) return true;
+
+      const sum = parseInt(actual) + parseInt(next);
+      const maybeSum = num.slice(j + 1, j + 1  + sum.toString().length);
+      if (sum == parseInt(maybeSum)) {
+        return backtrack(num, j, subs);
       }
+      subs -= actual;
+    }
   }
 
-  const debug = num[0];
-  backtrack(num, num[0], 1, debug);
+  return false;
+}
 
-  return debug == num;
-};
+var isAdditiveNumber = (num) => {
+  const subs = "";
+
+  return backtrack(num, 0, subs);
+}
 
 const cases = [
   "112358",
