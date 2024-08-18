@@ -83,22 +83,24 @@ https://leetcode.com/problems/additive-number/description/
 //   return debug == num;
 // };
 
-var backtrack = (num, idx, subs) => {
-  if (idx == num.length) return false;
+var backtrack = (num, left, right, subs) => {
+  if (right > num.length) return false;
   
-  for (let i = idx; i < num.length; i++) {
-    const actual = num.slice(idx, i + 1);
-    for (let j = i + 1; j < num.length; j++) {
-      subs += actual;
-      const next = num.slice(i + 1, j + 1);
-      if (subs + next == num) return true;
+  for (let i = left; i < num.length; i++) {
+    const actual = num.slice(left, right);
+    for (let j = right; j < num.length; j++) {
+      subs.push(actual);
 
+      const next = num.slice(right, j + 1);
+      if (subs.join("") + next == num) return true;
+      
       const sum = parseInt(actual) + parseInt(next);
-      const maybeSum = num.slice(j + 1, j + 1  + sum.toString().length);
+      const maybeSum = num.slice(j + 1, j + 1 + sum.toString().length);
       if (sum == parseInt(maybeSum)) {
-        return backtrack(num, j, subs);
+        return backtrack(num, right, right + next.length, subs);
       }
-      subs -= actual;
+
+      subs.pop();
     }
   }
 
@@ -106,9 +108,9 @@ var backtrack = (num, idx, subs) => {
 }
 
 var isAdditiveNumber = (num) => {
-  const subs = "";
+  const subs = [];
 
-  return backtrack(num, 0, subs);
+  return backtrack(num, 0, 1, subs);
 }
 
 const cases = [
