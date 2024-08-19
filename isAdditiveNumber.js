@@ -84,30 +84,36 @@ https://leetcode.com/problems/additive-number/description/
 // };
 
 var backtrack = (num, left, right, subs) => {
-  if (right > num.length) return false;
-  
+  if (right > num.length) {
+      if (subs.join("") + num.slice(left, right) == num) return true;
+      return false;
+  };
+
   for (let i = left; i < num.length; i++) {
-    const actual = num.slice(left, right);
-    for (let j = right; j < num.length; j++) {
-      subs.push(actual);
+      const actual = num.slice(left, right);
+      for (let j = right; j < num.length; j++) {
+          subs.push(actual);
 
-      const next = num.slice(right, j + 1);
-      if (subs.join("") + next == num) return true;
-      
-      const sum = parseInt(actual) + parseInt(next);
-      const maybeSum = num.slice(j + 1, j + 1 + sum.toString().length);
-      if (sum == parseInt(maybeSum)) {
-        return backtrack(num, right, right + next.length, subs);
+          const next = num.slice(right, j + 1);
+          const sum = parseInt(actual) + parseInt(next);
+          const maybeSum = num.slice(j + 1, j + 1 + sum.toString().length);
+
+          if (sum == parseInt(maybeSum)) {
+              return backtrack(num, right, right + next.length, subs);
+          }
+
+          if (subs.join("") + next == num && subs.join("").length >= next.length) return true;
+
+          subs.pop();
       }
-
-      subs.pop();
-    }
   }
 
   return false;
 }
 
 var isAdditiveNumber = (num) => {
+  if (num.length <= 2) return false;
+
   const subs = [];
 
   return backtrack(num, 0, 1, subs);
@@ -115,7 +121,8 @@ var isAdditiveNumber = (num) => {
 
 const cases = [
   "112358",
-  // "199100199",
+  "199100199",
+  "111",
 ];
 
 cases.forEach(c => console.log(isAdditiveNumber(c)));
