@@ -53,9 +53,10 @@ https://leetcode.com/problems/find-original-array-from-doubled-array/
  * @param {number[]} changed
  * @return {number[]}
  */
+// wrong initial approach
 function shuffle(changed, actual, used, opts) {
   if (actual.length === changed.length / 2) {
-    console.log('push actual:', actual);
+    // don't pass actual by reference since it will be mutated in the loop
     opts.push([...actual]);
     return;
   }
@@ -83,5 +84,52 @@ const cases = [
   [6, 3, 0, 1],
   // [1,3,4,2,6,8]
 ];
+
+var findOriginalArraySortedNoBacktrack = function(changed) {
+    
+  const n = changed.length
+  if(n%2 === 1) return []
+  
+  let original = []
+  let map = new Map()
+  
+  // [1, 3, 4, 2, 6, 8]
+  // place the possible halves at the right side from its doubles
+  changed.sort((a,b) => {
+      return a-b
+  })
+  // [8, 6, 4, 3, 2, 1]
+  
+  for(let ele of changed) {
+      const half = ele/2
+      if(
+        // check if a prev halved value is found
+        map.has(half) 
+        // and occurrences have not been allocated to other `ele`s 
+        && map.get(half) > 0
+      ) {
+          original.push(half)
+          // decrease by one to mark one `ele` occurrence to be used
+          map.set(half, map.get(half)-1)
+      } else {
+          map.set(
+            ele, map.has(ele) 
+            // if first time just increase by one
+            ? map.get(ele)+1
+            // if already seen but had 0 available just increase
+            : 1
+          )
+      }
+  }
+  // Map -> { 4: 1, 3: 1, 2: 1, 1.5: 1, 1: 1, 0.5: 1} all keys had one occurrence
+  // 8/2=4, 6/2=3, 4/2=2, 3/2=1.5, 2/2=1, 1/2=0.5 
+  // Map -> { _4_: 0, _3_: 0, 2: 1, 1.5: 1, _1_: 0, 0.5: 1}
+  // original [4, 3, 1]
+  
+  if(original.length !== n/2) return []
+  
+  return original
+};
+
 
 cases.forEach((c) => console.log(findOriginalArray(c)));
