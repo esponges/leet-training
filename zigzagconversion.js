@@ -62,39 +62,53 @@ https://leetcode.com/problems/zigzag-conversion/description/
 // P---A---H---N-
 // -A-P-L-S-I-I-G
 // --Y---I---R---
-var convert = function(s, numRows) {
-  let dir = "D";
-  let num = 0;
-  let idx = 0;
-  let rows = new Array(numRows).fill(null).map(el => []);
-  for (letter of s) {
-      console.log({ letter, num, idx, rows });
+
+// A
+// B
+
+var convert = function (s, numRows) {
+  if (s.length == 1 || numRows == 1) return s;
+  let rows = new Array(numRows).fill(null).map((el) => []);
+
+  if (numRows == 2) {
+    for (let i = 0; i < s.length; i++) {
+      if (i % 2 == 0) rows[0].push(s[i]);
+      else rows[1].push(s[i]);
+    }
+  } else {
+    let dir = 'D';
+    let num = 0;
+    let idx = 0;
+    for (letter of s) {
       rows[num][idx] = letter;
-      if (dir == "D") {
-          if (num == numRows - 1) {
-              dir = "U";
-              num--;
-              idx++;
-          } else {
-              num++;
-          }
-      } else {
-          if (num == 1) {
-              dir = "D";
-          } 
+      if (dir == 'D') {
+        if (num == numRows - 1) {
+          dir = 'U';
           num--;
           idx++;
+        } else {
+          num++;
+        }
+      } else {
+        if (num == 1) {
+          dir = 'D';
+        }
+        num--;
+        idx++;
       }
+    }
   }
+  console.log({ rows });
 
-  return rows.reduce((acc, row) => acc + row.join(""), "");
+  return rows.reduce((acc, row) => acc + row.join(''), '');
 };
 
 cases = [
-  ["PAYPALISHIRING", 3],
-  ["PAYPALISHIRING", 4],
-  ["A", 1],
+  // ['PAYPALISHIRING', 3],
+  // ['PAYPALISHIRING', 4],
+  // ['A', 1],
   // ["AB", 1],
+  ["AB", 2],
   // ["ABC", 1],
   // ["ABC", 2],
   // ["ABC", 3],
@@ -106,4 +120,4 @@ cases = [
   // ["ABC", 9],
 ];
 
-cases.forEach(c => console.log(convert(c[0], c[1])));
+cases.forEach((c) => console.log(convert(c[0], c[1])));
