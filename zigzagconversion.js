@@ -78,14 +78,12 @@ var convert = function (s, numRows) {
   } else {
     let dir = 'D';
     let num = 0;
-    let idx = 0;
     for (letter of s) {
-      rows[num][idx] = letter;
+      rows[num].push(letter);
       if (dir == 'D') {
         if (num == numRows - 1) {
           dir = 'U';
           num--;
-          idx++;
         } else {
           num++;
         }
@@ -94,11 +92,9 @@ var convert = function (s, numRows) {
           dir = 'D';
         }
         num--;
-        idx++;
       }
     }
   }
-  console.log({ rows });
 
   return rows.reduce((acc, row) => acc + row.join(''), '');
 };
@@ -108,7 +104,7 @@ cases = [
   // ['PAYPALISHIRING', 4],
   // ['A', 1],
   // ["AB", 1],
-  ["AB", 2],
+  ['AB', 2],
   // ["ABC", 1],
   // ["ABC", 2],
   // ["ABC", 3],
