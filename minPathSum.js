@@ -50,6 +50,8 @@ var minPathSum = function (grid) {
   let sums = Infinity;
 
   function backtrack(arr, row, col, acc) {
+    if (acc > sums) return;
+
     if (row == arr.length - 1 && col == arr[0].length - 1) {
       if (acc + arr[row][col] < sums) {
         sums = acc + arr[row][col];
