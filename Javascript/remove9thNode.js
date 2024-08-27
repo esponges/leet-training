@@ -99,3 +99,26 @@ cases.forEach((c) => {
   console.log(removeNthFromEnd(list));
   // const res = remove9thNode(list, c[1]);
 });
+
+// accepted not efficient (one year later after forgetting how linked lists work though)
+var removeNthFromEnd = function(head, n) {
+  const nodeVals = [];
+
+  let current = head;
+  while (current) {
+      nodeVals.push(current.val);
+      current = current.next;
+  }
+
+  let newList = new ListNode(-1);
+  current = newList;
+
+  for (let i = 0; i < nodeVals.length; i++) {
+      if (i != nodeVals.length - n) {
+          current.next = new ListNode(nodeVals[i]);
+          current = current.next;
+      }
+  }
+
+  return newList.next;
+};
