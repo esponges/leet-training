@@ -47,7 +47,7 @@ https://leetcode.com/problems/largest-multiple-of-three/description/
  */
 function largestMultipleOfThree(digits) {
   if (digits.length == 1) {
-    return digits[0] % 3 == 0 ? digits[0] : '';
+    return digits[0] % 3 == 0 ? digits[0].toString() : '';
   }
 
   function backtrack(nums, used, n, mults) {
