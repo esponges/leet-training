@@ -52,8 +52,9 @@ https://leetcode.com/problems/largest-number/description/
 var largestNumber = function (nums) {
   function backtrack(arr, tracked, biggest, actual) {
     if (actual.length === arr.length) {
-      const num = parseInt([...actual].join(''));
-      return num > biggest ? num : biggest;
+      const str = actual.join("");
+      const num = parseInt(str);
+      return num > biggest ? str : biggest;
     }
 
     for (let i = 0; i < arr.length; i++) {
@@ -76,7 +77,60 @@ var largestNumber = function (nums) {
 const cases = [
   [10, 2],
   [3, 30, 34, 5, 9],
-  [999999998, 999999997, 999999999],
+  // [999999998, 999999997, 999999999],
+  // [0,9,8,7,6,5,4,3,2,1],
 ];
 
-cases.forEach((c) => console.log(largestNumber(c)));
+// cases.forEach((c) => console.log(largestNumber(c)));
+
+// [3, 34] - 334 / 343
+function largestNumberSort (nums) {
+  nums.sort((a, b) => {
+    let firstOneDig = [];
+    if (a >= 10) {
+      const astr = a.toString();
+      firstOneDig[0] = parseInt(astr[0]);
+      const aRest = astr.slice(1);
+      firstOneDig[1] = aRest;
+      firstOneDig[2] = parseFloat(astr[0] + '.' + aRest);
+    } else {
+      firstOneDig = [a, '', a];
+    }
+
+    let secOneDig = [];
+    if (b >= 10) {
+      const bstr = b.toString();
+      secOneDig[0] = parseInt(bstr[0]);
+      const bRest = bstr.slice(1);
+      secOneDig[1] = bRest;
+      secOneDig[2] = parseFloat(bstr[0] + '.' + bRest);
+    } else {
+      secOneDig = [b, '', b];
+    }
+
+    if (firstOneDig[1] == '' && secOneDig[1] == '') {
+      return b - a;
+    } else if (!firstOneDig[1] == '' || !secOneDig[1] == '') {
+      // not same first digit return highest
+      if (firstOneDig[0] != secOneDig[0]) return secOneDig[0] - firstOneDig[0];
+      // they share common first digit - now diff using the rest of the digits
+      else {
+        // if any of them is visible by 10
+        if (a % 10 == 0) {
+          // we want `b` to be the biggest
+          return 1;
+        } else if (b % 10 == 0) {
+          // we want `a` to be the biggest
+          return -1;
+          // just check which one is bigger using their floats
+        } else {
+          return secOneDig[2] - firstOneDig[2];
+        }
+      }
+    }
+  });
+  
+  return nums.join("");
+}
+
+cases.forEach((c) => console.log(largestNumberSort(c)));
