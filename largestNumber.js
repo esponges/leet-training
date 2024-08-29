@@ -50,31 +50,33 @@ https://leetcode.com/problems/largest-number/description/
  */
 // just testing backtracking but i don't think this is the best solution for arrays (+10 length)
 var largestNumber = function (nums) {
-  function backtrack(arr, tracked, opts, actual) {
-      if (actual.length === arr.length) {
-          opts.push(parseInt([...actual].join("")));
-          return;
-      }
+  function backtrack(arr, tracked, biggest, actual) {
+    if (actual.length === arr.length) {
+      const num = parseInt([...actual].join(''));
+      return num > biggest ? num : biggest;
+    }
 
-      for (let i = 0; i < arr.length; i++) {
-          if (!tracked[i]) {
-              tracked[i] = true;
-              backtrack(arr, tracked, opts, [...actual, arr[i]]);
-              tracked[i] = false;
-          }
+    for (let i = 0; i < arr.length; i++) {
+      if (!tracked[i]) {
+        tracked[i] = true;
+        biggest = backtrack(arr, tracked, biggest, [...actual, arr[i]]);
+        tracked[i] = false;
       }
+    }
+    return biggest;
   }
 
   const used = new Array(nums.length).fill(false);
-  const words = [];
-  backtrack(nums, used, words, []);
+  let max = 0;
+  max = backtrack(nums, used, max, []);
 
-  return Math.max(...words).toString();
+  return max;
 };
 
 const cases = [
   [10, 2],
   [3, 30, 34, 5, 9],
+  [999999998, 999999997, 999999999],
 ];
 
-cases.forEach(c => console.log(largestNumber(c)));
+cases.forEach((c) => console.log(largestNumber(c)));
