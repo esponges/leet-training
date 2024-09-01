@@ -59,75 +59,47 @@ https://leetcode.com/problems/word-search/description/
 var exist = function (board, word) {
   let exists = false;
 
-  const rows = board.length;
-  const cols = board[0].length;
-  function backtrack(coord, acc, m, n) {
+  function backtrack(coord, acc, track) {
     if (!word.startsWith(acc)) return;
     if (acc == word) {
       exists = true;
       return;
     }
-    // out of bounds
-    if (!board[coord[0], coord[1]]) return;
-
+    
     const [row, col] = coord;
-    let opts = [];
+    for (let i = 0; i < 4; i++) {
+      let r, c;
+      if (i == 0) {
+        r = row;
+        c = col - 1;
+      } else if (i == 1) {
+        r = row - 1;
+        c = col;
+      } else if (i == 2) {
+        r = row;
+        c = col + 1;
+      } else {
+        r = row + 1;
+        c = col;
+      }
 
-    // m - row // n - col
-    if (row == 0) {
-      if (col == 0)
-        opts = [
-          [row, 1],
-          [row + 1, 0],
-        ];
-      else if (col == n - 1)
-        opts = [
-          [row, col - 1],
-          [row + 1, col],
-        ];
-      else
-        opts = [
-          [row, col - 1],
-          [row + 1, col],
-          [row, col + 1],
-        ];
-    } else if (row == m - 1) {
-      if (col == 0)
-        opts = [
-          [row - 1, col],
-          [row, col + 1],
-        ];
-      else if (col == n - 1)
-        opts = [
-          [row - 1, col],
-          [row, col - 1],
-        ];
-      else
-        opts = [
-          [row, col - 1],
-          [row - 1, col],
-          [row, col + 1],
-        ];
-    } else {
-      opts = [
-        [row, col - 1],
-        [row - 1, col],
-        [row, col + 1],
-        [row + 1, col],
-      ];
-    }
-
-    for (let i = 0; i < opts.length; i++) {
-      const [m, n] = opts[i];
-      acc += board[m][n];
-      backtrack(opts[i], acc, m, n);
-      acc -= board[m][n];
+      if (r >= 0 && r < board.length) { // avoid runtime except board[-1][x] <- board[-1] undefined
+        const next = board[r][c];
+        if (board[r][c] && track[r][c] != '-') {
+          track[row][col] = '-';
+          backtrack([r, c], acc + next, track);
+          track[row][col] = '.';
+        }
+      }
     }
   }
 
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      backtrack([i, j], board[i][j], rows, cols);
+  const used = new Array(board.length).fill(new Array(board[0].length).fill('.'));
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      used[i][j] = '-';
+      backtrack([i, j], board[i][j], used);
+      used[i][j] = '.';
     }
   }
 
