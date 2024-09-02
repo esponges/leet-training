@@ -59,47 +59,42 @@ https://leetcode.com/problems/word-search/description/
 var exist = function (board, word) {
   let exists = false;
 
-  function backtrack(coord, acc, track) {
-    if (!word.startsWith(acc)) return;
-    if (acc == word) {
+  function backtrack(row, col, index, used) {
+    if (index === word.length) {
       exists = true;
       return;
     }
-    
-    const [row, col] = coord;
-    for (let i = 0; i < 4; i++) {
-      let r, c;
-      if (i == 0) {
-        r = row;
-        c = col - 1;
-      } else if (i == 1) {
-        r = row - 1;
-        c = col;
-      } else if (i == 2) {
-        r = row;
-        c = col + 1;
-      } else {
-        r = row + 1;
-        c = col;
-      }
 
-      if (r >= 0 && r < board.length) { // avoid runtime except board[-1][x] <- board[-1] undefined
-        const next = board[r][c];
-        if (board[r][c] && track[r][c] != '-') {
-          track[row][col] = '-';
-          backtrack([r, c], acc + next, track);
-          track[row][col] = '.';
-        }
-      }
+    if (
+      row < 0 ||
+      row >= board.length ||
+      col < 0 ||
+      col >= board[0].length ||
+      used[row][col] ||
+      board[row][col] !== word[index]
+    ) {
+      return;
     }
+
+    used[row][col] = true;
+
+    backtrack(row, col - 1, index + 1, used);
+    backtrack(row - 1, col, index + 1, used);
+    backtrack(row, col + 1, index + 1, used);
+    backtrack(row + 1, col, index + 1, used);
+
+    used[row][col] = false;
   }
 
-  const used = new Array(board.length).fill(new Array(board[0].length).fill('.'));
+  // Create a proper 2D array for tracking visited cells
+  const used = Array.from({ length: board.length }, () =>
+    Array(board[0].length).fill(false)
+  );
+
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[0].length; j++) {
-      used[i][j] = '-';
-      backtrack([i, j], board[i][j], used);
-      used[i][j] = '.';
+      backtrack(i, j, 0, used);
+      if (exists) return true;
     }
   }
 
