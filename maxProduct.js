@@ -50,10 +50,11 @@ var maxProduct = function(nums) {
 
   let max = 0;
   function recursion(acc, index, count) {
+      max = Math.max(max, acc);
+
       if (index == nums.length - 1) {
           return;
       }
-      max = Math.max(max, acc);
 
       const actual = nums[index];
       const calc = count == 0 ? actual : acc * actual;
@@ -69,8 +70,9 @@ var maxProduct = function(nums) {
 };
 
 const cases = [
-  [[2,3,-2,4]],
-  [[-2,0,-1]],
+  // [2,3,-2,4],
+  // [-2,0,-1],
+  [-3,-1,-1]
 ];
 
 cases.forEach(c => console.log(maxProduct(c)));
