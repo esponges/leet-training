@@ -46,6 +46,8 @@ https://leetcode.com/problems/maximum-product-subarray/description/
  * @return {number}
  */
 var maxProduct = function(nums) {
+  if (nums.lenght === 1) return nums[0];
+
   let max = 0;
   function recursion(acc, index, count) {
       if (index == nums.length - 1) {
