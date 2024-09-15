@@ -45,23 +45,23 @@ https://leetcode.com/problems/maximum-product-subarray/description/
  * @param {number[]} nums
  * @return {number}
  */
-var maxProduct = function(nums) {
+var maxProduct = function (nums) {
   if (nums.lenght === 1) return nums[0];
 
   let max = 0;
   function recursion(acc, index, count) {
-      max = Math.max(max, acc);
+    const actual = nums[index];
+    const calc = count == 0 ? actual : acc * actual;
+    max = Math.max(max, calc);
 
-      if (index == nums.length - 1) {
-          return;
-      }
+    if (index == nums.length - 1) {
+      return;
+    }
 
-      const actual = nums[index];
-      const calc = count == 0 ? actual : acc * actual;
-      // continue actual recursion line
-      recursion(calc, index + 1, count + 1);
-      // start next sequence
-      recursion(0, index + 1, 0);
+    // continue actual recursion line
+    recursion(calc, index + 1, count + 1);
+    // start next sequence
+    recursion(0, index + 1, 0);
   }
 
   recursion(0, 0, 0);
@@ -72,7 +72,8 @@ var maxProduct = function(nums) {
 const cases = [
   // [2,3,-2,4],
   // [-2,0,-1],
-  [-3,-1,-1]
+  // [-3,-1,-1],
+  [-4, -3],
 ];
 
-cases.forEach(c => console.log(maxProduct(c)));
+cases.forEach((c) => console.log(maxProduct(c)));
