@@ -45,8 +45,9 @@ https://leetcode.com/problems/maximum-product-subarray/description/
  * @param {number[]} nums
  * @return {number}
  */
+// brute force approach - not performant
 var maxProduct = function (nums) {
-  if (nums.lenght === 1) return nums[0];
+  if (nums.length === 1) return nums[0];
 
   let max = 0;
   function recursion(acc, index, count) {
@@ -77,3 +78,31 @@ const cases = [
 ];
 
 cases.forEach((c) => console.log(maxProduct(c)));
+
+// Kadane's Algorithm - O(n) solution
+var maxProductBest = function (nums) {
+  if (nums.length === 1) return nums[0];
+
+  // any number will be bigger than this
+  let max = -Infinity;
+  let prod = 1;
+
+  for (n of nums) {
+    prod *= n;
+    max = Math.max(max, prod);
+    // restart product count when multiplied by 0
+    if (prod == 0) prod = 1;
+  }
+
+  prod = 1;
+
+  // required to handle negative left sides
+  // eg arr {-8,5,3,1,6} -> 90
+  for (let i = nums.length - 1; i >= 0; i--) {
+    prod *= nums[i];
+    max = Math.max(max, prod);
+    if (prod == 0) prod = 1;
+  }
+
+  return max;
+}
