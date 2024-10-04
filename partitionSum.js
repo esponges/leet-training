@@ -57,7 +57,7 @@ https://leetcode.com/problems/combination-sum/
  * @return {number[][]}
  */
 
-// accepted! but bad runtime :()
+// accepted! 70/64 — much better!
 var combinationSum = function (candidates, target) {
   const res = [];
 
@@ -79,9 +79,7 @@ var combinationSum = function (candidates, target) {
     }
   }
 
-  for (let i = 0; i <= candidates.length; i++) {
-    backtrack([candidates[i]], candidates[i], i);
-  }
+  backtrack([], 0, 0);
 
   return res;
 };
