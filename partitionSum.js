@@ -56,10 +56,9 @@ https://leetcode.com/problems/combination-sum/
  * @param {number} target
  * @return {number[][]}
  */
-var combinationSum = function (candidates, target) {
-  // sort desc
-  candidates.sort((a, b) => b - a);
 
+// accepted! but bad runtime :()
+var combinationSum = function (candidates, target) {
   const res = [];
 
   function backtrack(comb, acc, index) {
