@@ -31,21 +31,26 @@ https://leetcode.com/problems/h-index-ii/description/
  */
 var hIndex = function (citations) {
   let max = 0;
+  if (citations.length == 1 && citations[0] > 0) {
+    return 1;
+  };
+
   function rec(arr, offset) {
-    // [5, 6] 0
-    // base case here
+    if (arr.length == 1 && arr[0] == 1 && !offset) {
+      max =Math.max(max, arr[0]);
+    };
     if (!arr.length) return;
 
-    const mid = arr.length > 2 ? Math.floor(arr.length / 2) : 0; // 1 // to the left
-    const target = arr[mid]; // 6
-    const right = arr.length - (arr.length > 2 ? mid : 1) + offset; // 1 - 1 + 0 = 1
+    const mid = arr.length > 2 ? Math.floor(arr.length / 2) : 0;
+    const target = arr[mid];
+    const right = arr.length - (arr.length > 2 ? mid - 1 : 1) + offset;
 
     if (target <= right) {
       max = target;
-      rec(arr.slice(mid + 1, 0)); // [5, 6], 0
+      rec(arr.slice(mid + 1), 0); 
     } else {
-      rec(arr.slice(mid - 1, right)); // [5], 1
-      rec(arr.slice(mid + 1, 0)); // [6], 0
+      rec(arr.slice(0, mid - 1), 0);
+      rec(arr.slice(mid + 1), right);
     }
   }
 
@@ -57,5 +62,7 @@ var hIndex = function (citations) {
 const cases = [
   [0, 1, 3, 5, 6],
   [1, 2, 100],
+  [1],
+  [0, 1]
 ];
 cases.forEach((c) => console.log(hIndex(c)));
