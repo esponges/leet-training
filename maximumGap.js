@@ -43,6 +43,7 @@ https://leetcode.com/problems/maximum-gap/description/
  * @param {number[]} nums
  * @return {number}
  */
+// accepted 80%/20%
 var maximumGap = function (nums) {
   if (nums.length < 2) return 0;
 
@@ -51,9 +52,9 @@ var maximumGap = function (nums) {
   nums.forEach((v) => (vals[v] = true));
 
   let max = 0;
-  let prev = 0;
-  // {1, 3, 6, 9}
+  let prev;
   Object.keys(vals).forEach((v) => {
+    if (i == 0) prev = v;
     const diff = Math.abs(v - prev);
     if (diff > max) max = diff;
     prev = v;
