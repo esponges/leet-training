@@ -46,25 +46,23 @@ https://leetcode.com/problems/integer-break/description/
 var integerBreak = function(n) {
   let max = 0;
 
-  function backtrack(prod, sum, debug) {
+  function backtrack(prod, sum, prev) {
       if (sum == n) {
           max = Math.max(prod, max);
           return;
       }
 
-      for (let i = 1; i < n; i++) {
+      for (let i = prev; i < n; i++) {
           sum += i;
-          debug.push(i);
           if (sum <= n) {
             const newProd = prod * i || i;
-            backtrack(newProd, sum, debug);
+            backtrack(newProd, sum, prev);
           }
-          debug.pop();
           sum -= i;
       }
   }
 
-  backtrack(0, 0, []);
+  backtrack(0, 0, 0);
 
   return max;
 };
