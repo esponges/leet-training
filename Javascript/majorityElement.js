@@ -67,3 +67,29 @@ console.log(m2.getMajorityElement());
 
 const m3 = new Majority([1, 2, 5, 5, 6, 6, 1, 3, 3, 2, 3, 6, 6]);
 console.log(m3.getMajorityElement());
+
+
+/// nov 24
+
+// accepted but bad runtime and memory
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement = function(nums) {
+  const mem = {};
+
+  for (n of nums) {
+      if (!mem[n]) mem[n] = 1;
+      else mem[n] = mem[n] + 1;
+  }
+
+  let max = [0, 0];
+
+  Object.entries(mem).forEach(([key, val]) => {
+      if (val > max[1]) max = [parseInt(key), val];
+  });
+
+  return max[0];
+};
