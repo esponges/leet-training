@@ -75,9 +75,10 @@ Acceptance Rate
  * @param {number} n
  * @return {string[]}
  */
+// accepted beats 100% in runtime & memory
 var buildArray = function(target, n) {
   const targetSet = new Set(target);
-  const moves = ["Push"];
+  const moves = [];
 
   for(let i = 2; i <= n; i++) {
       if (targetSet.has(i)) { 
