@@ -54,7 +54,7 @@ https://leetcode.com/problems/max-number-of-k-sum-pairs/description/
  * @return {number}
  */
 var maxOperations = function (nums, k) {
-  let left = 0;gi
+  let left = 0;
   let right = nums.length - 1;
 
   nums.sort((a, b) => a - b);
