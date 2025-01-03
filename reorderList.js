@@ -54,31 +54,43 @@ https://leetcode.com/problems/reorder-list/description/
  * @param {ListNode} head
  * @return {void} Do not return anything, modify head in-place instead.
  */
-var reorderList = function (head) {
-  let curr = head;
-  const els = [];
+* @param {ListNode} head
+* @return {void} Do not return anything, modify head in-place instead.
+*/
+var reorderList = function(head) {
+   let curr = head;
+   const els = [];
 
-  while (curr.next != null) {
-    els.push = curr.val;
-    curr = curr.next;
-  }
+   while (curr != null) {
+       els.push(curr.val);
+       curr = curr.next;
+   }
+   console.log({ els });
 
-  // is this correctly creating the new list?
-  let last = new ListNode();
-  let currLast = last;
+   let last = new ListNode();
+   let currLast = last;
+   console.log({ last, currLast, next: currLast.val });
 
-  for (let i = els.length - 1; i > Math.floor(els.length / 2) - 1; i--) {
-    currLast.val = els[i];
-    currLast = currLast.next;
-  }
+   for (let i = els.length - 1; i > Math.floor(els.length/2) - 1; i--) {
+       currLast.val = els[i];
+       if (i != els.length/2) currLast.next = new ListNode();
+       currLast = currLast.next;
+   }
+   curr = head;
+   currLast = last;
 
-  for (let i = 0; i < Math.floor(els.length / 2); i++) {
-    const mem = curr.next;
-    curr.next = currLast.val;
-    curr.next.next = mem;
-    curr = curr.next;
-    currLast = currLast.next;
-  }
+   for (let i = 0; i < Math.floor(els.length/2); i++) {
+       const mem = curr.next;
+       // push opposite node
+       curr.next = currLast.next;
+       // move curr to next so we can restore prev next
+       curr = curr.next;
+       // restore memoized next
+       curr.next = mem;
+       // move both pointers
+       curr = curr.next;
+       currLast = currLast.next;
+   }
 
-  return head;
+   return head;
 };
