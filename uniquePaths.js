@@ -53,14 +53,38 @@ var uniquePaths = function (m, n) {
   getPath(2, 1);
   getPath(1, 2);
 
+  console.log({ m, n });
   return paths;
 };
 
 const cases = [
-  { m: 3, n: 7 },
+  { m: 2, n: 1 },
+  { m: 2, n: 2 },
   { m: 3, n: 2 },
+  { m: 3, n: 3 },
+  { m: 3, n: 4 },
+  { m: 3, n: 5 },
+  { m: 3, n: 6 },
+  { m: 3, n: 7 },
 ];
 
 cases.forEach((c) => {
   console.log(uniquePaths(c.m, c.n));
 })
+
+// DP still RTL
+
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var uniquePaths = function (m, n) {
+  function dp(x, y) {
+      if (x == 1 || y == 1) return 1;
+
+      return dp(x - 1, y) + dp(x, y - 1);
+  }
+
+  return dp(n, m);
+};
