@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Debounce</title>
+  </head>
+  <body>
+    <div>
+      <label for="debounce">Debounce this</label>
+      <input id="debounce" placeholder="debounce this" type="text" />
+    </div>
+  </body>
+  <script>
+  const input = document.getElementById('debounce');
+
+  function debounce (fn, timeout = 2000) {
+    // prevent previous call to be executed
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn(args);
+      }, timeout);
+    }
+  }
+
+  function fetch (event) {
+    console.log('fetching');
+  };
+
+  const debounceKeyup = debounce(fetch);
+
+  input.addEventListener('keyup', (e) => debounceKeyup(e));
+  </script>
+</html>

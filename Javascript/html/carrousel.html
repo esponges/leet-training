@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Javascript/html/carrousel.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Carrousel</title>
+  </head>
+  <body id="main">
+  </body>
+  <script>
+    const images = [
+      'https://picsum.photos/id/237/200/300',
+      'https://picsum.photos/id/238/200/300',
+      'https://picsum.photos/id/239/200/300',
+    ];
+    let activeImageIdx = 0;
+    let prevImageIdx;
+
+    function createImageElement(url, id) {
+      const el = document.createElement('img');
+      el.src = url;
+      el.id = `img-${id}`;
+      return el;
+    }
+
+    const imageElements = images.map((i) => {
+      return createImageElement(i);
+    });
+
+    const imageContainer = document.createElement('div');
+    imageContainer.id = 'img-container';
+    const imageEl = document.createElement('img');
+    imageEl.src = images[activeImageIdx];
+    imageEl.id = `img-${activeImageIdx}`;
+    imageContainer.append(imageEl);
+
+    const main = document.getElementById('main');
+    main.append(imageContainer);
+
+    function swapImageContainer (src) {
+      const parent = document.getElementById('img-container');
+      const child = document.getElementById(`img-${prevImageIdx}`);
+      const el = createImageElement(src, activeImageIdx);
+
+      child.remove();
+      parent.append(el);
+    }
+
+    setInterval(() => {
+      const nextIdx = activeImageIdx < images.length - 1 ? activeImageIdx + 1 : 0;
+      prevImageIdx = activeImageIdx;
+      activeImageIdx = nextIdx;
+
+      // console.log(activeImageIdx);
+      swapImageContainer(images[activeImageIdx]);
+    }, [1000]);
+  </script>
+</html>

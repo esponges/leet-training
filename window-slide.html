@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Window Slide Excercise</title>
+    <body id="root">
+      <h2>Window Slide Example</h2>
+      <div id="content">
+        <h3>Here are the inputs</h3>
+      </div>
+    </body>
+    <style>
+      form {
+        display: inline-grid;
+        max-height: 40px;
+        overflow-y: scroll;
+      }
+
+      .input-container {
+        display: inline-grid;
+        height: 40px;
+      }
+    </style>
+    <script>
+      const els = new Array(10).fill(null).map((_, idx) => ({ label: `foo${idx}` }));
+      const limit = 3;
+
+      function createInput(content) {
+        const label = document.createElement('label');
+        label.htmlFor = content;
+        label.textContent = content;
+        const input = document.createElement('input');
+        input.id = content;
+        input.placeholder = content;
+        input.ariaLabel = `An input with the following label: ${content}`;
+
+        const container = document.createElement('div');
+        container.classList.add('input-container');
+        container.classList.add(content);
+        container.id = `input-container-${content}`
+        container.append(label);
+        container.append(input);
+
+        return container;
+      }
+
+      const form = document.createElement('form');
+      form.id = 'form';
+      const contentDiv = document.getElementById('content');
+      contentDiv.append(form);
+
+      for (let i = 0; i < limit; i++) {
+        const input = createInput(els[i].label);
+        form.append(input);
+      }
+      
+      function getInputContainers() {
+        return document.querySelectorAll('.input-container');
+      }
+
+      let observer;
+      let left = 0;
+      let right = limit;
+      let topOffset = 0;
+      function observerCallback(entries) {
+        entries.forEach((e) => {
+          console.log({
+            target: e.target,
+            isIntersecting: e.isIntersecting,
+          });
+
+          // add one more if were in the end of the list
+          if (e && e.target && e.target.className.includes(right - 1) && e.isIntersecting && right < els.length) {
+            const newInput = createInput(`foo${right}`);
+            form.append(newInput);
+
+            // remove tail input
+            const tailInput = document.getElementById(`input-container-foo${left}`);
+            tailInput.remove();
+  
+            right++;
+            left++;
+          
+            // offset the height of the form to compensate for the removed element
+            topOffset += 20;
+            const newTail = document.getElementById(`input-container-foo${left}`);
+            newTail.style.marginTop = `${topOffset}px`;
+
+            // todo: increase element height to make the virtualization
+            // todo: move window
+
+            observer.disconnect();
+            observer = new IntersectionObserver(observerCallback, {
+              root: document.querySelector('#root'),
+              threshold: 0.5
+            });
+
+            const containers = getInputContainers();
+            containers.forEach(c => {
+              observer.observe(c);
+            })
+          }
+        });
+      }
+
+      const inputContainer = getInputContainers();
+      observer = new IntersectionObserver(observerCallback, {
+        root: document.querySelector('#root'),
+        threshold: 0.5,
+      });
+
+      inputContainer.forEach((inputC) => {
+        observer.observe(inputC);
+      });
+    </script>
+  </head>
+</html>
