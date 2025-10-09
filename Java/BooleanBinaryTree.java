@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class BooleanBinaryTree {
     public static void main(String[] args) {
     // You are given the root of a full binary tree with the following properties:
@@ -20,7 +22,7 @@ public class BooleanBinaryTree {
         TreeNode leftL = booleanBinaryTree.new TreeNode(0);
         TreeNode right = booleanBinaryTree.new TreeNode(3,leftL,rightL);
         TreeNode root = booleanBinaryTree.new TreeNode(2, left, right);
-
+        booleanBinaryTree.printTreeNode(root);
         System.out.println(booleanBinaryTree.getResolution(root));
     }
     public class TreeNode {
@@ -42,5 +44,24 @@ public class BooleanBinaryTree {
         } else {
             return getResolution(root.left) && getResolution(root.right);
         }
+    }
+
+    public void printTreeNode(TreeNode root){
+        Stack<TreeNode> stack1 = new Stack<>();
+        Stack<TreeNode> stack2 = new Stack<>();
+        
+        stack1.push(root);
+        while(!stack1.isEmpty()) {
+            TreeNode node = stack1.pop(); 
+            stack2.push(node); 
+            if(node.left != null)  stack1.push(node.left);
+            if(node.right != null)  stack1.push(node.right);
+                
+        }
+        System.out.print("[");
+        while(!stack2.isEmpty()) {
+            System.out.print(stack2.pop().val);
+        }
+        System.out.println("]");
     }
 }
